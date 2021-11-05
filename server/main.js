@@ -1,19 +1,14 @@
 const express = require('express');
-const app = express();
-const cors = require('cors');
-const bodyParser = require('body-parser');
 const oracledb = require('oracledb');
-
-const port = process.env.PORT || 3001;
+const cors = require('cors');
+const bodyParser = require('body-parser')
+var app = express();
 var host = 'localhost';
+var port = 3001;
 var database = 'xe';
 
-app.use(cors());
 app.use(bodyParser.json());
-
-app.listen(port, () => {
-    console.log(`server is listening at ${host}:${port}`);
-});
+app.use(cors());
 
 
 app.get('/', (req, res) => {
@@ -77,7 +72,6 @@ app.get('/', (req, res) => {
       console.log("respond:" + respond);
     })
 });
-
 app.post('/api', (req, res) => {
   res.send(req.body);
   console.log(req.body);
@@ -148,6 +142,11 @@ app.post('/api', (req, res) => {
       console.log("respond:" + respond);
     })
 });
+
+
+app.listen(port, () => {
+  console.log(`server is listening at ${host}:${port}`);
+})
 
 
 function doRelease(connection) {
