@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 
 function Test() {
@@ -23,13 +24,11 @@ function Test() {
 
   const onEnter = (e) => {
     setLoading(true);
-    fetch(`http://localhost:3001?user=${id_text}&pwd=${pwd_text}`)
+    fetch(`http://localhost:3001?user=${id_text}&pwd=${pwd_text}&query=select * from student`)
+      .then((res) => res.json())
       .then((res) => {
-        console.log("log"+res);
-        res.json()
-      })
-      .then((res) => {
-        console.log(res['text']);
+        console.log("res:" + res);
+        console.log("res.text:" + res['text']);
         setList(res['text']);
         setLoading(false);
         setIsLoading(false);
@@ -56,12 +55,10 @@ function Test() {
       },
       body: JSON.stringify(parameters),
     })
+    .then((res) => res.json())
     .then((res) => {
-      console.log("log"+res.value);
-      res.json()
-    })
-    .then((res) => {
-      console.log(res['text']);
+      console.log("res:" + res);
+      console.log("res.text:" + res['text']);
       setList(res['text']);
       setLoading(false);
       setIsLoading(false);
