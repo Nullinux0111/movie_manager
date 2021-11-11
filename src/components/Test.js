@@ -18,13 +18,13 @@ function Test() {
   }
   const onKeyPress = (e) => {
     if(e.key == 'Enter'){
-      onEnterPost(e);
+      onEnter(e);
     }
   }
 
   const onEnter = (e) => {
     setLoading(true);
-    fetch(`http://localhost:3001?user=${id_text}&pwd=${pwd_text}&query=select * from student`)
+    fetch(`http://localhost:3001?user=${id_text}&pwd=${pwd_text}&query=select * from pc`)
       .then((res) => res.json())
       .then((res) => {
         console.log("res:" + res);
