@@ -24,12 +24,15 @@ function Test() {
 
   const onEnter = (e) => {
     setLoading(true);
-    fetch(`http://localhost:3001?user=${id_text}&pwd=${pwd_text}&query=select * from student`)
+    fetch(`http://localhost:3001?user=${id_text}&pwd=${pwd_text}&query=select * from product`)
       .then((res) => res.json())
       .then((res) => {
         console.log("res:" + res);
         console.log("res.text:" + res['text']);
-        setList(res['text']);
+        console.log("res.data: " + res['data']);
+        var a = res['data'];
+        //setList(a[1]);
+        setList(res['data']);
         setLoading(false);
         setIsLoading(false);
       })
@@ -46,12 +49,13 @@ function Test() {
     const parameters = {
       user: id_text,
       pwd: pwd_text,
+      query: "select * from student"
     };
     console.log(JSON.stringify(parameters));
     fetch("http://localhost:3001/api",{
       method: "post", //통신방법
       headers: {
-        "content-type": "application/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(parameters),
     })
@@ -59,6 +63,7 @@ function Test() {
     .then((res) => {
       console.log("res:" + res);
       console.log("res.text:" + res['text']);
+      console.log("res.data: " + res['data']);
       setList(res['text']);
       setLoading(false);
       setIsLoading(false);
@@ -91,6 +96,10 @@ function Test() {
         <p>You try to login as {id_text}</p>
         <p>pw: {pwd_text}</p>
         <p>{list}</p>
+        
+        <ol>
+          
+        </ol>
       
     </div>
   );

@@ -1,7 +1,7 @@
 const express = require('express');
 const oracledb = require('oracledb');
 const cors = require('cors');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 var app = express();
 var host = 'localhost';
 var port = 3001;
@@ -16,7 +16,8 @@ app.get('/', (req, res) => {
   var pwd = req.query.pwd;
   var query= req.query.query;
   var respond = "";
-  console.log("try to login as "+user + ", "+pwd);
+
+  console.log("try to login as "+user + ", "+pwd + " by GET protocol.");
   oracledb.getConnection({
       user: user,
       password: pwd,
@@ -24,64 +25,46 @@ app.get('/', (req, res) => {
       database: database 
     }).then((connection) => {
         console.log("connection executed");
-        respond += "<p>Login Succeed! </p>\n";
+        respond += "Login Succeed!";
         if(query){
-          try {
-            connection.execute(query).then((result) => {
-              console.log(`Query: ${query}`);
-              console.log(result.rows);
-  
-              respond += `<p>Query: ${query}</p>`;
-              for( i in result.rows){
-                respond+="<br>"
-                for(j in result.rows[i]){
-                  respond+="\t" + result.rows[i][j];
-                }
-              }
-              res.send({'text': respond});
-            })
-            .catch((err) => {
-              logError(2, err, query);
-              respond += "<p>error location: 2</p>"
-                      + `<p>query: ${query}</p>`
-                      + `<p>${err.message}</p>`;
-              res.send({'text': respond});
-            })
-            
-          } catch(e){
-            logError(3, e, query);
-            respond += "<p>error location: 3</p>"
-                    + `<p>query: ${query}</p>`
-                    + `<p>${e}</p>`;
-            res.send({'text': respond});
-          }
+          console.log(`Query: ${query}`);
+          respond += `Query: ${query}`;
+          return connection.execute(query);
         }
-        else{
-          console.log("Query is not received.");
-          res.send({'text': respond}); 
-        }
+        console.log("Query is not received.");
         doRelease(connection);
         console.log("Connection is released.");
-        console.log("respond:" + respond);
+    })
+    .then((result) => {
+      console.log(result.rows);
+      if(!query) {
+        console.log("query is undefined.");
+        sendRespond(res, 200, {text:respond});
+        return;
+      }
+      else if(!result) {
+        console.log("result is undefined.");
+        sendRespond(res, 200, {text:respond});
+        return;
+      }
+      res.send({text: respond, data: result.rows});
     })
     .catch((err) => {    
       logError(1, err);
-      respond += "<p>error location: 1</p>"
-              +`<p>${err.message}</p>`;
-      res.send({text: respond});
-      console.log("respond:" + respond);
+      respond += "error location: 1"
+              +`${err.message}`;
+      sendRespond(res, 500, {text: respond});
     })
 });
+
 app.post('/api', (req, res) => {
-  res.send(req.body);
-  console.log(req.body);
-  console.log("body: ", req.body); 
-  console.log("req.query:" + req.query.user);
+  console.log("Req_body: ", req.body); 
   var user = req.body.user;
   var pwd = req.body.pwd;
   var query= req.body.query;
   var respond = "";
-  console.log("try to login as "+user + ", "+pwd);
+
+  console.log("try to login as "+user + ", "+pwd + " by POST protocol.");
   oracledb.getConnection({
       user: user,
       password: pwd,
@@ -89,58 +72,33 @@ app.post('/api', (req, res) => {
       database: database 
     }).then((connection) => {
         console.log("connection executed");
-        respond += "<p>Login Succeed!</p>\n";
-        res.writeHead(200, { 'Content-Type': 'application/json', 
-        'Access-Control-Allow-Origin': '*'
-        });
+        respond += "Login Succeed!\n";
         if(query){
-          try{
-            connection.execute(query).then((result) => {
-              console.log(`Query: ${query}`);
-              console.log(result.rows);
-  
-              respond += `<p>Query: ${query}</p>`;
-              for( i in result.rows){
-                respond+="<br>"
-                for(j in result.rows[i]){
-                  respond+="\t" + result.rows[i][j];
-                }
-              }
-              res.send({text: respond});
-            })
-            .catch((err) => {
-              logError(2, err, query);
-              respond += "<p>error location: 2</p>"
-                      + `<p>query: ${query}</p>`
-                      + `<p>${err.message}</p>`;
-              res.send({text: respond});
-            })
-            
-          } catch(e){
-            logError(3, e, query);
-            respond += "<p>error location: 3</p>"
-                    + `<p>query: ${query}</p>`
-                    + `<p>${e}</p>`;
-            res.writeHead(500, { 'Content-Type': 'application/json' });
-            res.send({text: respond});
-          }
+          console.log(`Query: ${query}`);
+          respond += `Query: ${query}`;
+          return connection.execute(query);
         }
-        else{
-          console.log("Query is not received.");
-          res.send({text: respond}); 
-        }
+        console.log("Query is not received.");
         doRelease(connection);
         console.log("Connection is released.");
-        console.log("respond:" + respond);
+    }).then((result) => {
+      console.log(result.rows);
+      
+      if(!query || !result) {
+        console.log("query or result is undefined.");
+        sendRespond(res, 200, {text:respond});
+        return;
+      }
+      sendRespond(res, 200, {text: respond, data: result.rows});
     })
     .catch((err) => {    
-      logError(1, err);
+      if(query) logError(2, err, query);
+      else logError(1, err);
       respond += "<p>error location: 1</p>"
               +`<p>${err.message}</p>`;
-      res.writeHead(500, { 'Content-Type': 'application/json' });
-      res.send({text: respond});
-      console.log("respond:" + respond);
+      sendRespond(res, 500, {text: respond});
     })
+  
 });
 
 
@@ -157,12 +115,21 @@ function doRelease(connection) {
   });
 }
 
+function sendRespond(res, status, body) {
+  res.status(status).json(body);
+  console.log("=========respond is sent: " + body
+            + "=========");
+}
+
 function logError(num, error, query){
+  var date = new Date();
+  console.log(date.getDate() + "일 " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()+"."+Date.now()%1000);
   if(num){
     console.log(`error location: ${num}`);
   }
   if(query){
     console.log("Query: " + query);
   }
-  console.error(error);
+  console.error("logError:"+error);
+  console.error("logError ended");
 }
