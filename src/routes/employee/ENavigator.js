@@ -5,13 +5,16 @@ import "./ENavigator.css";
 function ENavigator() {
   return (
     <div>
-      <Link className="link" to="info">
+      <Link className="link" to="/employee">
+        Main
+      </Link>
+      <Link className="link" to="/employee/info">
         Information
       </Link>
-      <Link className="link" to="complain">
+      <Link className="link" to="/employee/complain">
         Complain
       </Link>
-      <Link className="link" to="../">
+      <Link className="link" to="/">
         Logout
       </Link>
     </div>
