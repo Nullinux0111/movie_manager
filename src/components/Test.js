@@ -2,7 +2,6 @@
 import { useState } from 'react';
 
 function Test() {
-
   const [id_text, setText] = useState('');
   const [pwd_text, setPWd] = useState('');
 
@@ -15,16 +14,16 @@ function Test() {
   };
   const onPwdChange = (e) => {
     setPWd(e.target.value);
-  }
+  } 
   const onKeyPress = (e) => {
     if(e.key == 'Enter'){
-      onEnterPost(e);
+      onEnter(e);
     }
   }
 
   const onEnter = (e) => {
     setLoading(true);
-    fetch(`http://localhost:3001?user=${id_text}&pwd=${pwd_text}&query=select * from product`)
+    fetch(`http://localhost:3001?user=${id_text}&pwd=${pwd_text}&query=select * from pc`)
       .then((res) => res.json())
       .then((res) => {
         console.log("res:" + res);
