@@ -1,5 +1,11 @@
 import React from "react";
-import logo from "../../components/logo.png";
+import "./MovieInfo.css";
+import { Link } from 'react-router-dom';
+import pbl_logo from './assets/img/pbl_logo.png';
+import poster01 from './assets/img/poster01.jpg';
+import poster02 from './assets/img/poster02.jpg';
+import poster03 from './assets/img/poster03.jpg';
+import poster04 from './assets/img/poster04.jpg';
 
 function MovieInfo() {
     return(
@@ -28,63 +34,43 @@ function MovieInfo() {
             <link rel="stylesheet" href="./MovieInfo.css" media="all" />
     </head>
 
-
-        
     <body className="MovieInfoPage">
-        <header className="HeaderMenu">
-
-        <a href="/" target="_self" title="디비영화관 메인화면으로 가기" >
-        <img src={logo} className="Cinema-logo" alt="logo" />
-        </a>
-
-        <p>
-            영화 예매 스토어 등 헤더 메뉴 추가 가능
-        </p>
-
-        </header>
+    <header id="header">
+        <div class="container">
+            <div class="row">
+                <div class="header clearfix">
+                    <h1>
+                        <Link to="/Main">
+                            <em><img src= {pbl_logo} alt="일석이조"/></em>
+                        </Link>
+                    </h1>
+                    <nav id="mNav">
+                        <h2 class="ir_so">전체메뉴</h2>
+                        <a href="#:" class="ham"><span></span></a>
+                    </nav>
+                    <nav class="nav">
+                        <ul class="clearfix">
+                            <Link to='/Moviemenu'>
+                                <li><a href="#:">영화</a></li>
+                            </Link>
+                            <li><a href="#:">영화관</a></li>
+                            <li><a href="#:">스토어</a></li>
+                            <li><a href="#:">고객센터</a></li>
+                            <Link to='/LoginPage'>
+                                <li><a href="#:">로그인</a></li>
+                            </Link>
+                        </ul>
+                    </nav>    
+                </div>
+            </div>
+        </div>
+    </header>
 
         <section className="mainpage">
             <div ></div>
 
             
-        <div className="LoginBox">
-            
-
-        <p className="LoginText">
-          아이디와 비밀번호를 입력해 로그인하세요
-        </p>
         
-        <div className="idpassword">
-        <p className="id"> 
-            ID: <input className="idbox" id='id' ></input>
-        </p>
-        <p className="password">
-            PW: <input className="passbox" id='pwd' ></input>
-        </p>
-        
-        </div>
-        <button className="loginButton" > 
-            로그인
-        </button>
-
-        <div className = "loginoption">
-        <a className = "findid" href="/" target="_self" title="디비영화관 메인화면으로 가기" >
-        아이디 찾기
-        </a>
-        <a className = "findpass" href="/" target="_self" title="디비영화관 메인화면으로 가기" >
-        비밀번호 찾기
-        </a>
-        <a className = "findres" href="/" target="_self" title="디비영화관 메인화면으로 가기" >
-        비회원 예매확인
-        </a>
-        </div>
-
-        <div className = "loginselect" >
-        <label><input className = "logincus" type="radio" name="고객직원" value="customer" checked/> 고객</label>
-        <label><input className = "loginemp" type="radio" name="고객직원" value="employee"/> 직원</label>
-        </div>
-        <p className = "loginProcess"></p>
-        </div>
 
         </section>
 

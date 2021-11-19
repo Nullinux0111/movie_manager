@@ -40,7 +40,7 @@
 }
 
 .LoginBox {
-  margin: 5rem;
+  margin: 8rem;
   border: solid;
   border-color: #000000;
   width: 40rem;
@@ -111,6 +111,7 @@
 }
 
 .loginButton {
+  cursor: pointer;
   margin: 1rem;
   background-color: #302050;
   color: #ffffff;
@@ -172,9 +173,4 @@
   font-size: 0.5rem;
   height: 2%;
   width: 30rem;
-}
-
-.Cinema-logo {
-  height: 100px;
-  pointer-events: none;
 }

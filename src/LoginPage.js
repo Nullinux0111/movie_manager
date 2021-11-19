@@ -1,7 +1,9 @@
-import logo from "../../components/logo.png";
+import { Link } from 'react-router-dom';
+import pbl_logo from './assets/img/pbl_logo.png';
 import React from "react";
 import { useState } from 'react';
 import "./LoginPage.css";
+
 
 function LoginPage() {
 
@@ -86,17 +88,36 @@ function LoginPage() {
 
     return (
     <body className="LoginPage">
-        <header className="HeaderMenu">
-
-        <a href="/" target="_self" title="디비영화관 메인화면으로 가기" >
-        <img src={logo} className="Cinema-logo" alt="logo" />
-        </a>
-
-        <p>
-            영화 예매 스토어 등 헤더 메뉴 추가 가능
-        </p>
-
-        </header>
+        <header id="header">
+        <div class="container">
+            <div class="row">
+                <div class="header clearfix">
+                    <h1>
+                        <Link to="/Main">
+                            <em><img src= {pbl_logo} alt="일석이조"/></em>
+                        </Link>
+                    </h1>
+                    <nav id="mNav">
+                        <h2 class="ir_so">전체메뉴</h2>
+                        <a href="#:" class="ham"><span></span></a>
+                    </nav>
+                    <nav class="nav">
+                        <ul class="clearfix">
+                            <Link to='/Moviemenu'>
+                                <li><a href="#:">영화</a></li>
+                            </Link>
+                            <li><a href="#:">영화관</a></li>
+                            <li><a href="#:">스토어</a></li>
+                            <li><a href="#:">고객센터</a></li>
+                            <Link to='/LoginPage'>
+                                <li><a href="#:">로그인</a></li>
+                            </Link>
+                        </ul>
+                    </nav>    
+                </div>
+            </div>
+        </div>
+    </header>
 
         <section className="loginmainpage">
             <div ></div>
@@ -118,7 +139,7 @@ function LoginPage() {
         </p>
         
         </div>
-        <button className="loginButton" onClick={onEnter}> 
+        <button className="loginButton" onClick={onEnter} > 
             로그인
         </button>
 
