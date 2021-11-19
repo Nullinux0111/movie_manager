@@ -1,4 +1,4 @@
-import logo from './logo.png';
+import logo from "../../components/logo.png";
 import React from "react";
 import { useState } from 'react';
 import "./LoginPage.css";
@@ -19,7 +19,7 @@ function LoginPage() {
         setPWd(e.target.value);
     } 
     const onKeyPress = (e) => {
-        if(e.key == 'Enter'){
+        if(e.key === 'Enter'){
          onEnter(e);
         }
     }
@@ -98,7 +98,7 @@ function LoginPage() {
 
         </header>
 
-        <section className="mainpage">
+        <section className="loginmainpage">
             <div ></div>
 
             
