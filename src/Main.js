@@ -19,7 +19,7 @@ function Main() {
             <div class="row">
                 <div class="header clearfix">
                     <h1>
-                        <Link to="/main">
+                        <Link to="/Main">
                             <em><img src= {pbl_logo} alt="일석이조"/></em>
                         </Link>
                     </h1>
@@ -29,13 +29,15 @@ function Main() {
                     </nav>
                     <nav class="nav">
                         <ul class="clearfix">
-                            <Link to='/movie_menu'>
+                            <Link to='/Moviemenu'>
                                 <li><a href="#:">영화</a></li>
                             </Link>
                             <li><a href="#:">영화관</a></li>
                             <li><a href="#:">스토어</a></li>
                             <li><a href="#:">고객센터</a></li>
-                            <li><a href="#:">로그인</a></li>
+                            <Link to='/Login'>
+                                <li><a href="#:">로그인</a></li>
+                            </Link>
                         </ul>
                     </nav>    
                 </div>
