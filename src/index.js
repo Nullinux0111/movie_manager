@@ -13,11 +13,14 @@ import Reservation from "./routes/customer/Reservation";
 import Complain from "./routes/customer/Complain";
 import LoginPage from "./routes/login/LoginPage";
 import MovieInfo from "./routes/movieInfo/MovieInfo";
+import Main from "./Main";
+import Moviemenu from "./Moviemenu";
+import Login from "./Login";
 
 ReactDOM.render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<App />} />
+      <Route path="/" element={<App />} exact={true}/>
       <Route path="/employee" element={<EMain />} />
       <Route path="/employee/info" element={<EInformation />} />
       <Route path="/employee/complain" element={<EComplain />} />
@@ -28,6 +31,9 @@ ReactDOM.render(
       <Route path="/complain" element={<Complain />} />
       <Route path="/loginpage" element={<LoginPage />} />
       <Route path="/movieinfo" element={<MovieInfo />} />
+      <Route path="/Main" element={<Main />} />
+      <Route path="/Moviemenu" element={<Moviemenu />} />
+      <Route path="/Login" element={<Login />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")

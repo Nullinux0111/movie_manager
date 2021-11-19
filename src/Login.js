@@ -23,7 +23,7 @@ function Test() {
 
   const onEnter = (e) => {
     setLoading(true);
-    fetch(`http://localhost:3001?user=${id_text}&pwd=${pwd_text}&query=select * from pc`)
+    fetch(`http://localhost:3000?user=${id_text}&pwd=${pwd_text}&query=select * from pc`)
       .then((res) => res.json())
       .then((res) => {
         console.log("res:" + res);
@@ -51,7 +51,7 @@ function Test() {
       query: "select * from student"
     };
     console.log(JSON.stringify(parameters));
-    fetch("http://localhost:3001/api",{
+    fetch("http://localhost:3000/api",{
       method: "post", //통신방법
       headers: {
         "Content-Type": "application/json",
