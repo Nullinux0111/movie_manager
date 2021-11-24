@@ -2,6 +2,9 @@ const express = require('express');
 const oracledb = require('oracledb');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+
+const customerACC = require('./customer_account');
+
 var app = express();
 var host = 'localhost';
 var port = 3001;
@@ -36,7 +39,6 @@ app.get('/', (req, res) => {
         console.log("Connection is released.");
     })
     .then((result) => {
-      console.log(result.rows);
       if(!query) {
         console.log("query is undefined.");
         sendRespond(res, 200, {text:respond});
@@ -47,7 +49,7 @@ app.get('/', (req, res) => {
         sendRespond(res, 200, {text:respond});
         return;
       }
-      res.send({text: respond, data: result.rows});
+      sendRespond(res, 200, {text: respond, data: result.rows});
     })
     .catch((err) => {    
       logError(1, err);
@@ -57,8 +59,39 @@ app.get('/', (req, res) => {
     })
 });
 
+
+app.post('/customer_join', (req, res) => {
+  console.log("Req_body: ", req.body);
+  var user = req.body.user;
+  var pwd = req.body.pwd;
+  var name = req.body.name;
+  var phone = req.body.phone;
+  var birthday = req.body.birthday;
+  var respond = "";
+  console.log("try to join as "+user + ", "+pwd + " by POST protocol.");
+
+  var data = {
+    id: user,
+    pwd: pwd,
+    name: name,
+    phone: phone,
+    birthday: birthday
+  }
+
+  customerACC.join_Customer(data).then((result)=>{
+      if(result){
+        sendRespond(res, 200, {text:"success"});
+      }
+      else{
+        sendRespond(res, 200, {text:"Failed"});
+      }
+
+  });
+});
+
+
 app.post('/api', (req, res) => {
-  console.log("Req_body: ", req.body); 
+  console.log("Req_body: ", req.body);
   var user = req.body.user;
   var pwd = req.body.pwd;
   var query= req.body.query;
@@ -82,8 +115,7 @@ app.post('/api', (req, res) => {
         doRelease(connection);
         console.log("Connection is released.");
     }).then((result) => {
-      console.log(result.rows);
-      
+
       if(!query || !result) {
         console.log("query or result is undefined.");
         sendRespond(res, 200, {text:respond});
@@ -98,7 +130,7 @@ app.post('/api', (req, res) => {
               +`<p>${err.message}</p>`;
       sendRespond(res, 500, {text: respond});
     })
-  
+
 });
 
 
