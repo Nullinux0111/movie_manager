@@ -35,7 +35,7 @@ function Main() {
                             <li><a href="#:">영화관</a></li>
                             <li><a href="#:">스토어</a></li>
                             <li><a href="#:">고객센터</a></li>
-                            <Link to='/Login'>
+                            <Link to='/LoginPage'>
                                 <li><a href="#:">로그인</a></li>
                             </Link>
                         </ul>

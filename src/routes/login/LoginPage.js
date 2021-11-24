@@ -1,4 +1,4 @@
-import logo from './logo.png';
+import pbl_logo from './pbl_logo.png';
 import React from "react";
 import { useState } from 'react';
 import "./LoginPage.css";
@@ -89,7 +89,7 @@ function LoginPage() {
         <header className="HeaderMenu">
 
         <a href="/" target="_self" title="디비영화관 메인화면으로 가기" >
-        <img src={logo} className="Cinema-logo" alt="logo" />
+        <img src={pbl_logo} className="Cinema-logo" alt="일석이조" />
         </a>
 
         <p>

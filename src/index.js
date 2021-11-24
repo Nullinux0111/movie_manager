@@ -14,7 +14,6 @@ import Complain from "./routes/customer/Complain";
 import LoginPage from "./routes/login/LoginPage";
 import Main from "./Main";
 import Moviemenu from "./Moviemenu";
-import Login from "./Login";
 
 ReactDOM.render(
   <BrowserRouter>
@@ -28,10 +27,9 @@ ReactDOM.render(
       <Route path="/movie" element={<Movie />} />
       <Route path="/reserv" element={<Reservation />} />
       <Route path="/complain" element={<Complain />} />
-      <Route path="/loginpage" element={<LoginPage />} />
       <Route path="/Main" element={<Main />} />
       <Route path="/Moviemenu" element={<Moviemenu />} />
-      <Route path="/Login" element={<Login />} />
+      <Route path="/LoginPage" element={<LoginPage />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")
