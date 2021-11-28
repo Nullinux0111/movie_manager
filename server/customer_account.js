@@ -13,7 +13,12 @@ exports.login_customer = (id, pwd) => {
     return login_customer(id, pwd);
 }
 
-
+/**
+ * Join account for customer.
+ * 
+ * @param {JSON} data Json object which contains account data.
+ * @returns Promise
+ */
 const join_customer = (data) => {
     var id = data.id;
     var pwd = data.pwd;
@@ -51,6 +56,12 @@ const join_customer = (data) => {
     
 };
 
+/**
+ * 
+ * @param {String} id account ID
+ * @param {String} pwd Hashed String of password
+ * @returns Promise
+ */
 const login_customer = (id, pwd) => {
     return account.loginCustomer(id, pwd);
 }

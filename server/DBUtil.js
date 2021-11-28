@@ -8,7 +8,7 @@ var database = 'xe';
 
 /**
  * 
- * @returns Promise<Connection> 
+ * @returns Promise
 */
 exports.getDBConnection = () => {
     const TAG = "DBUtil.getDBconnection:";

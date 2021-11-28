@@ -8,13 +8,19 @@ const DEBUG = true;
 exports.getMovieInfo = (data) => getMovieInfo(data);
 exports.insertMovieToDB = (data) => insertMovieToDB(data);
 
-
+/**
+ * 
+ * @param {JSON} data Json data for query 
+ *                      { title : movie name, movieCode : movie code }
+ * @returns {Promise<JSON | undefined>} Promise
+ */
 function getMovieInfo(data){
     
     var query = "";
     if(data.title)
-        query += `http://kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json?key=8d87809b4aeb3882889061a07a04116e&movieNm=${data.title}`;
-    else if(data.movieCode)
+        return Promise.resolve();
+        //query += `http://kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json?key=8d87809b4aeb3882889061a07a04116e&movieNm=${data.title}`;
+    if(data.movieCode)
         query +=`http://kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json?key=8d87809b4aeb3882889061a07a04116e&movieCd=${data.movieCode}`;
     return fetch(query)
             .then((res) => res.json())
@@ -28,9 +34,17 @@ function getMovieInfo(data){
             })
 }
 
-
+/**
+ * Insert movie data to Database by movie code or movie name.
+ * 
+ * @param {JSON} data Json data for query 
+ *                      { title : movie name, movieCode : movie code }
+ * @returns Promise
+ */
 function insertMovieToDB(data) {
     return getMovieInfo(data).then((info) => {
+        if(!info)
+            return false;
         var bindParams = {
             code : info.movieCd,
             name : info.movieNm,

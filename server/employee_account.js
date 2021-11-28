@@ -13,7 +13,12 @@ exports.login_employee = (id, pwd) => {
     return login_employee(id, pwd);
 }
 
-
+/**
+ * Join account for employee.
+ * 
+ * @param {JSON} data Json object which contains account data.
+ * @returns Promise
+ */
 const join_employee = (data) => {
     var id = data.id;
     var pwd = data.pwd;
@@ -51,6 +56,12 @@ const join_employee = (data) => {
     
 };
 
+/**
+ * 
+ * @param {String} id account ID
+ * @param {String} pwd Hashed String of password
+ * @returns Promise
+ */
 const login_employee = (id, pwd) => {
     return account.loginEmployee(id, pwd);
 }

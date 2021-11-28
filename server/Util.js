@@ -3,38 +3,11 @@ exports.generateHashPassword = (password, key) => {
     return generateHashPassword(password, key);
 };
 
-//exports.checkPassword = 
 
 exports.dateToString = (date) => {
 	return dateToString(date);
 };
 
-function checkPassword(password, key, ref){
-	let hashString = generateHashPassword(password, key);
-
-	return ref.once('value').then(function(dataSnapshot){
-		console.log('check snapshot: ' + dataSnapshot);
-  		console.log('check snapshot val: ' + dataSnapshot.val());
-		if(!dataSnapshot.exists()) 
-			return { 
-				result: false,
-				error: "Schedule is not exists"
-		};
-		if(!dataSnapshot.child("password").exists()) 
-			return { 
-				result : false,
-				error: "Password is not exists - Invalid Schedule."
-			};
-		if(dataSnapshot.child("password").val() == hashString)
-			return {
-				result : true
-			}
-		else return { 
-			result : false,
-			error : "Incorrect Password"
-		};
-	})
-}
 
 function generateHashPassword(password, key){
 	const crypto = require('crypto');

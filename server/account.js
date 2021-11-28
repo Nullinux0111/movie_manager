@@ -30,6 +30,13 @@ exports.loginEmployee = (id, pwd) => {
 }
 
 
+/**
+ * Check if id exists.
+ * 
+ * @param {String} id account ID
+ * @param {String} type User type. Customer or Employee.
+ * @returns {Promise<boolean>} promise
+ */
 function idCheck(id, type) {
     var table = "";
     if(type == "Customer")
@@ -68,6 +75,14 @@ function idCheck(id, type) {
     })
 }
 
+/**
+ * Check whether password is valid for id.
+ * 
+ * @param {String} id account ID
+ * @param {String} pwd Hashed string of password
+ * @param {String} type User type. Customer or Employee.
+ * @returns Promise
+ */
 function pwdCheck(id, pwd, type) {
     var table = "";
     if(type == "Customer")
@@ -78,6 +93,9 @@ function pwdCheck(id, pwd, type) {
         return Promise.resolve(false);
     
     return DBUtil.getDBConnection().then((connection) => {
+        if(!connection)
+            return false;
+
         var query = `select user_pwd from ${table} where user_id='${id}'`;
         Log.info(TAG+"pwd_check", `query: ${query}`);
         return connection.execute(query).then((result) => {
@@ -99,6 +117,13 @@ function pwdCheck(id, pwd, type) {
     })
 }
 
+/**
+ * 
+ * @param {String} id account ID
+ * @param {String} pwd Hashed String of password
+ * @param {String} type User type. Customer or Employee.
+ * @returns Promise
+ */
 function login(id, pwd, type) {
     var table = "";
     if(type == "Customer")
@@ -126,7 +151,12 @@ function login(id, pwd, type) {
     })
 }
 
-
+/**
+ * 
+ * @param {JSON} data User data to insert to DB.
+ * @param {String} type User type. Customer or Employee.
+ * @returns Promise
+ */
 function insertUser(data, type) {
     var pwd = data.pwd;
     var bindParams = {
@@ -170,7 +200,7 @@ function insertUser(data, type) {
             // user 테이블 insert query 실행
             return connection.execute(query1, bindParams).then((result) => {
                 if(DEBUG)
-                Log.info(TAG+"insertUser", "Account inserted.");
+                    Log.info(TAG+"insertUser", "Account inserted.");
                 connection.commit();
                 return true;
             })
