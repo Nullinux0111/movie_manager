@@ -1,38 +1,56 @@
-import React from "react";
+import React, { useState } from "react";
 import "./MovieInfo.css";
 import { Link } from 'react-router-dom';
 import pbl_logo from './assets/img/pbl_logo.png';
-import poster01 from './assets/img/poster01.jpg';
-import poster02 from './assets/img/poster02.jpg';
-import poster03 from './assets/img/poster03.jpg';
-import poster04 from './assets/img/poster04.jpg';
+import poster13a from './assets/img/poster13@2.jpg';
+import './assets/css/style19.css';
+import './assets/css/slick.css';
+import './assets/css/reset19.css';
+import './assets/css/font-awesome.css';
+import './assets/css/swiper.css';
+import MovSynopsis from './assets/js/MovieSynopsis';
+import MovStillcut from './assets/js/MovieStillcut';
+import MovTrailer from './assets/js/MovieTrailer';
+import MovRating from './assets/js/MovieRating';
 
-function MovieInfo() {
+const menuList = {
+    0: <MovSynopsis />,
+    1: <MovStillcut />,
+    2: <MovTrailer />,
+    3: <MovRating />,
+  };
+
+const movieTitle = "듄";
+const movieTitleOrig = "DUNE";
+const age = "icon undera12";//상영등급. 백엔드 추출해서 나중에 써야지
+const rate = 8.4; //예매율. 백엔드에서 추출
+const soonwi = 2; //예매순위. 마찬가지로 백엔드에서 추출
+const watchers = 1245345; //영화관 말고 영화진흥 위원회 기준! 어려우면 빼자
+const genre = "SF"; //장르. 백엔드 추출??
+const running_time = 155; //상영시간. 백엔드 추출
+
+const director = "드니 빌뇌브"; //이것들은.. 따로 모아두는 페이지를 만들 게 아닌 이상 프론트엔드가 낫지않나
+const actor = "티모시 샬라메 ,  레베카 퍼거슨 ,  오스카 아이삭 ,  제이슨 모모아 ,  조슈 브롤린 ,  젠데이아 콜먼 ,  하비에르 바르뎀 ,  스텔란 스카스가드 ,  장첸 ,  샤론 던컨 브루스터 ,  데이브 바티스타 ,  데이빗 다스트말치안";
+const openingdate = "2021년 10월 20일";
+
+class MovieInfo extends React.Component{
+
+    constructor(props) {
+        super();
+    
+        this.state = {
+          menu: 0,
+        };
+      }
+
+      changeMenu = (menuIndex) =>{
+        this.setState({menu : menuIndex});
+      }
+    
+      render(){
+
     return(
     <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-        <link rel="shortcut icon" href="/static/pc/images/favicon.ico" />
-    
-            <title>MEET PLAY SHARE, 메가박스</title>
-            <meta property="name"			id="metaTagTitle"	content="[메가박스]듄"/>
-            <meta property="description"	id="metaTagDtls"	content="“듄을 지배하는 자가 우주를 지배한다!”10191년, 아트레이데스 가문의 후계자인 폴(티모시 샬라메)은 시공을 초월한 존재이자 전 우주를 구원할 예지된 자의 운명을 타고났다. 그리고 어떤 계시처럼 매일 꿈에서 아라키스 행성에 있는 한 여인을 만난다. 모래언덕을 뜻하는 '듄'이라 불리는 아라키스는 물 한 방울 없는 사막이지만 우주에서 가장 비싼 물질인 신성한 환각제 스파이스의 유일한 생산지로 이를 차지하기 위한 전쟁이 치열하다. 황제의 명령으로 폴과 아트레이데스 가문은 죽음이 기다리는 아라키스로 향하는데…위대한 자는 부름에 응답한다, 두려움에 맞서라, 이것은 위대한 시작이다!"/>
-            <meta property="keywords"		id="metaTagKeyword"	content="듄,DUNE,SF,티모시 샬라메, 레베카 퍼거슨, 오스카 아이삭, 제이슨 모모아, 조슈 브롤린, 젠데이아 콜먼, 하비에르 바르뎀, 스텔란 스카스가드, 장첸, 데이브 바티스타, 데이비드 다스트말치안, 샬롯 램플링,"/>
-    
-            <meta property="fb:app_id" 		id="fbAppId" 	content="546913502790694"/>
-            
-    
-            <meta property="og:site_name" 	id="fbSiteName"	content="메가박스"/>
-            <meta property="og:type" 		id="fbType"		content="movie"/>
-            <meta property="og:url" 		id="fbUrl"		content="https://www.megabox.co.kr/movie-detail?rpstMovieNo=21058500" />
-            <meta property="og:title" 		id="fbTitle"	content="[메가박스]듄" />
-            <meta property="og:description"	id="fbDtls"		content="“듄을 지배하는 자가 우주를 지배한다!”10191년, 아트레이데스 가문의 후계자인 폴(티모시 샬라메)은 시공을 초월한 존재이자 전 우주를 구원할 예지된 자의 운명을 타고났다. 그리고 어떤 계시처럼 매일 꿈에서 아라키스 행성에 있는 한 여인을 만난다. 모래언덕을 뜻하는 '듄'이라 불리는 아라키스는 물 한 방울 없는 사막이지만 우주에서 가장 비싼 물질인 신성한 환각제 스파이스의 유일한 생산지로 이를 차지하기 위한 전쟁이 치열하다. 황제의 명령으로 폴과 아트레이데스 가문은 죽음이 기다리는 아라키스로 향하는데…위대한 자는 부름에 응답한다, 두려움에 맞서라, 이것은 위대한 시작이다!"/>
-            <meta property="og:image" 		id="fbImg"		content="https://img.megabox.co.kr/SharedImg/2021/09/16/5kxrrz7YXuRfySllsNV3pFwar5WP9vhn_316.jpg" />
-            <link rel="stylesheet" href="./MovieInfo.css" media="all" />
-    </head>
 
     <body className="MovieInfoPage">
     <header id="header">
@@ -57,7 +75,7 @@ function MovieInfo() {
                             <li><a href="#:">스토어</a></li>
                             <li><a href="#:">고객센터</a></li>
                             <Link to='/LoginPage'>
-                                <li><a href="#:">로그인</a></li>
+                                <li><a href='/LoginPage'>로그인</a></li>
                             </Link>
                         </ul>
                     </nav>    
@@ -66,17 +84,69 @@ function MovieInfo() {
         </div>
     </header>
 
-        <section className="mainpage">
-            <div ></div>
+    <section id="movieinfo">
+        <div class="container">
+            <div class="row">
+                <div class="movieDetail">
+                    <div class="movieBrief">
+                        
+                    <div class="moviePart">
+                    <span class={age}></span>
+ 
+                    <p class="movieName">
 
-            
-        
+                    <strong class="movieTitle">
+                        {movieTitle}
+                    </strong>
 
-        </section>
+                    <p class="movieTitleOrig">
+                        {movieTitleOrig} 
+                    </p>
+
+                    <p class="movieSpec">예매율 <strong>{soonwi}</strong>위 ({rate}%) 누적 관객 수 <strong>{watchers}</strong>명 </p>
+
+                    <p class="movieTMI">
+                    
+                    <p>감독 : {director} 장르 : {genre}/{running_time}분  개봉일: {openingdate} </p> 
+                    <p>출연 {actor}  </p>
+                    </p>
+
+                    <button class="resButton">
+                        예매하기
+                    </button>
+                    </p>
+                    </div>
+
+                    <div class="mainPoster">
+                    <img class="mainPosterImg" src={poster13a} alt="포스터" ></img> 
+                    </div>
+
+                    </div>
+
+                    <div className="wrap">
+                    <div className="menuBar">
+                        <ul className="tabs">
+                            <li className={`${this.state.menu === 0? 'active': ''}`} onClick={() => this.changeMenu(0)}>시놉시스</li>
+                            {/*<li className={`${this.state.menu === 1? 'active': ''}`} onClick={() => this.changeMenu(1)}>스틸컷(실패)</li>*/}
+                            <li className={`${this.state.menu === 2? 'active': ''}`} onClick={() => this.changeMenu(2)}>트레일러</li>
+                            <li className={`${this.state.menu === 3? 'active': ''}`} onClick={() => this.changeMenu(3)}>평점</li>
+                        </ul>
+                        </div>
+                     <div className="contentArea">
+                        {menuList[this.state.menu]}
+                     </div>
+                     </div>
+                    
+                </div>
+
+            </div>
+        </div>
+    </section>
 
     </body>
     </html>
     )
+    }
 
 }
 
