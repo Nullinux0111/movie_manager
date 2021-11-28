@@ -135,6 +135,18 @@ app.get('/backTest', (req, res)=> {
 
 })
 
+app.get('/movieInsertAPI', (req, res) => {
+  var cd = req.query.code;
+  var nm = req.query.name;
+  const api = require('./movieAPI');
+
+  api.insertMovieToDB({title: nm, movieCode: cd}).then((data)=>{
+    sendRespond(res, 200, data);
+  })
+
+})
+
+
 app.post('/api', (req, res) => {
   console.log("Req_body: ", req.body);
   var user = req.body.user;
