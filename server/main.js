@@ -2,6 +2,10 @@ const express = require('express');
 const oracledb = require('oracledb');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+
+const customerACC = require('./customer_account');
+const reserve = require('./reservation');
+
 var app = express();
 var host = 'localhost';
 var port = 3001;
@@ -36,7 +40,6 @@ app.get('/', (req, res) => {
         console.log("Connection is released.");
     })
     .then((result) => {
-      console.log(result.rows);
       if(!query) {
         console.log("query is undefined.");
         sendRespond(res, 200, {text:respond});
@@ -47,7 +50,7 @@ app.get('/', (req, res) => {
         sendRespond(res, 200, {text:respond});
         return;
       }
-      res.send({text: respond, data: result.rows});
+      sendRespond(res, 200, {text: respond, data: result.rows});
     })
     .catch((err) => {    
       logError(1, err);
@@ -55,10 +58,97 @@ app.get('/', (req, res) => {
               +`${err.message}`;
       sendRespond(res, 500, {text: respond});
     })
-});
+})
+
+
+app.post('/customer_join', (req, res) => {
+  console.log("Req_body: ", req.body);
+  var user = req.body.user;
+  var pwd = req.body.pwd;
+  var name = req.body.name;
+  var phone = req.body.phone;
+  var birthday = req.body.birthday;
+  var respond = "";
+  console.log("try to join as "+user + ", "+pwd + " by POST protocol.");
+
+  var data = {
+    id: user,
+    pwd: pwd,
+    name: name,
+    phone: phone,
+    birthday: birthday
+  }
+
+  customerACC.join_customer(data).then((result)=>{
+      if(result){
+        sendRespond(res, 200, {status: true, text:"success"});
+      }
+      else{
+        sendRespond(res, 200, {status: false, text:"Failed"});
+      }
+
+  });
+})
+
+app.post('/list_cinema', (req, res)=>{
+  console.log("list_cinema executed.");
+  reserve.list_cinema().then((result) => {
+    sendRespond(res, 200, result);
+  })
+})
+
+app.post('/load_schedule_cinema', (req, res) => {
+  var cinema = req.body.cinema;
+  if(!cinema){
+    Log.info(TAG+"load_schedule_cinema", "cinema is undefined.");
+    sendRespond(res, 500, {status: false});
+  }
+  reserve.load_schedule_cinema(cinema).then((result) => {
+    sendRespond(res, 200, result);
+  })
+})
+
+app.post('/login', (req, res) => {
+  var id = req.body.id;
+  var pwd = req.body.pwd;
+  if(!id || !pwd){
+    Log.info(TAG+"login", "id or pwd is undefined.");
+    sendRespond(res, 500, {status: false});
+  }
+
+  customerACC.login_customer(id, pwd).then((result) => {
+    sendRespond(res, 200, result);
+  })
+})
+
+app.get('/backTest', (req, res)=> {
+  var id = req.query.id;
+  var pwd = req.query.pwd;
+  if(!id || !pwd){
+    Log.info(TAG+"login", "id or pwd is undefined.");
+    sendRespond(res, 500, {status: false});
+  }
+
+  customerACC.login_customer(id, pwd).then((result) => {
+    sendRespond(res, 200, result);
+  })
+
+})
+
+app.get('/movieInsertAPI', (req, res) => {
+  var cd = req.query.code;
+  var nm = req.query.name;
+  const api = require('./movieAPI');
+
+  api.insertMovieToDB({title: nm, movieCode: cd}).then((data)=>{
+    sendRespond(res, 200, data);
+  })
+
+})
+
 
 app.post('/api', (req, res) => {
-  console.log("Req_body: ", req.body); 
+  console.log("Req_body: ", req.body);
   var user = req.body.user;
   var pwd = req.body.pwd;
   var query= req.body.query;
@@ -82,8 +172,7 @@ app.post('/api', (req, res) => {
         doRelease(connection);
         console.log("Connection is released.");
     }).then((result) => {
-      console.log(result.rows);
-      
+
       if(!query || !result) {
         console.log("query or result is undefined.");
         sendRespond(res, 200, {text:respond});
@@ -98,7 +187,7 @@ app.post('/api', (req, res) => {
               +`<p>${err.message}</p>`;
       sendRespond(res, 500, {text: respond});
     })
-  
+
 });
 
 
