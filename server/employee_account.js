@@ -3,23 +3,23 @@ const account = require('./account.js');
 const Util = require('./Util');
 const Log = require('./Log');
 
-const TAG = "customer_account:";
+const TAG = "employee_account:";
 
-exports.join_customer = (data) => {
-    return join_customer(data);
+exports.join_employee = (data) => {
+    return join_employee(data);
 }
 
-exports.login_customer = (id, pwd) => {
-    return login_customer(id, pwd);
+exports.login_employee = (id, pwd) => {
+    return login_employee(id, pwd);
 }
 
 
-const join_customer = (data) => {
+const join_employee = (data) => {
     var id = data.id;
     var pwd = data.pwd;
 
     var error_message = "";
-    return account.customerIdCheck(id)
+    return account.employeeIdCheck(id)
     .then((isValid) => {
         if(!isValid){
             var hashString = Util.generateHashPassword(pwd, id);
@@ -32,7 +32,7 @@ const join_customer = (data) => {
         if(!hashString)
             return false;
         data.pwd = hashString;
-        return account.insertCustomer(data);
+        return account.insertEmployee(data);
     })
     .then((result)=>{
         if(error_message!="")
@@ -51,6 +51,6 @@ const join_customer = (data) => {
     
 };
 
-const login_customer = (id, pwd) => {
-    return account.loginCustomer(id, pwd);
+const login_employee = (id, pwd) => {
+    return account.loginEmployee(id, pwd);
 }

@@ -7,6 +7,14 @@ const Util = require('./Util');
 
 const TAG = "reservation:";
 
+exports.list_cinema = () => {
+    return list_cinema();
+}
+
+exports.load_schedule_cinema = (cinema) => {
+    return load_schedule_cinema(cinema);
+}
+
 
 
 /**
@@ -83,12 +91,3 @@ const load_schedule_cinema = (cinema) => {
     })
 }
 
-
-
-exports.list_cinema = () => {
-    return list_cinema();
-}
-
-exports.load_schedule_cinema = (cinema) => {
-    return load_schedule_cinema(cinema);
-}

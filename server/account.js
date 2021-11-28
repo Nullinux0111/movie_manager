@@ -1,8 +1,7 @@
-const e = require('express');
-const OracleDB = require('oracledb');
 const DBUtil = require('./DButil.js');
+const Util = require('./Util');
 const Log = require('./Log');
-const TAG = "join_check:"
+const TAG = "account.js:"
 
 const DEBUG = true;
 
@@ -22,6 +21,14 @@ exports.insertEmployee = (data) => {
     return insertUser(data, "Employee");
 };
 
+exports.loginCustomer = (id, pwd) => {
+    return login(id, pwd, "Customer");
+};
+
+exports.loginEmployee = (id, pwd) => {
+    return login(id, pwd, "Employee");
+}
+
 
 function idCheck(id, type) {
     var table = "";
@@ -35,23 +42,23 @@ function idCheck(id, type) {
     return DBUtil.getDBConnection()
     .then((connection) => {
         Log.info(TAG + "idCheck", "connection executed");
+
         if(!connection){
             Log.info(TAG+"idCheck", "connection is undefined");
             return false;
         }
 
-        //var user_id = "";
         var query = `select user_id from ${table} where user_id = '${id}'`;
         Log.info(TAG+"idCheck", `Query: ${query}`);
         return connection.execute(query).then((result) => {
-            //doRelease(connection);
             Log.info(TAG, "idCheck_result: " + result.rows);
+
             if(result.rows == id){
                 Log.info(TAG+"idCheck", "There is a same id.");
-                return false;
+                return true;
             }
             else{
-                return true;
+                return false;
             }
         });
     })
@@ -61,6 +68,63 @@ function idCheck(id, type) {
     })
 }
 
+function pwdCheck(id, pwd, type) {
+    var table = "";
+    if(type == "Customer")
+        table = "CustomerAcc";
+    else if(type == "Employee")
+        table = "EmployeeAcc";
+    else
+        return Promise.resolve(false);
+    
+    return DBUtil.getDBConnection().then((connection) => {
+        var query = `select user_pwd from ${table} where user_id='${id}'`;
+        Log.info(TAG+"pwd_check", `query: ${query}`);
+        return connection.execute(query).then((result) => {
+            
+            if(DEBUG)
+                Log.info(TAG + "pwdCheck_found", result.rows);
+            if(result.rows == Util.generateHashPassword(pwd, id)){
+                Log.info(TAG+"pwdCheck", "PWD is correct.");
+                return true;
+            }
+            else{
+                return false;
+            }
+        })
+        .catch((error) => {
+            Log.error("join_pwd_check", error, `id: ${id}, pwd: ${pwd}, type: ${type}`);
+            return false;
+        })
+    })
+}
+
+function login(id, pwd, type) {
+    var table = "";
+    if(type == "Customer")
+        table = "CustomerAcc";
+    else if(type == "Employee")
+        table = "EmployeeAcc";
+    else
+        return Promise.resolve({status:false, message:"Wrong Parameter"});
+    
+    return idCheck(id, type).then((result) => {
+        if(result){
+            return pwdCheck(id, pwd, type);
+        }
+        return false;
+    })
+    .then((result) => {
+        if(result)
+            return {status: true};
+        else
+            return {status: false, message: "아이디 혹은 비밀번호를 확인하세요."};
+    })
+    .catch((error) => {
+        Log.error(TAG+"login", error, `id: ${id}, pwd: ${pwd}`);
+        return {status: false, message: "에러가 발생했습니다. Try again later."};
+    })
+}
 
 
 function insertUser(data, type) {
@@ -98,11 +162,12 @@ function insertUser(data, type) {
         if(DEBUG)
             Log.info(TAG+"insertUser", `Query: ${query}`);
             
-        
+        // account 테이블 insert query 실행
         return connection.execute(query).then((result) => {
             if(DEBUG){
                 Log.info(TAG+"insertUser", "rows inserted: " + result.rowsAffected + " rows");
             }
+            // user 테이블 insert query 실행
             return connection.execute(query1, bindParams).then((result) => {
                 if(DEBUG)
                 Log.info(TAG+"insertUser", "Account inserted.");
@@ -110,12 +175,14 @@ function insertUser(data, type) {
                 return true;
             })
             .catch((error) => {
+                // User insert Error
                 Log.error(TAG+"insertUser", error, query1);
                 return false;
             })
             
         })
         .catch((error) => {
+            // Account insert Error
             Log.error(TAG + "insertUser", error, query);
             connection.rollback();
             return false;
@@ -123,6 +190,7 @@ function insertUser(data, type) {
 
     })
     .catch((error) => {
+        // DB connection Error
         Log.error(TAG+"insertUser", error);
         return false;
     })

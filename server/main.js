@@ -79,7 +79,7 @@ app.post('/customer_join', (req, res) => {
     birthday: birthday
   }
 
-  customerACC.join_Customer(data).then((result)=>{
+  customerACC.join_customer(data).then((result)=>{
       if(result){
         sendRespond(res, 200, {status: true, text:"success"});
       }
@@ -100,7 +100,7 @@ app.post('/list_cinema', (req, res)=>{
 app.post('/load_schedule_cinema', (req, res) => {
   var cinema = req.body.cinema;
   if(!cinema){
-    Log.info(TAG, "cinema is undefined.");
+    Log.info(TAG+"load_schedule_cinema", "cinema is undefined.");
     sendRespond(res, 500, {status: false});
   }
   reserve.load_schedule_cinema(cinema).then((result) => {
@@ -108,17 +108,31 @@ app.post('/load_schedule_cinema', (req, res) => {
   })
 })
 
-app.get('/backTest', (req, res)=> {
-  var cinema = req.query.cinema;
-  if(!cinema){
-    Log.info(TAG, "cinema is undefined.");
+app.post('/login', (req, res) => {
+  var id = req.body.id;
+  var pwd = req.body.pwd;
+  if(!id || !pwd){
+    Log.info(TAG+"login", "id or pwd is undefined.");
     sendRespond(res, 500, {status: false});
   }
-  
-  reserve.load_schedule_cinema(cinema).then((result) => {
+
+  customerACC.login_customer(id, pwd).then((result) => {
     sendRespond(res, 200, result);
   })
-  
+})
+
+app.get('/backTest', (req, res)=> {
+  var id = req.query.id;
+  var pwd = req.query.pwd;
+  if(!id || !pwd){
+    Log.info(TAG+"login", "id or pwd is undefined.");
+    sendRespond(res, 500, {status: false});
+  }
+
+  customerACC.login_customer(id, pwd).then((result) => {
+    sendRespond(res, 200, result);
+  })
+
 })
 
 app.post('/api', (req, res) => {
