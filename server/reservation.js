@@ -1,5 +1,4 @@
-
-//const schedule = require('./schedule.js');
+const Schedule = require('./Schedule.js');
 
 const DBUtil = require('./DBUtil');
 const Log = require('./Log');
@@ -15,6 +14,9 @@ exports.load_schedule_cinema = (cinema) => {
     return load_schedule_cinema(cinema);
 }
 
+exports.list_empty_seats = (schedule) => {
+    return list_empty_seats(schedule);
+}
 
 
 /**
@@ -78,9 +80,7 @@ const load_schedule_cinema = (cinema) => {
         var list = [];
         for(schedule of result.rows){
             var record = [];
-            record.push(Util.dateToString(schedule[0]));
-            record.push(Util.dateToString(schedule[1]));
-            list.push( record.concat( schedule.slice(2) ) );
+            list.push( schedule );
         }
         
         return {status: true, data: list};
@@ -91,3 +91,31 @@ const load_schedule_cinema = (cinema) => {
     })
 }
 
+
+/**
+ * 
+ * @param {Schedule} schedule 
+ */
+const list_empty_seats = (schedule) => {
+    DBUtil.getDBConnection().then((connection) => {
+        if(!connection)
+            return {status:false};
+        var query = `select seat_num from Seat where cinema = '${schedule['cinema']}' ` +
+            `and theater = ${schedule['theater']} ` +
+            `and seat_num not in (` +
+            `select seat_num from Reservation_seat ` +
+            `where `+ schedule.predicate() +")";
+
+        Log.info(TAG+"list_empty_seats", query);
+        connection.execute(query).then((result) => {
+            if(result.rows.lastIndex>=0)
+                Log.info(TAG+"list_empty_seats", "lastIndex: " + lastIndex);
+            
+            return result.rows;
+        })
+    })
+}
+
+const reserve = (user, schedule, seat) => {
+    
+}
