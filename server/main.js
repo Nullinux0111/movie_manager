@@ -2,9 +2,12 @@ const express = require('express');
 const oracledb = require('oracledb');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const Log = require('./Log');
 
 const customerACC = require('./customer_account');
 const reserve = require('./reservation');
+const movie = require('./Movie');
+const schedule = require('./Schedule');
 
 var app = express();
 var host = 'localhost';
@@ -122,17 +125,17 @@ app.post('/login', (req, res) => {
 })
 
 app.get('/backTest', (req, res)=> {
-  var id = req.query.id;
-  var pwd = req.query.pwd;
-  if(!id || !pwd){
-    Log.info(TAG+"login", "id or pwd is undefined.");
-    sendRespond(res, 500, {status: false});
-  }
-
-  customerACC.login_customer(id, pwd).then((result) => {
-    sendRespond(res, 200, result);
+  var play_date = req.query.date;
+  var play_time = req.query.time;
+  var cinema = req.query.cinema;
+  var theater = req.query.theater;
+  schedule.selectSchedule(play_date, play_time, cinema, theater).then((result) => {
+    if(result)
+      sendRespond(res, 200, result);
   })
-
+  .catch((error) => {
+    Log.error("main.js", error);
+  })
 })
 
 app.get('/movieInsertAPI', (req, res) => {
@@ -144,6 +147,21 @@ app.get('/movieInsertAPI', (req, res) => {
     sendRespond(res, 200, data);
   })
 
+})
+
+
+app.post('/selectSchedule', (req, res) => {
+  var play_date = req.query.date;
+  var play_time = req.query.time;
+  var cinema = req.query.cinema;
+  var theater = req.query.theater;
+  schedule.selectSchedule(play_date, play_time, cinema, theater).then((result) => {
+    if(result)
+      sendRespond(res, 200, result);
+  })
+  .catch((error) => {
+    Log.error("main.js", error);
+  })
 })
 
 
