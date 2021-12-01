@@ -19,7 +19,7 @@ function LoginPage() {
         setPWd(e.target.value);
     } 
     const onKeyPress = (e) => {
-        if(e.key == 'Enter'){
+        if(e.key === 'Enter'){
          onEnter(e);
         }
     }
