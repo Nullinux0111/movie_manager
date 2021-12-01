@@ -7,6 +7,7 @@ const TAG = "Schedule.js:";
 
 
 exports.selectSchedule = (date, time, cinema, theater) => selectSchedule(date, time, cinema, theater);
+exports.list_schedule = (cinema, filter) => list_schedule(cinema, filter);
 
 
 /**
@@ -83,39 +84,95 @@ function insertSchedule(data) {
 function selectSchedule(date, time, cinema, theater){
     var play_date = new Date(date);
     var play_time = new Date(time);
+    var play_date_str = Util.dateToString(play_date);
+    var play_time_str = Util.dateTimeToString(play_time);
 
     return DBUtil.getDBConnection().then((connection) => {
         if(!connection)
-            return {status: false};
+            return false;
         var query = `select * from Schedule where `+
-                `play_date=TO_DATE('${Util.dateToString(play_date)}','YYYY-MM-DD') ` +
-                `and play_time=TO_DATE('${Util.dateTimeToString(play_time)}','YYYY-MM-DD HH24:mi:ss') ` +
+                `play_date=TO_DATE('${play_date_str}','YYYY-MM-DD') ` +
+                `and play_time=TO_DATE('${play_time_str}','YYYY-MM-DD HH24:mi:ss') ` +
                 `and cinema_name = '${cinema}' and theater_number = ${theater}`;
         Log.info(TAG+"select_schedule", "query: " + query);
         return connection.execute(query).then((result) => {
-            if(!(result.rows.lastIndex > 0))
+            if(!(result.rows.length == 1))
                 return false;
             else if(!result.rows[0][4])
                 return false;
             Log.info(TAG+"select_Schedule", "result="+ result.rows[0]);
             return new Schedule(date, time, cinema, theater, result.rows[0][4], result.rows[0][5], result.rows[0][6]);
         })
+        .catch((error) => {
+            Log.error(TAG+"select_schedule", error);
+            return false;
+        })
     })
     .catch((error) => {
         Log.error(TAG+"select_schedule", error);
+        return false;
     })
     
 }
 
 
-function list_schedule_cinema_movie(cinema, movie) {
+/***
+ * Search schedules of a cinema after now.
+ * 
+ * @param {String} cinema name
+ * @param {JSON}   filter [filter{play_date, movie_id, movie_name}]
+ * @returns JsonObject
+ *              - status : if execute successfully
+ *              - data : array of schedules after now. 
+ *                      - each schedule represents a list.
+ */
+ const list_schedule = (cinema, filter) => {
+    return DBUtil.getDBConnection()
+    .then((connection) => {
+        if(!connection){
+            Log.info(TAG+"list_cinema", "connection is undefined");
+            return {status: false};
+        }
 
+        var query = `select * from Schedule where cinema_name='${cinema}' `;
+        if(filter){
+            if(filter.play_date){
+                query += `and play_date = TO_DATE(${Util.dateToString(filter.play_date)}, 'YYYY-MM-DD')`;
+            }
+            else{
+                query += `and play_date > CURRENT_DATE`;
+            }
+            if(filter.movie_id){
+                query += `and movie_id = '${movie_id}'`;
+            }
+            if(filter.movie_name){
+                query += `and movie_name = '${movie_name}'`;
+            }
+        }
+
+        return connection.execute(query).then((result) => {
+                Log.info(TAG, "list_cinema_result: " + result.rows);
+                var list = [];
+                for(schedule of result.rows){
+                    var record = [];
+                    list.push( schedule );
+                }
+                
+                return {status: true, data: list};
+            })
+            .catch((error) => {
+                Log.error(TAG+"load_schedule_cinema", error);
+                return {status: false};
+            })
+    })
 }
+
 
 
 
 function wherePredicate(play_date, play_time, cinema, theater) {
     if(play_date != null)
-        return `play_date=${play_date} and play_time=TO_DATE('${Util.dateToString(play_time)}','YYYY-MM-DD HH24:mi:ss') `
+        return `play_date=TO_DATE('${Util.dateToString(play_date)}','YYYY-MM-DD') `
+            + `and play_time=TO_DATE('${Util.dateTimeToString(play_time)}','YYYY-MM-DD HH24:mi:ss') `
             + `and cinema_name = '${cinema}' and theater_number = ${theater}`;
 }

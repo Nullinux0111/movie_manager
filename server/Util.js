@@ -12,6 +12,9 @@ exports.dateTimeToString = (date) => {
 	return dateTimeToString(date);
 };
 
+exports.dateFormat = "YYYY-MM-DD";
+exports.dateTimeFormat = "YYYY-MM-DD HH24:mi:ss";
+
 
 function generateHashPassword(password, key){
 	const crypto = require('crypto');
