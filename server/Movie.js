@@ -12,13 +12,24 @@ exports.list_movies = (data) => list_movies(data);
 
 function list_movies(data) {
     var query = "select * from movie where ";
-    if(data.movie_id)
-        query += `movie_id = '${data.movie_id}'`;
-    else if(data.movie_name)
+    var filterCount = 0;
+    if(data.movie_id){
+        query += `movie_id = '${data.movie_id}' `;
+        filterCount = 1;
+    }
+    if(data.movie_name){
+        if(filterCount == 1)
+            query += `and `;
+        filterCount += 1;
         query += `movie_name LIKE '%${data.movie_name}%'`;
-    else if(data.director)
-        query += `director LIKE %'${data.director}'`;
-    else
+    }
+    if(data.director){
+        if(filterCount > 0)
+            query += `and `;
+        filterCount += 1;
+        query += `director LIKE '%${data.director}%'`;
+    }
+    else if(filterCount == 0)
         query = "select * from movie";
     
     return DBUtil.getDBConnection().then((connection) => {
