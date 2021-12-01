@@ -8,6 +8,7 @@ const customerACC = require('./customer_account');
 const reserve = require('./reservation');
 const movie = require('./Movie');
 const schedule = require('./Schedule');
+const Admin = require('./admin');
 
 var app = express();
 var host = 'localhost';
@@ -172,6 +173,28 @@ app.post('/reservation', (req, res) => {
 
 
 
+// Admin
+
+app.post('/admin/addCinema', (req, res) => {
+  var cinema = req.body.cinema;
+
+  Admin.addCinema(cinema).then((result) => {
+    sendRespond(res, 200, result);
+  })
+})
+
+app.post('/admin/addDepartment', (req,res)=>{
+  var cinema = req.query.cinema;
+  var dept = req.query.dept;
+
+  Admin.addDepartment(cinema, dept).then((result) => {
+    sendRespond(res, 200, result);
+  })
+})
+
+
+
+
 // statistic
 
 
@@ -189,17 +212,10 @@ app.listen(port, () => {
 // TEST 함수
 
 app.get('/backTest', (req, res)=> {
-  var date = req.query.date;
-  var time = req.query.time;
   var cinema = req.query.cinema;
-  var theater = req.query.theater;
-  var seat = req.query.seat;
-  var schedule = {
-    cinema: cinema,
-    theater: theater,
-    play_type: 'day'
-  }
-  reserve.checkCost(schedule, seat).then((result) => {
+  var dept = req.query.dept;
+
+  Admin.addDepartment(cinema, dept).then((result) => {
     sendRespond(res, 200, result);
   })
   
