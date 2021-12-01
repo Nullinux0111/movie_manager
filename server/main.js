@@ -101,6 +101,8 @@ app.post('/selectSchedule', (req, res) => {
   schedule.selectSchedule(play_date, play_time, cinema, theater).then((result) => {
     if(result)
       sendRespond(res, 200, result);
+    else
+      sendRespond(res, 200, {status:false});
   })
   .catch((error) => {
     Log.error(TAG+"/selectSchedule", error);
@@ -109,16 +111,46 @@ app.post('/selectSchedule', (req, res) => {
 
 
 
-app.post('/load_schedule_cinema', (req, res) => {
+app.post('/list_schedule', (req, res) => {
   var cinema = req.body.cinema;
+  var filter = req.body.filter;
   if(!cinema){
     Log.info(TAG+"load_schedule_cinema", "cinema is undefined.");
     sendRespond(res, 500, {status: false});
   }
-  reserve.load_schedule_cinema(cinema).then((result) => {
+  reserve.load_schedule_cinema(cinema,filter).then((result) => {
     sendRespond(res, 200, result);
   })
 })
+
+
+// Reservation
+
+app.post('/reservation', (req, res) => {
+  var play_date = req.body.date;
+  var play_time = req.body.time;
+  var cinema = req.body.cinema;
+  var theater = req.body.theater;
+  var seat_num = req.body.seat_num;
+  var user_id = req.body.user;
+  if(play_date && play_time && cinema && theater && seat_num && user_id){
+    schedule.selectSchedule(play_date, play_time, cinema, theater).then((target) => {
+      if(!target) sendRespond(res, 200, target);
+      Log.info(TAG+"test", "target found");
+      reserve.reserve(user_id, target, seat_num).then((result) => {
+        sendRespond(res, 200, result);
+      })
+    })
+  }
+  else
+    sendRespond(res, 200, {status: false});
+})
+
+
+
+
+
+
 
 
 
@@ -135,14 +167,22 @@ app.get('/backTest', (req, res)=> {
   var play_time = req.query.time;
   var cinema = req.query.cinema;
   var theater = req.query.theater;
-  schedule.selectSchedule(play_date, play_time, cinema, theater).then((result) => {
-    if(result)
-      sendRespond(res, 200, result);
-  })
-  .catch((error) => {
-    Log.error(TAG+"/backTest", error);
-  })
+  var seat_num = req.query.seat_num;
+  var user_id = req.query.user;
+  if(play_date && play_time && cinema && theater && seat_num && user_id){
+    schedule.selectSchedule(play_date, play_time, cinema, theater).then((target) => {
+      if(!target) sendRespond(res, 200, target);
+      Log.info(TAG+"test", "target found");
+      reserve.reserve(user_id, target, seat_num).then((result) => {
+        sendRespond(res, 200, result);
+      })
+    })
+  }
+  else
+    sendRespond(res, 200, {status: false});
+  
 })
+
 
 app.get('/', (req, res) => {
   var user = req.query.user;
