@@ -104,7 +104,7 @@ const ticketCost = (schedule, seat) => {
             return connection.execute(playCostQuery);
         })
         .then((result) => {
-            if(!result || !result.rows[0] || !result.rows[0].length==1){
+            if(!result.rows || !result.rows[0] || !result.rows[0].length==1){
                 if(!result.rows[0])
                     Log.info(TAG+"ticketCost", "result.rows[0]: " + result.rows[0]);
                 else if(!result.rows[0].length==1)
@@ -118,7 +118,7 @@ const ticketCost = (schedule, seat) => {
             return connection.execute(seatCostQuery);
         })
         .then((result) => {
-            if(!result || !result.rows[0] || !result.rows[0].length==1){
+            if(!result.rows || !result.rows[0] || !result.rows[0].length==1){
                 if(!result.rows[0])
                     Log.info(TAG+"ticketCost", "result.rows[0]: " + result.rows[0]);
                 else if(!result.rows[0].length==1)
