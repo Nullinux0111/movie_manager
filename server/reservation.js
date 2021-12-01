@@ -14,6 +14,10 @@ exports.list_empty_seats = (schedule) => {
     return list_empty_seats(schedule);
 }
 
+exports.checkCost = (schedule, seat) => {
+    return ticketCost(schedule, seat);
+}
+
 exports.reserve = (user, schedule, seat) => {
     return reserve(user, schedule, seat);
 }
@@ -78,6 +82,60 @@ const list_empty_seats = (schedule) => {
         })
     })
 }
+
+const ticketCost = (schedule, seat) => {
+    var play_type = schedule.play_type;
+    
+    return DBUtil.getDBConnection().then((connection) => {
+        if(!connection) return {status: false};
+        var theaterCostQuery = `select cost from TheaterType where type = `+
+                    `(select type from Theater where cinema_name='${schedule.cinema}' `+
+                    `and theater_number=${schedule.theater})`;
+        var playCostQuery = `select cost from Cost_time where play_type = '${play_type}'`;
+        var seatCostQuery = `select cost from Cost_seat where seat_type = `+
+                    `(select seat_type from Seat where cinema_name='${schedule.cinema}' `+
+                    `and theater_number=${schedule.theater} and seat_number='${seat}') `;
+        var totalCost = 0;
+        return connection.execute(theaterCostQuery).then((result) => {
+            if(!result.rows)
+                return false;
+            Log.info(TAG+"ticketCost1", result.rows);
+            totalCost += result.rows[0][0];
+            return connection.execute(playCostQuery);
+        })
+        .then((result) => {
+            if(!result || !result.rows[0] || !result.rows[0].length==1){
+                if(!result.rows[0])
+                    Log.info(TAG+"ticketCost", "result.rows[0]: " + result.rows[0]);
+                else if(!result.rows[0].length==1)
+                    Log.info(TAG+"ticketCost", "result.rows[0] length: "+result.rows[0].length);
+                return false;
+            }
+                
+            Log.info(TAG+"ticketCost2[0][0]", result.rows[0][0]);
+            Log.info(TAG+"ticketCost2", result.rows);
+            totalCost += result.rows[0][0];
+            return connection.execute(seatCostQuery);
+        })
+        .then((result) => {
+            if(!result || !result.rows[0] || !result.rows[0].length==1){
+                if(!result.rows[0])
+                    Log.info(TAG+"ticketCost", "result.rows[0]: " + result.rows[0]);
+                else if(!result.rows[0].length==1)
+                    Log.info(TAG+"ticketCost", "result.rows[0] length: "+result.rows[0].length);
+                return false;
+            }
+            Log.info(TAG+"ticketCost3", result.rows);
+            totalCost += result.rows[0][0];
+            return {status: true, cost: totalCost};
+        })
+        .catch((error) => {
+            Log.error(TAG+"ticketCost", error);
+            return {status: false};
+        })
+    })
+}
+
 
 const reserve = (user, schedule, seat) => {
     var play_date = schedule.play_date;
