@@ -127,6 +127,10 @@ app.post('/list_schedule', (req, res) => {
 
 // Reservation
 
+app.post('/list_empty_seats', (req, res) => {
+
+})
+
 app.post('/check_seat_available', (req, res) => {
   
 })
@@ -184,15 +188,53 @@ app.post('/admin/addCinema', (req, res) => {
 })
 
 app.post('/admin/addDepartment', (req,res)=>{
-  var cinema = req.query.cinema;
-  var dept = req.query.dept;
+  var cinema = req.body.cinema;
+  var dept = req.body.dept;
 
   Admin.addDepartment(cinema, dept).then((result) => {
     sendRespond(res, 200, result);
   })
 })
 
+app.post('/admin/addEmployee', (req, res) => {
+  var id = req.body.id;
+  var cinema = req.body.cinema;
+  var dept = req.body.department;
+  var name = req.body.name;
+  var birthday = req.body.birthday;
+  var phone = req.body.phone;
+  var salary = req.body.salary;
 
+  if(!id || !cinema || !dept || !name)
+    sendRespond(res, 200, {status: false});
+  
+  var data = {
+    id: id,
+    cinema: cinema,
+    dept: dept,
+    name: name,
+    birthday: birthday,
+    phone: phone,
+    salary: salary
+  }
+
+  Admin.addEmployee(data).then((result) => {
+    if(!result) sendRespond(res, 200, {status: false});
+    sendRespond(res, 200, result);
+  })
+
+})
+
+app.post('/admin/getDepartment', (req, res) => {
+  var id = req.body.employee_id;
+
+  if(!id)
+    sendRespond(res, 200, {status: false});
+  
+  Admin.getDepartment(id).then((result) => {
+    sendRespond(res, 200, result);
+  })
+})
 
 
 // statistic
@@ -212,13 +254,14 @@ app.listen(port, () => {
 // TEST 함수
 
 app.get('/backTest', (req, res)=> {
-  var cinema = req.query.cinema;
-  var dept = req.query.dept;
+  var id = req.query.employee_id;
 
-  Admin.addDepartment(cinema, dept).then((result) => {
+  if(!id)
+    sendRespond(res, 200, {status: false});
+  
+  Admin.getDepartment(id).then((result) => {
     sendRespond(res, 200, result);
   })
-  
 })
 
 

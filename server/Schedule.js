@@ -140,7 +140,7 @@ function selectSchedule(date, time, cinema, theater){
                 query += `and play_date = TO_DATE(${Util.dateToString(filter.play_date)}, 'YYYY-MM-DD')`;
             }
             else{
-                query += `and play_date > CURRENT_DATE`;
+                query += `and play_date >= CURRENT_DATE`;
             }
             if(filter.movie_id){
                 query += `and movie_id = '${movie_id}'`;
@@ -151,7 +151,7 @@ function selectSchedule(date, time, cinema, theater){
         }
 
         return connection.execute(query).then((result) => {
-                Log.info(TAG, "list_cinema_result: " + result.rows);
+                Log.info(TAG, "list_schedule_result: " + result.rows);
                 var list = [];
                 for(schedule of result.rows){
                     var record = [];
@@ -161,7 +161,7 @@ function selectSchedule(date, time, cinema, theater){
                 return {status: true, data: list};
             })
             .catch((error) => {
-                Log.error(TAG+"load_schedule_cinema", error);
+                Log.error(TAG+"list_schedule", error);
                 return {status: false};
             })
     })
