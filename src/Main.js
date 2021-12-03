@@ -4,6 +4,7 @@ import "./assets/css/reset19.css";
 import "./assets/css/slick.css";
 import "./assets/css/style19.css";
 import "./assets/css/swiper.css";
+import "./App.css";
 import pbl_logo from "./assets/img/pbl_logo.png";
 import poster01 from "./assets/img/poster01.jpg";
 import poster02 from "./assets/img/poster02.jpg";
@@ -22,6 +23,11 @@ function Main() {
   function moveCinema(event) {
     event.preventDefault();
     navigate("/reservation-cinema", { state: { cinema: false, movie: false } });
+  }
+
+  function moveInfo(event) {
+    event.preventDefault();
+    navigate("/movieInfo");
   }
 
   function handleMove(event) {
@@ -133,7 +139,7 @@ function Main() {
                           <strong>침묵</strong>
                         </h3>
                         <div class="infor_btn">
-                          <a href="#:">상세정보</a>
+                          <a href="#:" onClick={moveInfo}>상세정보</a>
                           <a href="#:" onClick={handleMove}>
                             예매하기
                           </a>
@@ -157,7 +163,7 @@ function Main() {
                           <strong>신세계</strong>
                         </h3>
                         <div class="infor_btn">
-                          <a href="#:">상세정보</a>
+                          <a href="#:" onClick={moveInfo}>상세정보</a>
                           <a href="#:" onClick={handleMove}>예매하기</a>
                         </div>
                       </div>
@@ -179,7 +185,7 @@ function Main() {
                           <strong>마스터</strong>
                         </h3>
                         <div class="infor_btn">
-                          <a href="#:">상세정보</a>
+                          <a href="#:" onClick={moveInfo}>상세정보</a>
                           <a href="#:" onClick={handleMove}>예매하기</a>
                         </div>
                       </div>
@@ -201,7 +207,7 @@ function Main() {
                           <strong>마약왕</strong>
                         </h3>
                         <div class="infor_btn">
-                          <a href="#:">상세정보</a>
+                          <a href="#:" onClick={moveInfo}>상세정보</a>
                           <a href="#:" onClick={handleMove}>예매하기</a>
                         </div>
                       </div>

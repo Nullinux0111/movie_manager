@@ -27,6 +27,11 @@ function Moviemenu() {
     navigate("/reservation-cinema", { state: { cinema: false, movie: false } });
   }
 
+  function moveInfo(event) {
+    event.preventDefault();
+    navigate("/movieInfo");
+  }
+
   function handleMove(event) {
     event.preventDefault();
     if (location.state.cinema !== false) {
@@ -108,7 +113,7 @@ function Moviemenu() {
                           <strong>침묵</strong>
                         </h3>
                         <div class="infor_btn">
-                          <a href="#:">상세정보</a>
+                          <a href="#:" onClick={moveInfo}>상세정보</a>
                           <a href="#:" onClick={handleMove}>
                             예매하기
                           </a>
@@ -132,7 +137,7 @@ function Moviemenu() {
                           <strong>신세계</strong>
                         </h3>
                         <div class="infor_btn">
-                          <a href="#:">상세정보</a>
+                          <a href="#:" onClick={moveInfo}>상세정보</a>
                           <a href="#:" onClick={handleMove}>예매하기</a>
                         </div>
                       </div>
@@ -154,7 +159,7 @@ function Moviemenu() {
                           <strong>마스터</strong>
                         </h3>
                         <div class="infor_btn">
-                          <a href="#:">상세정보</a>
+                          <a href="#:" onClick={moveInfo}>상세정보</a>
                           <a href="#:" onClick={handleMove}>예매하기</a>
                         </div>
                       </div>
@@ -176,7 +181,7 @@ function Moviemenu() {
                           <strong>마약왕</strong>
                         </h3>
                         <div class="infor_btn">
-                          <a href="#:">상세정보</a>
+                          <a href="#:" onClick={moveInfo}>상세정보</a>
                           <a href="#:" onClick={handleMove}>예매하기</a>
                         </div>
                       </div>
@@ -198,7 +203,7 @@ function Moviemenu() {
                           <strong>침묵</strong>
                         </h3>
                         <div class="infor_btn">
-                          <a href="#:">상세정보</a>
+                          <a href="#:" onClick={moveInfo}>상세정보</a>
                           <a href="#:" onClick={handleMove}>예매하기</a>
                         </div>
                       </div>
@@ -220,7 +225,7 @@ function Moviemenu() {
                           <strong>신세계</strong>
                         </h3>
                         <div class="infor_btn">
-                          <a href="#:">상세정보</a>
+                          <a href="#:" onClick={moveInfo}>상세정보</a>
                           <a href="#:" onClick={handleMove}>예매하기</a>
                         </div>
                       </div>
@@ -242,7 +247,7 @@ function Moviemenu() {
                           <strong>마스터</strong>
                         </h3>
                         <div class="infor_btn">
-                          <a href="#:">상세정보</a>
+                          <a href="#:" onClick={moveInfo}>상세정보</a>
                           <a href="#:" onClick={handleMove}>예매하기</a>
                         </div>
                       </div>
@@ -264,7 +269,7 @@ function Moviemenu() {
                           <strong>마약왕</strong>
                         </h3>
                         <div class="infor_btn">
-                          <a href="#:">상세정보</a>
+                          <a href="#:" onClick={moveInfo}>상세정보</a>
                           <a href="#:" onClick={handleMove}>예매하기</a>
                         </div>
                       </div>

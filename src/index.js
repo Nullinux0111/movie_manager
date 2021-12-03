@@ -9,6 +9,7 @@ import Moviemenu from "./Moviemenu";
 import Reservation from "./routes/reservation/Reservation";
 import SelectTime from "./routes/reservation/SelectTime";
 import ReservationComplete from "./routes/reservation/ResComplete";
+import MovieInfo from "./routes/movieInfo/MovieInfo";
 
 ReactDOM.render(
   <BrowserRouter>
@@ -20,6 +21,7 @@ ReactDOM.render(
       <Route path="/reservation-cinema" element={<Reservation />} />
       <Route path="/reservation-time" element={<SelectTime />} />
       <Route path="/reservation-complete" element={<ReservationComplete />} />
+      <Route path="/movieInfo" element={<MovieInfo />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")
