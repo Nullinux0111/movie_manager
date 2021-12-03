@@ -17,11 +17,21 @@ function Moviemenu() {
   let navigate = useNavigate();
   console.log(location.state);
 
+  function moveMovie(event) {
+    event.preventDefault();
+    navigate("/Moviemenu", { state: { cinema: false, movie: false } });
+  }
+
+  function moveCinema(event) {
+    event.preventDefault();
+    navigate("/reservation-cinema", { state: { cinema: false, movie: false } });
+  }
+
   function handleMove(event) {
     event.preventDefault();
     if (location.state.cinema !== false) {
       navigate("/reservation-time", {
-        state: { state: { cinema: location.state.cinema, movie: "movie" } },
+        state: { cinema: location.state.cinema, movie: "movie" },
       });
     } else {
       navigate("/reservation-cinema", {
@@ -43,20 +53,24 @@ function Moviemenu() {
                   </em>
                 </Link>
               </h1>
-              <nav id="mNav">
+              {/* <nav id="mNav">
                 <h2 class="ir_so">전체메뉴</h2>
                 <a href="#:" class="ham">
                   <span></span>
                 </a>
-              </nav>
+              </nav> */}
               <nav class="nav">
                 <ul class="clearfix">
-                  <li>
-                    <a href="#:">영화</a>
-                  </li>
-                  <li>
-                    <a href="#:">영화관</a>
-                  </li>
+                  <Link to="/Moviemenu">
+                    <li onClick={moveMovie}>
+                      <a href="#:">영화</a>
+                    </li>
+                  </Link>
+                  <Link to="/reservation-cinema">
+                    <li onClick={moveCinema}>
+                      <a href="#:">영화관</a>
+                    </li>
+                  </Link>
                   <li>
                     <a href="#:">스토어</a>
                   </li>
@@ -119,7 +133,7 @@ function Moviemenu() {
                         </h3>
                         <div class="infor_btn">
                           <a href="#:">상세정보</a>
-                          <a href="#:">예매하기</a>
+                          <a href="#:" onClick={handleMove}>예매하기</a>
                         </div>
                       </div>
                     </div>
@@ -141,7 +155,7 @@ function Moviemenu() {
                         </h3>
                         <div class="infor_btn">
                           <a href="#:">상세정보</a>
-                          <a href="#:">예매하기</a>
+                          <a href="#:" onClick={handleMove}>예매하기</a>
                         </div>
                       </div>
                     </div>
@@ -163,7 +177,7 @@ function Moviemenu() {
                         </h3>
                         <div class="infor_btn">
                           <a href="#:">상세정보</a>
-                          <a href="#:">예매하기</a>
+                          <a href="#:" onClick={handleMove}>예매하기</a>
                         </div>
                       </div>
                     </div>
@@ -185,7 +199,7 @@ function Moviemenu() {
                         </h3>
                         <div class="infor_btn">
                           <a href="#:">상세정보</a>
-                          <a href="#:">예매하기</a>
+                          <a href="#:" onClick={handleMove}>예매하기</a>
                         </div>
                       </div>
                     </div>
@@ -207,7 +221,7 @@ function Moviemenu() {
                         </h3>
                         <div class="infor_btn">
                           <a href="#:">상세정보</a>
-                          <a href="#:">예매하기</a>
+                          <a href="#:" onClick={handleMove}>예매하기</a>
                         </div>
                       </div>
                     </div>
@@ -229,7 +243,7 @@ function Moviemenu() {
                         </h3>
                         <div class="infor_btn">
                           <a href="#:">상세정보</a>
-                          <a href="#:">예매하기</a>
+                          <a href="#:" onClick={handleMove}>예매하기</a>
                         </div>
                       </div>
                     </div>
@@ -251,271 +265,7 @@ function Moviemenu() {
                         </h3>
                         <div class="infor_btn">
                           <a href="#:">상세정보</a>
-                          <a href="#:">예매하기</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                &nbsp;
-                <div class="container3">
-                  <div class="line3">
-                    <div class="movie1">
-                      <div class="poster">
-                        <figure>
-                          <img src={poster01} srcset={poster01} x2 alt="침묵" />
-                        </figure>
-                      </div>
-                      <div class="infor">
-                        <h3>
-                          <span class="icon all ir_pm">전체관람가</span>{" "}
-                          <strong>침묵</strong>
-                        </h3>
-                        <div class="infor_btn">
-                          <a href="#:">상세정보</a>
-                          <a href="#:">예매하기</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="movie2">
-                      <div class="poster">
-                        <figure>
-                          <img
-                            src={poster02}
-                            srcset={poster02}
-                            x2
-                            alt="신세계"
-                          />
-                        </figure>
-                      </div>
-                      <div class="infor">
-                        <h3>
-                          <span class="icon a19 ir_pm">19세 이상 관람</span>{" "}
-                          <strong>신세계</strong>
-                        </h3>
-                        <div class="infor_btn">
-                          <a href="#:">상세정보</a>
-                          <a href="#:">예매하기</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="movie3">
-                      <div class="poster">
-                        <figure>
-                          <img
-                            src={poster03}
-                            srcset={poster03}
-                            x2
-                            alt="마스터"
-                          />
-                        </figure>
-                      </div>
-                      <div class="infor">
-                        <h3>
-                          <span class="icon a12 ir_pm">12세 이상 관람</span>{" "}
-                          <strong>마스터</strong>
-                        </h3>
-                        <div class="infor_btn">
-                          <a href="#:">상세정보</a>
-                          <a href="#:">예매하기</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="movie4">
-                      <div class="poster">
-                        <figure>
-                          <img
-                            src={poster04}
-                            srcset={poster04}
-                            x2
-                            alt="마약왕"
-                          />
-                        </figure>
-                      </div>
-                      <div class="infor">
-                        <h3>
-                          <span class="icon a15 ir_pm">15세 이상 관람</span>{" "}
-                          <strong>마약왕</strong>
-                        </h3>
-                        <div class="infor_btn">
-                          <a href="#:">상세정보</a>
-                          <a href="#:">예매하기</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                &nbsp;
-                <div class="container4">
-                  <div class="line4">
-                    <div class="movie1">
-                      <div class="poster">
-                        <figure>
-                          <img src={poster01} srcset={poster01} x2 alt="침묵" />
-                        </figure>
-                      </div>
-                      <div class="infor">
-                        <h3>
-                          <span class="icon all ir_pm">전체관람가</span>{" "}
-                          <strong>침묵</strong>
-                        </h3>
-                        <div class="infor_btn">
-                          <a href="#:">상세정보</a>
-                          <a href="#:">예매하기</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="movie2">
-                      <div class="poster">
-                        <figure>
-                          <img
-                            src={poster02}
-                            srcset={poster02}
-                            x2
-                            alt="신세계"
-                          />
-                        </figure>
-                      </div>
-                      <div class="infor">
-                        <h3>
-                          <span class="icon a19 ir_pm">19세 이상 관람</span>{" "}
-                          <strong>신세계</strong>
-                        </h3>
-                        <div class="infor_btn">
-                          <a href="#:">상세정보</a>
-                          <a href="#:">예매하기</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="movie3">
-                      <div class="poster">
-                        <figure>
-                          <img
-                            src={poster03}
-                            srcset={poster03}
-                            x2
-                            alt="마스터"
-                          />
-                        </figure>
-                      </div>
-                      <div class="infor">
-                        <h3>
-                          <span class="icon a12 ir_pm">12세 이상 관람</span>{" "}
-                          <strong>마스터</strong>
-                        </h3>
-                        <div class="infor_btn">
-                          <a href="#:">상세정보</a>
-                          <a href="#:">예매하기</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="movie4">
-                      <div class="poster">
-                        <figure>
-                          <img
-                            src={poster04}
-                            srcset={poster04}
-                            x2
-                            alt="마약왕"
-                          />
-                        </figure>
-                      </div>
-                      <div class="infor">
-                        <h3>
-                          <span class="icon a15 ir_pm">15세 이상 관람</span>{" "}
-                          <strong>마약왕</strong>
-                        </h3>
-                        <div class="infor_btn">
-                          <a href="#:">상세정보</a>
-                          <a href="#:">예매하기</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                &nbsp;
-                <div class="container5">
-                  <div class="line5">
-                    <div class="movie1">
-                      <div class="poster">
-                        <figure>
-                          <img src={poster01} srcset={poster01} x2 alt="침묵" />
-                        </figure>
-                      </div>
-                      <div class="infor">
-                        <h3>
-                          <span class="icon all ir_pm">전체관람가</span>{" "}
-                          <strong>침묵</strong>
-                        </h3>
-                        <div class="infor_btn">
-                          <a href="#:">상세정보</a>
-                          <a href="#:">예매하기</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="movie2">
-                      <div class="poster">
-                        <figure>
-                          <img
-                            src={poster02}
-                            srcset={poster02}
-                            x2
-                            alt="신세계"
-                          />
-                        </figure>
-                      </div>
-                      <div class="infor">
-                        <h3>
-                          <span class="icon a19 ir_pm">19세 이상 관람</span>{" "}
-                          <strong>신세계</strong>
-                        </h3>
-                        <div class="infor_btn">
-                          <a href="#:">상세정보</a>
-                          <a href="#:">예매하기</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="movie3">
-                      <div class="poster">
-                        <figure>
-                          <img
-                            src={poster03}
-                            srcset={poster03}
-                            x2
-                            alt="마스터"
-                          />
-                        </figure>
-                      </div>
-                      <div class="infor">
-                        <h3>
-                          <span class="icon a12 ir_pm">12세 이상 관람</span>{" "}
-                          <strong>마스터</strong>
-                        </h3>
-                        <div class="infor_btn">
-                          <a href="#:">상세정보</a>
-                          <a href="#:">예매하기</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="movie4">
-                      <div class="poster">
-                        <figure>
-                          <img
-                            src={poster04}
-                            srcset={poster04}
-                            x2
-                            alt="마약왕"
-                          />
-                        </figure>
-                      </div>
-                      <div class="infor">
-                        <h3>
-                          <span class="icon a15 ir_pm">15세 이상 관람</span>{" "}
-                          <strong>마약왕</strong>
-                        </h3>
-                        <div class="infor_btn">
-                          <a href="#:">상세정보</a>
-                          <a href="#:">예매하기</a>
+                          <a href="#:" onClick={handleMove}>예매하기</a>
                         </div>
                       </div>
                     </div>

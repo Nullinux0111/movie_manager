@@ -5,9 +5,21 @@ import "../../assets/css/slick.css";
 import "../../assets/css/style19.css";
 import "../../assets/css/swiper.css";
 import pbl_logo from "../../assets/img/pbl_logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function ReservationComplete() {
+  let navigate = useNavigate();
+
+  function moveMovie(event) {
+    event.preventDefault();
+    navigate("/Moviemenu", { state: { cinema: false, movie: false } });
+  }
+
+  function moveCinema(event) {
+    event.preventDefault();
+    navigate("/reservation-cinema", { state: { cinema: false, movie: false } });
+  }
+  
   return (
     <div>
       <header id="header">
@@ -21,22 +33,24 @@ function ReservationComplete() {
                   </em>
                 </Link>
               </h1>
-              <nav id="mNav">
+              {/* <nav id="mNav">
                 <h2 class="ir_so">전체메뉴</h2>
                 <a href="#:" class="ham">
                   <span></span>
                 </a>
-              </nav>
+              </nav> */}
               <nav class="nav">
                 <ul class="clearfix">
                   <Link to="/Moviemenu">
-                    <li>
+                    <li onClick={moveMovie}>
                       <a href="#:">영화</a>
                     </li>
                   </Link>
-                  <li>
-                    <a href="#:">영화관</a>
-                  </li>
+                  <Link to="/reservation-cinema">
+                    <li onClick={moveCinema}>
+                      <a href="#:">영화관</a>
+                    </li>
+                  </Link>
                   <li>
                     <a href="#:">스토어</a>
                   </li>

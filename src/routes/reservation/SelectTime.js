@@ -6,9 +6,23 @@ import "../../assets/css/style19.css";
 import "../../assets/css/swiper.css";
 import "../../assets/css/Reservation-time.css";
 import pbl_logo from "../../assets/img/pbl_logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 function SelectTime() {
+  let navigate = useNavigate();
+  let location = useLocation();
+  console.log(location.state);
+
+  function moveMovie(event) {
+    event.preventDefault();
+    navigate("/Moviemenu", { state: { cinema: false, movie: false } });
+  }
+
+  function moveCinema(event) {
+    event.preventDefault();
+    navigate("/reservation-cinema", { state: { cinema: false, movie: false } });
+  }
+
   return (
     <div>
       <header id="header">
@@ -22,22 +36,24 @@ function SelectTime() {
                   </em>
                 </Link>
               </h1>
-              <nav id="mNav">
+              {/* <nav id="mNav">
                 <h2 class="ir_so">전체메뉴</h2>
                 <a href="#:" class="ham">
                   <span></span>
                 </a>
-              </nav>
+              </nav> */}
               <nav class="nav">
                 <ul class="clearfix">
                   <Link to="/Moviemenu">
-                    <li>
+                    <li onClick={moveMovie}>
                       <a href="#:">영화</a>
                     </li>
                   </Link>
-                  <li>
-                    <a href="#:">영화관</a>
-                  </li>
+                  <Link to="/reservation-cinema">
+                    <li onClick={moveCinema}>
+                      <a href="#:">영화관</a>
+                    </li>
+                  </Link>
                   <li>
                     <a href="#:">스토어</a>
                   </li>
@@ -56,6 +72,23 @@ function SelectTime() {
         </div>
       </header>
 
+      <section id="banner">
+        <div class="slider">
+          <div class="swiper-container">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide ss4">
+                <div class="container">
+                  <div class="row">
+                    <h3>시간 선택</h3>
+                    <p>관람하실 시간을 선택해주세요</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section id="movie">
         <div class="container">
           <div class="row">
@@ -72,7 +105,7 @@ function SelectTime() {
                         </div>
                       </div>
                     </Link>
-                    <Link to="#" class="cinema-link">
+                    <Link to="/reservation-complete" class="cinema-link">
                       <div class="swiper-slide">
                         <div class="infor">
                           <h3>
@@ -81,7 +114,7 @@ function SelectTime() {
                         </div>
                       </div>
                     </Link>
-                    <Link to="#" class="cinema-link">
+                    <Link to="/reservation-complete" class="cinema-link">
                       <div class="swiper-slide">
                         <div class="infor">
                           <h3>
@@ -90,7 +123,7 @@ function SelectTime() {
                         </div>
                       </div>
                     </Link>
-                    <Link to="#" class="cinema-link">
+                    <Link to="/reservation-complete" class="cinema-link">
                       <div class="swiper-slide">
                         <div class="infor">
                           <h3>
@@ -103,38 +136,38 @@ function SelectTime() {
                 </div>
                 <div class="swiper-container2">
                   <div class="chart_cont1 swiper-wrapper">
-                    <Link to="#" class="cinema-link">
+                    <Link to="/reservation-complete" class="cinema-link">
                       <div class="swiper-slide">
                         <div class="infor">
                           <h3>
-                            <strong>시간 1</strong>
+                            <strong>시간 5</strong>
                           </h3>
                         </div>
                       </div>
                     </Link>
-                    <Link to="#" class="cinema-link">
+                    <Link to="/reservation-complete" class="cinema-link">
                       <div class="swiper-slide">
                         <div class="infor">
                           <h3>
-                            <strong>시간 2</strong>
+                            <strong>시간 6</strong>
                           </h3>
                         </div>
                       </div>
                     </Link>
-                    <Link to="#" class="cinema-link">
+                    <Link to="/reservation-complete" class="cinema-link">
                       <div class="swiper-slide">
                         <div class="infor">
                           <h3>
-                            <strong>시간 3</strong>
+                            <strong>시간 7</strong>
                           </h3>
                         </div>
                       </div>
                     </Link>
-                    <Link to="#" class="cinema-link">
+                    <Link to="/reservation-complete" class="cinema-link">
                       <div class="swiper-slide">
                         <div class="infor">
                           <h3>
-                            <strong>시간 4</strong>
+                            <strong>시간 8</strong>
                           </h3>
                         </div>
                       </div>

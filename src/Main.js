@@ -24,6 +24,13 @@ function Main() {
     navigate("/reservation-cinema", { state: { cinema: false, movie: false } });
   }
 
+  function handleMove(event) {
+    event.preventDefault();
+    navigate("/reservation-cinema", {
+      state: { cinema: false, movie: "movie" },
+    });
+  }
+
   return (
     <div>
       <header id="header">
@@ -37,12 +44,12 @@ function Main() {
                   </em>
                 </Link>
               </h1>
-              <nav id="mNav">
+              {/* <nav id="mNav">
                 <h2 class="ir_so">전체메뉴</h2>
                 <a href="#:" class="ham">
                   <span></span>
                 </a>
-              </nav>
+              </nav> */}
               <nav class="nav">
                 <ul class="clearfix">
                   <Link to="/Moviemenu">
@@ -79,14 +86,14 @@ function Main() {
           <div class="container">
             <div class="row">
               <div class="bm_right">
-                <ul>
+                {/* <ul>
                   <li class="white">
                     <a href="#:">상영시간표</a>
                   </li>
                   <li class="purple">
                     <a href="#:">빠른예매</a>
                   </li>
-                </ul>
+                </ul> */}
               </div>
             </div>
           </div>
@@ -110,19 +117,15 @@ function Main() {
       <section id="movie">
         <div class="container">
           <div class="row">
-            <h2 class="ir_so">영화 예매</h2>
             <div class="movie">
               <div class="movie_chart">
-                <div class="swiper-container2">
-                  <div class="chart_cont1 swiper-wrapper">
-                    <div class="swiper-slide">
+                <div class="container1">
+                  <div class="line1">
+                    <div class="movie1">
                       <div class="poster">
                         <figure>
                           <img src={poster01} srcset={poster01} x2 alt="침묵" />
                         </figure>
-                        <div class="rank">
-                          <strong>1</strong>
-                        </div>
                       </div>
                       <div class="infor">
                         <h3>
@@ -131,11 +134,13 @@ function Main() {
                         </h3>
                         <div class="infor_btn">
                           <a href="#:">상세정보</a>
-                          <a href="#:">예매하기</a>
+                          <a href="#:" onClick={handleMove}>
+                            예매하기
+                          </a>
                         </div>
                       </div>
                     </div>
-                    <div class="swiper-slide">
+                    <div class="movie2">
                       <div class="poster">
                         <figure>
                           <img
@@ -145,9 +150,6 @@ function Main() {
                             alt="신세계"
                           />
                         </figure>
-                        <div class="rank">
-                          <strong>2</strong>
-                        </div>
                       </div>
                       <div class="infor">
                         <h3>
@@ -156,11 +158,11 @@ function Main() {
                         </h3>
                         <div class="infor_btn">
                           <a href="#:">상세정보</a>
-                          <a href="#:">예매하기</a>
+                          <a href="#:" onClick={handleMove}>예매하기</a>
                         </div>
                       </div>
                     </div>
-                    <div class="swiper-slide">
+                    <div class="movie3">
                       <div class="poster">
                         <figure>
                           <img
@@ -170,9 +172,6 @@ function Main() {
                             alt="마스터"
                           />
                         </figure>
-                        <div class="rank">
-                          <strong>3</strong>
-                        </div>
                       </div>
                       <div class="infor">
                         <h3>
@@ -181,11 +180,11 @@ function Main() {
                         </h3>
                         <div class="infor_btn">
                           <a href="#:">상세정보</a>
-                          <a href="#:">예매하기</a>
+                          <a href="#:" onClick={handleMove}>예매하기</a>
                         </div>
                       </div>
                     </div>
-                    <div class="swiper-slide">
+                    <div class="movie4">
                       <div class="poster">
                         <figure>
                           <img
@@ -195,9 +194,6 @@ function Main() {
                             alt="마약왕"
                           />
                         </figure>
-                        <div class="rank">
-                          <strong>4</strong>
-                        </div>
                       </div>
                       <div class="infor">
                         <h3>
@@ -206,7 +202,7 @@ function Main() {
                         </h3>
                         <div class="infor_btn">
                           <a href="#:">상세정보</a>
-                          <a href="#:">예매하기</a>
+                          <a href="#:" onClick={handleMove}>예매하기</a>
                         </div>
                       </div>
                     </div>
