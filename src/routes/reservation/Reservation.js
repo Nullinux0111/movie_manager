@@ -12,6 +12,17 @@ import React from "react";
 function Reservation() {
   let location = useLocation();
   let navigate = useNavigate();
+  console.log(location.state);
+
+  function moveMovie(event) {
+    event.preventDefault();
+    navigate("/Moviemenu", { state: { cinema: false, movie: false } });
+  }
+
+  function moveCinema(event) {
+    event.preventDefault();
+    navigate("/reservation-cinema", { state: { cinema: false, movie: false } });
+  }
 
   function handleMove(event) {
     event.preventDefault();
@@ -39,22 +50,24 @@ function Reservation() {
                   </em>
                 </Link>
               </h1>
-              <nav id="mNav">
+              {/* <nav id="mNav">
                 <h2 class="ir_so">전체메뉴</h2>
                 <a href="#:" class="ham">
                   <span></span>
                 </a>
-              </nav>
+              </nav> */}
               <nav class="nav">
                 <ul class="clearfix">
                   <Link to="/Moviemenu">
-                    <li>
+                    <li onClick={moveMovie}>
                       <a href="#:">영화</a>
                     </li>
                   </Link>
-                  <li>
-                    <a href="#:">영화관</a>
-                  </li>
+                  <Link to="/reservation-cinema">
+                    <li onClick={moveCinema}>
+                      <a href="#:">영화관</a>
+                    </li>
+                  </Link>
                   <li>
                     <a href="#:">스토어</a>
                   </li>
@@ -122,7 +135,7 @@ function Reservation() {
                       </div>
                     </Link>
                     <Link to="/Moviemenu" class="cinema-link">
-                      <div class="swiper-slide">
+                      <div class="swiper-slide" onClick={handleMove}>
                         <div class="poster">
                           <figure>
                             <img
@@ -145,7 +158,7 @@ function Reservation() {
                       </div>
                     </Link>
                     <Link to="/Moviemenu" class="cinema-link">
-                      <div class="swiper-slide">
+                      <div class="swiper-slide"  onClick={handleMove}>
                         <div class="poster">
                           <figure>
                             <img
@@ -168,7 +181,7 @@ function Reservation() {
                       </div>
                     </Link>
                     <Link to="/Moviemenu" class="cinema-link">
-                      <div class="swiper-slide">
+                      <div class="swiper-slide"  onClick={handleMove}>
                         <div class="poster">
                           <figure>
                             <img
