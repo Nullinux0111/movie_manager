@@ -15,6 +15,7 @@ import LoginPage from "./LoginPage";
 import MovieInfo from "./MovieInfo";
 import Main from "./Main";
 import Moviemenu from "./Moviemenu";
+import MyPage from "./Mypage";
 
 ReactDOM.render(
   <BrowserRouter>
@@ -32,6 +33,7 @@ ReactDOM.render(
       <Route path="/Main" element={<Main />} />
       <Route path="/Moviemenu" element={<Moviemenu />} />
       <Route path="/LoginPage" element={<LoginPage />} />
+      <Route path="/MyPage" element={<MyPage />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./MovieInfo.css";
-import { Link } from 'react-router-dom';
+import { Link , useLocation} from 'react-router-dom';
 import pbl_logo from './assets/img/pbl_logo.png';
 import poster13a from './assets/img/poster13@2.jpg';
 import './assets/css/style19.css';
@@ -28,10 +28,17 @@ const soonwi = 2; //예매순위. 마찬가지로 백엔드에서 추출
 const watchers = 1245345; //영화관 말고 영화진흥 위원회 기준! 어려우면 빼자
 const genre = "SF"; //장르. 백엔드 추출??
 const running_time = 155; //상영시간. 백엔드 추출
+const is_on = false;
 
 const director = "드니 빌뇌브"; //이것들은.. 따로 모아두는 페이지를 만들 게 아닌 이상 프론트엔드가 낫지않나
 const actor = "티모시 샬라메 ,  레베카 퍼거슨 ,  오스카 아이삭 ,  제이슨 모모아 ,  조슈 브롤린 ,  젠데이아 콜먼 ,  하비에르 바르뎀 ,  스텔란 스카스가드 ,  장첸 ,  샤론 던컨 브루스터 ,  데이브 바티스타 ,  데이빗 다스트말치안";
 const openingdate = "2021년 10월 20일";
+
+function AAAA(){
+const search = useLocation().search;
+const name = new URLSearchParams(search).get('name');
+return name;
+}
 
 class MovieInfo extends React.Component{
 
@@ -111,9 +118,15 @@ class MovieInfo extends React.Component{
                     <p>출연 {actor}  </p>
                     </p>
 
-                    <button class="resButton">
+                    {is_on
+                    ?<button className="resButton"> {/* 여기에만 parameter string을 받아서 링크로 보내면 되겠다!*/}
                         예매하기
                     </button>
+                    :<button className='resButton_disabled'>
+                        상영종료
+                    </button>
+                    }
+
                     </p>
                     </div>
 

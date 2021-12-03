@@ -120,8 +120,6 @@ function LoginPage() {
     </header>
 
         <section className="loginmainpage">
-            <div ></div>
-
             
         <div className="LoginBox">
             
@@ -135,7 +133,7 @@ function LoginPage() {
             ID: <input className="idbox" id='id' onChange={onChange}></input>
         </p>
         <p className="password">
-            PW: <input className="passbox" id='pwd' onChange={onPwdChange} onKeyPress={onKeyPress}></input>
+            PW: <input className="passbox" type='password' id='pwd' onChange={onPwdChange} onKeyPress={onKeyPress}></input>
         </p>
         
         </div>
