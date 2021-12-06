@@ -96,7 +96,7 @@ function SelectTime() {
               <div class="movie_chart">
                 <div class="swiper-container2">
                   <div class="chart_cont1 swiper-wrapper">
-                    <Link to="/reservation-complete" class="cinema-link">
+                    <Link to="/reservation-seat" class="cinema-link">
                       <div class="swiper-slide">
                         <div class="infor">
                           <h3>
@@ -105,7 +105,7 @@ function SelectTime() {
                         </div>
                       </div>
                     </Link>
-                    <Link to="/reservation-complete" class="cinema-link">
+                    <Link to="/reservation-seat" class="cinema-link">
                       <div class="swiper-slide">
                         <div class="infor">
                           <h3>
@@ -114,7 +114,7 @@ function SelectTime() {
                         </div>
                       </div>
                     </Link>
-                    <Link to="/reservation-complete" class="cinema-link">
+                    <Link to="/reservation-seat" class="cinema-link">
                       <div class="swiper-slide">
                         <div class="infor">
                           <h3>
@@ -123,7 +123,7 @@ function SelectTime() {
                         </div>
                       </div>
                     </Link>
-                    <Link to="/reservation-complete" class="cinema-link">
+                    <Link to="/reservation-seat" class="cinema-link">
                       <div class="swiper-slide">
                         <div class="infor">
                           <h3>
@@ -136,7 +136,7 @@ function SelectTime() {
                 </div>
                 <div class="swiper-container2">
                   <div class="chart_cont1 swiper-wrapper">
-                    <Link to="/reservation-complete" class="cinema-link">
+                    <Link to="/reservation-seat" class="cinema-link">
                       <div class="swiper-slide">
                         <div class="infor">
                           <h3>
@@ -145,7 +145,7 @@ function SelectTime() {
                         </div>
                       </div>
                     </Link>
-                    <Link to="/reservation-complete" class="cinema-link">
+                    <Link to="/reservation-seat" class="cinema-link">
                       <div class="swiper-slide">
                         <div class="infor">
                           <h3>
@@ -154,7 +154,7 @@ function SelectTime() {
                         </div>
                       </div>
                     </Link>
-                    <Link to="/reservation-complete" class="cinema-link">
+                    <Link to="/reservation-seat" class="cinema-link">
                       <div class="swiper-slide">
                         <div class="infor">
                           <h3>
@@ -163,7 +163,7 @@ function SelectTime() {
                         </div>
                       </div>
                     </Link>
-                    <Link to="/reservation-complete" class="cinema-link">
+                    <Link to="/reservation-seat" class="cinema-link">
                       <div class="swiper-slide">
                         <div class="infor">
                           <h3>
