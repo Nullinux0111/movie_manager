@@ -31,7 +31,7 @@ class MovieWrapper extends React.Component {
 
     if(event.target.id == '2'){
       if (location.state.cinema !== false) {
-        navaigate("/reservation-time", {
+        this.navaigate("/reservation-time", {
           state: { cinema: location.state.cinema, movie: event.currentTarget.previousElementSibling.children[1].textContent },
         });
       } else {
