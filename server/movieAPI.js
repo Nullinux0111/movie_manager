@@ -59,7 +59,7 @@ function insertMovieToDB(data) {
             return false;
         else
             DBUtil.getDBConnection().then((connection) => {
-                var query = `insert into movie values (:code, :name, :director, :actors, :grade, :genre, :runningTime, null)`;
+                var query = `insert into movie values (:code, :name, :director, :actors, :grade, :genre, :runningTime, null, null)`;
                 if(!connection)
                     return false;
                 connection.execute(query, bindParams).then((result) => {

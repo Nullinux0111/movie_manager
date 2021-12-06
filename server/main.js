@@ -9,6 +9,7 @@ const reserve = require('./reservation');
 const movie = require('./Movie');
 const schedule = require('./Schedule');
 const Admin = require('./admin');
+const Util = require('./Util');
 
 var app = express();
 var host = 'localhost';
@@ -89,6 +90,15 @@ app.get('/movieInsertAPI', (req, res) => {
     sendRespond(res, 200, data);
   })
 
+})
+
+app.post('/listMovie', (req, res) => {
+  var data = req.body.filter;
+  console.log("listMovie executed.");
+  
+  movie.list_movies(data).then((result) => {
+    sendRespond(res, 200, result);
+  })
 })
 
 
@@ -254,14 +264,19 @@ app.listen(port, () => {
 // TEST 함수
 
 app.get('/backTest', (req, res)=> {
-  var id = req.query.employee_id;
-
-  if(!id)
-    sendRespond(res, 200, {status: false});
+  var data = req.body.filter;
+  console.log("listMovie executed.");
   
-  Admin.getDepartment(id).then((result) => {
+  movie.list_movies(data).then((result) => {
     sendRespond(res, 200, result);
   })
+})
+
+app.get('/hashpassord', (req, res) => {
+  var pwd = req.query.pwd;
+  var id = req.query.id;
+
+  sendRespond(res, 200, Util.generateHashPassword(pwd, id));
 })
 
 
