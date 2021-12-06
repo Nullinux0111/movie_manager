@@ -272,11 +272,39 @@ app.get('/backTest', (req, res)=> {
   })
 })
 
-app.get('/hashpassord', (req, res) => {
+app.get('/hashpassword', (req, res) => {
   var pwd = req.query.pwd;
   var id = req.query.id;
 
   sendRespond(res, 200, Util.generateHashPassword(pwd, id));
+})
+
+app.get('/join_test', (req, res) => {
+  var user = req.query.user;
+  var pwd = req.query.pwd;
+  var name = req.query.name;
+  var phone = req.query.phone;
+  var birthday = req.query.birthday;
+  
+  console.log("try to join as "+user + ", "+pwd + " by POST protocol.");
+
+  var data = {
+    id: user,
+    pwd: pwd,
+    name: name|"NuLL",
+    phone: phone|"010-0000-0000",
+    birthday: birthday
+  }
+
+  customerACC.join_customer(data).then((result)=>{
+      if(result){
+        sendRespond(res, 200, {status: true, text:"success"});
+      }
+      else{
+        sendRespond(res, 200, {status: false, text:"Failed"});
+      }
+
+  });
 })
 
 
