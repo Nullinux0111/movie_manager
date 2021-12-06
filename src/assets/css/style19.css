@@ -100,9 +100,9 @@
 .movie_chart > div > div > div .infor h3 strong {padding-left: 0px;}
 .movie_chart > div > div > div .infor h3 span {width: 29px; height: 29px; display: inline-block; margin-top: 9px; vertical-align: -2px;}
 .movie_chart > div > div > div .infor h3 span.all {background-position: -87px -125px;}
-.movie_chart > div > div > div .infor h3 span.a12 {background-position: -58px -125px;}
-.movie_chart > div > div > div .infor h3 span.a15 {background-position: 0 -125px;}
-.movie_chart > div > div > div .infor h3 span.a19 {background-position: -29px -125px;}
+.movie_chart > div > div > div .infor h3 span.a12 {background-position: 0 -125px;}
+.movie_chart > div > div > div .infor h3 span.a15 {background-position: -29px -125px;}
+.movie_chart > div > div > div .infor h3 span.a19 {background-position: -58px -125px;}
 .movie_chart > div > div > div .infor .infor_btn {overflow: hidden;}
 .movie_chart > div > div > div .infor .infor_btn a {display: block; float: left; width: 49%; margin-right: 2%; padding: 10px 0; text-align: center; background: #f2f2f2; color: #666; font-size: 18px;}
 .movie_chart > div > div > div .infor .infor_btn a:last-child {margin-right: 0;}

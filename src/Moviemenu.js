@@ -11,7 +11,7 @@ import poster03 from "./assets/img/poster03.jpg";
 import poster04 from "./assets/img/poster04.jpg";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import React from "react";
-
+import Header from "./Header.js";
 
 class MovieWrapper extends React.Component {
   constructor(props){
@@ -26,20 +26,20 @@ class MovieWrapper extends React.Component {
    */
    handleMove = (event)=> {
     event.preventDefault();
-    console.log(event.target.id);
     const {location, navigate} = this.props;
 
-    if(event.target.id == '2'){
-      if (location.state.cinema !== false) {
-        this.navaigate("/reservation-time", {
-          state: { cinema: location.state.cinema, movie: event.currentTarget.previousElementSibling.children[1].textContent },
-        });
-      } else {
-        
-        this.navigate("/reservation-cinema", {
-          state: { cinema: location.state.cinema, movie: event.currentTarget.previousElementSibling.children[1].textContent },
-        });
-      }
+    var selectedMovie = event.currentTarget.parentElement.previousElementSibling.children[1].textContent;
+    var state = location.state;
+    state.movie = selectedMovie;
+
+    if (location.state.cinema) {
+      navigate("/reservation-time", {
+        state: state,
+      });
+    } else {
+      navigate("/reservation-cinema", {
+        state: state,
+      });
     }
     
   }
@@ -47,56 +47,13 @@ class MovieWrapper extends React.Component {
 
   async componentDidMount(){
     console.log(this.props.location.state);
-    //var element = await this.list_movie();
-    //this.setState({ element });
   }
 
   render() {
+    const { state } = this.props.location;
     return (
       <div>
-        <header id="header">
-          <div class="container">
-            <div class="row">
-              <div class="header clearfix">
-                <h1>
-                  <Link to="/Main">
-                    <em>
-                      <img src={pbl_logo} alt="일석이조" />
-                    </em>
-                  </Link>
-                </h1>
-                <nav id="mNav">
-                  <h2 class="ir_so">전체메뉴</h2>
-                  <a href="#:" class="ham">
-                    <span></span>
-                  </a>
-                </nav>
-                <nav class="nav">
-                  <ul class="clearfix">
-                    <li>
-                      <a href="#:">영화</a>
-                    </li>
-                    <li>
-                      <a href="#:">영화관</a>
-                    </li>
-                    <li>
-                      <a href="#:">스토어</a>
-                    </li>
-                    <li>
-                      <a href="#:">고객센터</a>
-                    </li>
-                    <Link to="/LoginPage">
-                      <li>
-                        <a href="#:">로그인</a>
-                      </li>
-                    </Link>
-                  </ul>
-                </nav>
-              </div>
-            </div>
-          </div>
-        </header>
-  
+        <Header state={state}/>
         <section id="movie">
           <div class="container">
             <div class="row">
@@ -115,9 +72,9 @@ class MovieWrapper extends React.Component {
                             <span class="icon all ir_pm">전체관람가</span>{" "}
                             <strong>침묵</strong>
                           </h3>
-                          <div class="infor_btn" onClick={this.handleMove}>
-                            <a id='1' href="#:">상세정보</a>
-                            <a id='2' href="#:">
+                          <div class="infor_btn">
+                            <a href="#:">상세정보</a>
+                            <a href="#:" onClick={this.handleMove}>
                               예매하기
                             </a>
                           </div>
@@ -141,7 +98,9 @@ class MovieWrapper extends React.Component {
                           </h3>
                           <div class="infor_btn">
                             <a href="#:">상세정보</a>
-                            <a href="#:">예매하기</a>
+                            <a href="#:" onClick={this.handleMove}>
+                              예매하기
+                            </a>
                           </div>
                         </div>
                       </div>
@@ -163,7 +122,9 @@ class MovieWrapper extends React.Component {
                           </h3>
                           <div class="infor_btn">
                             <a href="#:">상세정보</a>
-                            <a href="#:">예매하기</a>
+                            <a href="#:" onClick={this.handleMove}>
+                              예매하기
+                            </a>
                           </div>
                         </div>
                       </div>
@@ -180,12 +141,14 @@ class MovieWrapper extends React.Component {
                         </div>
                         <div class="infor">
                           <h3>
-                            <span class="icon a15 ir_pm">15세 이상 관람</span>{" "}
+                            <span class="icon a12 ir_pm">15세 이상 관람</span>{" "}
                             <strong>마약왕</strong>
                           </h3>
                           <div class="infor_btn">
                             <a href="#:">상세정보</a>
-                            <a href="#:">예매하기</a>
+                            <a href="#:" onClick={this.handleMove}>
+                              예매하기
+                            </a>
                           </div>
                         </div>
                       </div>

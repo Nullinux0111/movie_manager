@@ -37,7 +37,7 @@ const list_cinema = () => {
             return {status: false};
         }
 
-        var query = "select cinema_name from Cinema";
+        var query = "select cinema_name from Cinema where cinema_name != '본사'";
         return connection.execute(query);
     })
     .then((result) => {
