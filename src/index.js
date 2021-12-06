@@ -10,7 +10,7 @@ import MyPage from "./Mypage";
 import Reservation from "./routes/reservation/Reservation";
 import SelectTime from "./routes/reservation/SelectTime";
 import ReservationComplete from "./routes/reservation/ResComplete";
-import MovieInfo from "./routes/movieInfo/MovieInfo";
+import MovieInfo from "./MovieInfo";
 
 ReactDOM.render(
   <BrowserRouter>
