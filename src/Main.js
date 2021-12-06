@@ -71,9 +71,11 @@ function Main() {
                   <li>
                     <a href="#:">스토어</a>
                   </li>
-                  <li>
-                    <a href="#:">고객센터</a>
-                  </li>
+                  <Link to="/StaffCeo">
+                    <li>
+                      <a href="#:">고객센터</a>
+                    </li>
+                  </Link>
                   <Link to="/LoginPage">
                     <li>
                       <a href="#:">로그인</a>

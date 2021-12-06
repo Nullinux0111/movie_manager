@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import App from "./App";
 import LoginPage from ".//LoginPage";
 import Main from "./Main";
@@ -11,6 +12,7 @@ import Reservation from "./routes/reservation/Reservation";
 import SelectTime from "./routes/reservation/SelectTime";
 import ReservationComplete from "./routes/reservation/ResComplete";
 import MovieInfo from "./MovieInfo";
+import StaffCeo from "./StaffCeo";
 
 ReactDOM.render(
   <BrowserRouter>
@@ -24,6 +26,7 @@ ReactDOM.render(
       <Route path="/reservation-time" element={<SelectTime />} />
       <Route path="/reservation-complete" element={<ReservationComplete />} />
       <Route path="/movieInfo" element={<MovieInfo />} />
+      <Route path="/StaffCeo" element={<StaffCeo />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")
