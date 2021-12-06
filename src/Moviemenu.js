@@ -31,12 +31,11 @@ class MovieWrapper extends React.Component {
 
     if(event.target.id == '2'){
       if (location.state.cinema !== false) {
-        this.navaigate("/reservation-time", {
+        this.props.navaigate("/reservation-time", {
           state: { cinema: location.state.cinema, movie: event.currentTarget.previousElementSibling.children[1].textContent },
         });
       } else {
-        
-        this.navigate("/reservation-cinema", {
+        this.props.navigate("/reservation-cinema", {
           state: { cinema: location.state.cinema, movie: event.currentTarget.previousElementSibling.children[1].textContent },
         });
       }
