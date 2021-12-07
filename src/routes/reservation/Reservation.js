@@ -5,7 +5,7 @@ import "../../assets/css/slick.css";
 import "../../assets/css/style19.css";
 import "../../assets/css/swiper.css";
 import "../../assets/css/Reservation.css";
-import pbl_logo from "../../assets/img/pbl_logo.png";
+import Header from "../../Header.js";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import React, { Fragment } from "react";
 
@@ -22,19 +22,28 @@ class CinemaWrapper extends React.Component {
     console.log(this.props);
   }
   
+ /**
+   * 
+   * @param {React.MouseEvent} event 
+   */
+  handleMove = (event) => {
+    event.preventDefault();
+    const {location, navigate} = this.props;
 
-handleMove = (event) => {
-  event.preventDefault();
-  if (this.props.location.state.movie !== false) {
-    this.props.navigate("/reservation-time", {
-      state: { cinema: "cinema", movie: this.props.location.state.movie },
-    });
-  } else {
-    this.props.navigate("/Moviemenu", {
-      state: { cinema: "cinema", movie: this.props.location.state.movie },
-    });
+    var selectedCinema = event.currentTarget.children[1].textContent;
+    var state = location.state;
+    state.cinema = selectedCinema;
+
+    if (location.state.movie) {
+      navigate("/reservation-time", {
+        state: state,
+      });
+    } else {
+      navigate("/Moviemenu", {
+        state: state,
+      });
+    }
   }
-}
 
   async componentDidMount() {
     console.log(this.props.location.state);
@@ -44,53 +53,10 @@ handleMove = (event) => {
 
   render () { 
     const { element } = this.state;
+    const { state } = this.props.location;
     return (
       <div>
-        <header id="header">
-          <div class="container">
-            <div class="row">
-              <div class="header clearfix">
-                <h1>
-                  <Link to="/Main">
-                    <em>
-                      <img src={pbl_logo} alt="일석이조" />
-                    </em>
-                  </Link>
-                </h1>
-                <nav id="mNav">
-                  <h2 class="ir_so">전체메뉴</h2>
-                  <a href="#:" class="ham">
-                    <span></span>
-                  </a>
-                </nav>
-                <nav class="nav">
-                  <ul class="clearfix">
-                    <Link to="/Moviemenu">
-                      <li>
-                        <a href="#:">영화</a>
-                      </li>
-                    </Link>
-                    <li>
-                      <a href="#:">영화관</a>
-                    </li>
-                    <li>
-                      <a href="#:">스토어</a>
-                    </li>
-                    <li>
-                      <a href="#:">고객센터</a>
-                    </li>
-                    <Link to="/LoginPage">
-                      <li>
-                        <a href="#:">로그인</a>
-                      </li>
-                    </Link>
-                  </ul>
-                </nav>
-              </div>
-            </div>
-          </div>
-        </header>
-  
+        <Header state={state}/> 
         <section id="banner">
           <div class="slider">
             <div class="swiper-container">
@@ -115,7 +81,7 @@ handleMove = (event) => {
               <div class="movie">
                 <div class="movie_chart">
                   <div class="swiper-container2">
-                    <div class="chart_cont1 swiper-wrapper">
+                    <div class="chart_cont1">
                       {element}
                     </div>
                   </div>
@@ -157,11 +123,7 @@ function list_cinema() {
                 return (<Fragment>
                   {res['data'].map((data) => (
                     
-                    <Link to={{pathname:"/Moviemenu",
-                    state: {
-                      movie: "movie"
-                    }
-                   }} class="cinema-link">
+                    <Link to="/Moviemenu" class="cinema-link">
                     <div class="swiper-slide" onClick={this.handleMove}>
                       <div class="poster">
                         <figure>

@@ -12,6 +12,7 @@ import MovieWrapper from "./Moviemenu";
 import CinemaWrapper from "./routes/reservation/Reservation";
 import SelectTime from "./routes/reservation/SelectTime";
 import ReservationComplete from "./routes/reservation/ResComplete";
+import SelectSeat from "./routes/reservation/SelectSeat";
 import MovieInfo from "./MovieInfo";
 import StaffCeo from "./StaffCeo";
 
@@ -29,6 +30,7 @@ ReactDOM.render(
       <Route path="/reservation-complete" element={<ReservationComplete />} />
       <Route path="/movieInfo" element={<MovieInfo />} />
       <Route path="/StaffCeo" element={<StaffCeo />} />
+      <Route path="/reservation-seat" element={<SelectSeat />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")
