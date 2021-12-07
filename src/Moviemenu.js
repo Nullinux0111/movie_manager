@@ -4,7 +4,6 @@ import "./assets/css/reset19.css";
 import "./assets/css/slick.css";
 import "./assets/css/style19.css";
 import "./assets/css/swiper.css";
-import pbl_logo from "./assets/img/pbl_logo.png";
 import poster01 from "./assets/img/poster01.jpg";
 import poster02 from "./assets/img/poster02.jpg";
 import poster03 from "./assets/img/poster03.jpg";

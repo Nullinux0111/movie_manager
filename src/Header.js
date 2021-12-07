@@ -6,8 +6,10 @@ function Header(props) {
     var state = {};
     if(props.state)
         state = props.state;
-    state.cinema = false;
-    state.movie = false;
+    else{
+        state.cinema = false;
+        state.movie = false;
+    }
 
     return (
         <header id="header">
