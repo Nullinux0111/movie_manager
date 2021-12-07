@@ -32,16 +32,22 @@ class MovieWrapper extends React.Component {
     var state = location.state;
     state.movie = selectedMovie;
 
-    if (location.state.cinema) {
-      navigate("/reservation-time", {
-        state: state,
-      });
-    } else {
-      navigate("/reservation-cinema", {
-        state: state,
-      });
+    if(event.target.textContent == "예매하기"){
+      if (location.state.cinema) {
+        navigate("/reservation-time", {
+          state: state,
+        });
+      } else {
+        navigate("/reservation-cinema", {
+          state: state,
+        });
+      }
     }
-    
+    else if(event.target.textContent == "상세정보"){
+      navigate("/movieInfo", {
+        state: state
+      })
+    }
   }
 
 
@@ -73,7 +79,7 @@ class MovieWrapper extends React.Component {
                             <strong>침묵</strong>
                           </h3>
                           <div class="infor_btn">
-                            <a href="#:">상세정보</a>
+                            <a href="#:" onClick={this.handleMove}>상세정보</a>
                             <a href="#:" onClick={this.handleMove}>
                               예매하기
                             </a>
@@ -97,7 +103,7 @@ class MovieWrapper extends React.Component {
                             <strong>신세계</strong>
                           </h3>
                           <div class="infor_btn">
-                            <a href="#:">상세정보</a>
+                            <a href="#:" onClick={this.handleMove}>상세정보</a>
                             <a href="#:" onClick={this.handleMove}>
                               예매하기
                             </a>
@@ -121,7 +127,7 @@ class MovieWrapper extends React.Component {
                             <strong>마스터</strong>
                           </h3>
                           <div class="infor_btn">
-                            <a href="#:">상세정보</a>
+                            <a href="#:" onClick={this.handleMove}>상세정보</a>
                             <a href="#:" onClick={this.handleMove}>
                               예매하기
                             </a>
@@ -145,7 +151,7 @@ class MovieWrapper extends React.Component {
                             <strong>마약왕</strong>
                           </h3>
                           <div class="infor_btn">
-                            <a href="#:">상세정보</a>
+                            <a href="#:" onClick={this.handleMove}>상세정보</a>
                             <a href="#:" onClick={this.handleMove}>
                               예매하기
                             </a>
