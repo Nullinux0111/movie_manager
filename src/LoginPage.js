@@ -22,10 +22,10 @@ function LoginPage() {
   };
   const onKeyPress = (e) => {
     if (e.key === "Enter") {
-      onEnter(e);
+      onEnterPost(e);
     }
   };
-
+  
   const onEnter = (e) => {
     setLoading(true);
     fetch(
@@ -52,12 +52,11 @@ function LoginPage() {
   const onEnterPost = (e) => {
     setLoading(true);
     const parameters = {
-      user: id_text,
+      id: id_text,
       pwd: pwd_text,
-      query: "select * from student",
     };
     console.log(JSON.stringify(parameters));
-    fetch("http://localhost:3001/api", {
+    fetch("http://localhost:3001/login", {
       method: "post", //통신방법
       headers: {
         "Content-Type": "application/json",
@@ -67,15 +66,15 @@ function LoginPage() {
       .then((res) => res.json())
       .then((res) => {
         console.log("res:" + res);
-        console.log("res.text:" + res["text"]);
-        console.log("res.data: " + res["data"]);
-        setList(res["text"]);
+        console.log("res.text:" + res["status"]);
+        setList(res["status"]);
         setLoading(false);
         setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
         setList(err.message);
+        alert("아이디 혹은 비밀번호가 일치하지 않습니다.");
         setLoading(false);
         setIsLoading(false);
       });
@@ -162,11 +161,19 @@ function LoginPage() {
               ></input>
             </p>
           </div>
-          <button className="loginButton" onClick={onEnter}>
+          <button className="loginButton" onClick={onEnterPost}>
             로그인
           </button>
 
           <div className="loginoption">
+            <a
+              className="signup"
+              href="/"
+              target="_self"
+              title="디비영화관 메인화면으로 가기"
+            >
+              회원가입
+            </a>
             <a
               className="findid"
               href="/"
@@ -191,6 +198,7 @@ function LoginPage() {
             >
               비회원 예매확인
             </a>
+
           </div>
 
           <div className="loginselect">

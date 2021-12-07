@@ -7,6 +7,7 @@ import App from "./App";
 import LoginPage from ".//LoginPage";
 import Main from "./Main";
 import MyPage from "./Mypage";
+import SignUpPage from "./SignUpPage";
 import MovieWrapper from "./Moviemenu";
 import CinemaWrapper from "./routes/reservation/Reservation";
 import SelectTime from "./routes/reservation/SelectTime";
@@ -21,6 +22,7 @@ ReactDOM.render(
       <Route path="/Main" element={<Main />} />
       <Route path="/Moviemenu" element={<MovieWrapper />} />
       <Route path="/LoginPage" element={<LoginPage />} />
+      <Route path="/SignUpPage" element={<SignUpPage />} />
       <Route path="/MyPage" element={<MyPage />} />
       <Route path="/reservation-cinema" element={<CinemaWrapper />} />
       <Route path="/reservation-time" element={<SelectTime />} />
