@@ -15,6 +15,7 @@ import ReservationComplete from "./routes/reservation/ResComplete";
 import SelectSeat from "./routes/reservation/SelectSeat";
 import MovieInfo from "./MovieInfo";
 import StaffCeo from "./StaffCeo";
+import Staffmain from "./Staffmain";
 import ScrollTop from "./ScrollTop";
 
 ReactDOM.render(
@@ -32,6 +33,7 @@ ReactDOM.render(
       <Route path="/reservation-complete" element={<ReservationComplete />} />
       <Route path="/movieInfo" element={<MovieInfo />} />
       <Route path="/StaffCeo" element={<StaffCeo />} />
+      <Route path="/Staffmain" element={<Staffmain />} />
       <Route path="/reservation-seat" element={<SelectSeat />} />
     </Routes>
   </BrowserRouter>,

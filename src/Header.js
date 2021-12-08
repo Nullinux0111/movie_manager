@@ -57,7 +57,7 @@ function Header(props) {
                                 <li>
                                 <a href="#:">스토어</a>
                                 </li>
-                                <Link to="/StaffCeo" state={state}>
+                                <Link to="/Staffmain" state={state}>
                                 <li>
                                     <a href="#:">고객센터</a>
                                 </li>

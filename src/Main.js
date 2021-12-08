@@ -79,7 +79,7 @@ function Main() {
                     <div class="movie1">
                       <div class="poster">
                         <figure>
-                          <img src={poster01} srcset={poster01} x2 alt="침묵" />
+                          <img src={poster01} srcset={poster01} x2 alt="스파이더맨 : 노 웨이 홈" />
                         </figure>
                       </div>
                       <div class="infor">
@@ -102,7 +102,7 @@ function Main() {
                             src={poster02}
                             srcset={poster02}
                             x2
-                            alt="신세계"
+                            alt="돈 룩 업"
                           />
                         </figure>
                       </div>
@@ -124,7 +124,7 @@ function Main() {
                             src={poster03}
                             srcset={poster03}
                             x2
-                            alt="마스터"
+                            alt="소설가 구보의 하루"
                           />
                         </figure>
                       </div>
@@ -146,7 +146,7 @@ function Main() {
                             src={poster04}
                             srcset={poster04}
                             x2
-                            alt="마약왕"
+                            alt="왼팔의복서 닉"
                           />
                         </figure>
                       </div>
