@@ -10,6 +10,8 @@ exports.list_cinema = () => {
     return list_cinema();
 }
 
+exports.viewMyReservations = (id) => viewMyReservations(id);
+
 exports.list_empty_seats = (schedule) => {
     return list_empty_seats(schedule);
 }
@@ -59,6 +61,28 @@ const list_cinema = () => {
         Log.error(TAG+"list_cinema", error);
     })
 }
+
+
+
+const viewMyReservations = (user) => {
+    var query = `select * from Reservation where customer_id='${user}'`;
+    return DBUtil.getDBConnection().then((connection) => {
+        if(!connection) return {status: false};
+
+        return connection.execute(query).then((result) => {
+            if(!result || !result.rows)
+                return {status: true, data: []};
+            return {status: true, data: result};
+        })
+        .catch((error) => {
+            Log.error(TAG+"viewReserv", error);
+            return {status: false};
+        })
+    })
+}
+
+
+
 
 
 
