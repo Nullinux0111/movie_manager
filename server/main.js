@@ -27,7 +27,7 @@ app.use(cors());
 
 app.post('/customer_join', (req, res) => {
   console.log("Req_body: ", req.body);
-  var user = req.body.user;
+  var user = req.body.id;
   var pwd = req.body.pwd;
   var name = req.body.name;
   var phone = req.body.phone;
@@ -42,7 +42,7 @@ app.post('/customer_join', (req, res) => {
     phone: phone,
     birthday: birthday
   }
-
+  Log.info("main", "id: "+data.id);
   customerACC.join_customer(data).then((result)=>{
       if(result){
         sendRespond(res, 200, {status: true, text:"success"});
