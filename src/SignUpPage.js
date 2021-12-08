@@ -102,8 +102,8 @@ function SignUpPage() {
     const parameters = {
       id: id_text,
       pwd: pwd_text,
-      name: name_text, 
-      phone: phone_text, 
+      name: name_text,
+      phone: phone_text,
       birthday: birthday_text
 
     };
@@ -120,17 +120,22 @@ function SignUpPage() {
         console.log("res:" + res);
         console.log("res.text:" + res["status"]);
         setList(res["status"]);
-        alert(name_text + "님, 성공적으로 가입되었습니다!");
+        if(res["status"]===true){
+            alert(name_text + "님, 성공적으로 가입되었습니다!");
         
-        navigate('/');
-        refreshPage();
-        setLoading(false);
-        setIsLoading(false);
+            navigate('/');
+            refreshPage();
+            setLoading(false);
+            setIsLoading(false);
+        }
+        else{
+            alert("이미 존재하는 아이디입니다.");
+        }
+        
     })
     .catch((err) => {
         console.log(err);
         setList(err.message);
-        alert("이미 존재하는 아이디입니다.");
         setLoading(false);
         setIsLoading(false);
       });

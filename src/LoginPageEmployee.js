@@ -4,7 +4,7 @@ import { useState } from "react";
 import "./LoginPage.css";
 import Header from "./Header.js";
 
-function LoginPage() {
+function LoginPageEmployee() {
   let navigate = useNavigate();
   let location = useLocation();
 
@@ -55,11 +55,11 @@ function LoginPage() {
     const parameters = {
       id: id_text,
       pwd: pwd_text,
-      type: "customer"
+      type: "employee"
     };
     
     console.log(JSON.stringify(parameters));
-    console.log("customer");
+    console.log("employee");
     fetch("http://localhost:3001/login", {
       method: "post", //통신방법
       headers: {
@@ -72,18 +72,68 @@ function LoginPage() {
         console.log("res:" + res);
         console.log("res.text:" + res["status"]);
         setList(res["status"]);
+        const parameters2 = {
+          id: id_text
+        };
+        return fetch("http://localhost:3001/admin/getDepartment", {
+          method: "post", //통신방법
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(parameters2),
+        })
+        .then((res) => res.json())
+        .then((res) => {
           if(res["status"]===true){
-            sessionStorage.setItem("MovieCurrentUser", id_text);
-            console.log(sessionStorage.getItem("MovieCurrentUser"));
-        
-            navigate('/');
-            window.location.reload();
-            setLoading(false);
-            setIsLoading(false);
+             
+            if(res["data"][1] === "관리자"){
+              
+              sessionStorage.setItem("CurrentEmployee", id_text); //여기 있는 값은 모두 sessionStorage.getItem("이름");으로 불러온다.
+              console.log(sessionStorage.getItem("CurrentEmployee"));
+              sessionStorage.setItem("EmployeeCinema", res["data"][0]);
+              console.log(sessionStorage.getItem("EmployeeCinem"));
+              sessionStorage.setItem("EmployeeDepartment", res["data"][1]);
+              console.log(sessionStorage.getItem("EmployeeDepartment"));
+              navigate('/StaffCeo');
+                window.location.reload();
+                setLoading(false);
+                setIsLoading(false);
+            }
+            else if(res["data"][1] === "시설팀"){
+              
+              sessionStorage.setItem("CurrentEmployee", id_text);
+              console.log(sessionStorage.getItem("CurrentEmployee"));
+              sessionStorage.setItem("EmployeeCinema", res["data"][0]);
+              console.log(sessionStorage.getItem("EmployeeCinem"));
+              sessionStorage.setItem("EmployeeDepartment", res["data"][1]);
+              console.log(sessionStorage.getItem("EmployeeDepartment"));
+              navigate('/StaffMaterial');
+                window.location.reload();
+                setLoading(false);
+                setIsLoading(false);
+            }
+            else if(res["data"][1] === "매점팀"){
+              
+              sessionStorage.setItem("CurrentEmployee", id_text);
+              console.log(sessionStorage.getItem("CurrentEmployee"));
+              sessionStorage.setItem("EmployeeCinema", res["data"][0]);
+              console.log(sessionStorage.getItem("EmployeeCinem"));
+              sessionStorage.setItem("EmployeeDepartment", res["data"][1]);
+              console.log(sessionStorage.getItem("EmployeeDepartment"));
+              navigate('/StaffItem');
+                window.location.reload();
+                setLoading(false);
+                setIsLoading(false);
+            }
+            else{
+              alert("존재하지 않는 부서입니다!");
+            }
           }
           else{
             alert("아이디 혹은 비밀번호가 일치하지 않습니다.");
           }
+              
+        })
       })
       .catch((err) => {
         console.log(err);
@@ -103,7 +153,7 @@ function LoginPage() {
       <Header state={location.state}/>
         <section className="loginmainpage">
         <div className="LoginBox">
-          <p className="LoginText">아이디와 비밀번호를 입력해 로그인하세요</p>
+          <p className="LoginText">아이디와 비밀번호를 입력해 직원으로 로그인하세요</p>
 
           <div className="idpassword">
             <p className="id">
@@ -123,6 +173,7 @@ function LoginPage() {
             로그인
           </button>
 
+          {/*
           <div className="loginoption">
             <a
               className="signup"
@@ -156,9 +207,9 @@ function LoginPage() {
             >
               비회원 예매확인
             </a>
+            
 
-          </div>
-
+          </div>*/}
           <p className="loginProcess">{list}</p>
         </div>
       </section>
@@ -166,4 +217,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default LoginPageEmployee;
