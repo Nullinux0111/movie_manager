@@ -146,10 +146,16 @@ const reserve = (user, schedule, seat) => {
 
     var movie_id = schedule.movie_id;
     var movie_name = schedule.movie_name;
+
+    var cost = 0;
     
     if(!seat_num) return Promise.resolve({status:false});
 
-    return list_empty_seats(schedule).then((list)=>{
+    return ticketCost(schedule, seat).then((calc_cost)=> {
+        cost = calc_cost;
+        return list_empty_seats(schedule);
+    })
+    .then((list)=>{
         if(!list) 
             return {status:false};
         
@@ -169,7 +175,7 @@ const reserve = (user, schedule, seat) => {
                     })
                     .then(()=>{
                         var query = `insert into Reservation values(` +
-                                    `reservation_seq.NEXTVAL, NULL, CURRENT_DATE, CURRENT_DATE, `+
+                                    `reservation_seq.NEXTVAL, ${cost}, CURRENT_DATE, CURRENT_DATE, `+
                                     `'${movie_id}', '${movie_name}', TO_DATE('${play_date_str}', '${Util.dateFormat}'), `+
                                     `TO_DATE('${play_time_str}','${Util.dateTimeFormat}'), `+
                                     `'${cinema}', ${theater}, '${seat_num}', '${user}', 0)`;
@@ -186,6 +192,27 @@ const reserve = (user, schedule, seat) => {
                         Log.info(TAG+"reserve", "rollback!");
                         return {status:false};
                     })
+                }).then((reserveResult) => {
+                    if(reserveResult["status"])
+                        DBUtil.getDBConnection().then((connection) => {
+                            var saleQuery = `update movie_sales set sales_amount=sales_amount+${cost} where movie_id=${movie_id}`;
+                            var customerQuery = `update movie_sales set customers=customers+${1} where movie_id=${movie_id}`;
+                            return connection.execute(saleQuery)
+                            .then((result) => {
+                                if(result.rowsAffected>0)
+                                    return connection.execute(customerQuery);
+                                else
+                                    Log.info(TAG+"reserve_log", "Not counted reservation.");
+                            })
+                            .then((result) => {
+                                if(result.rowsAffected==0)
+                                    Log.info(TAG+"reserve_log", "Not counted reservation.");
+                            })
+                        })
+                        .catch((error) => {
+                            Log.error(TAG+"reserve_log", error);
+                        })
+                    return reserveResult;
                 })
             }
         }
