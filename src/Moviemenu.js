@@ -103,7 +103,8 @@ class MovieWrapper extends React.Component {
                         <div class="infor">
                           <h3>
                             <span class="icon a15 ir_pm">15세 이상 관람</span>{" "}
-                            <strong>돈 룩 업 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong>
+                            <strong>돈 룩 업</strong>
+                            <h3>&nbsp;&nbsp;&nbsp;</h3>
                           </h3>
                           <div class="infor_btn">
                             <a href="#:" onClick={this.handleMove}>상세정보</a>
@@ -151,7 +152,8 @@ class MovieWrapper extends React.Component {
                         <div class="infor">
                           <h3>
                             <span class="icon a15 ir_pm">15세 이상 관람</span>{" "}
-                            <strong>왼팔의복서 닉 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong>
+                            <strong>왼팔의복서 닉</strong>
+                            <h3>&nbsp;&nbsp;&nbsp;</h3>
                           </h3>
                           <div class="infor_btn">
                             <a href="#:" onClick={this.handleMove}>상세정보</a>
@@ -179,7 +181,8 @@ class MovieWrapper extends React.Component {
                         <div class="infor">
                           <h3>
                             <span class="icon a12 ir_pm">12세 이상 관람</span>{" "}
-                            <strong>리슨 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong>
+                            <strong>리슨</strong>
+                            <h3> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h3>
                           </h3>
                           <div class="infor_btn">
                             <a href="#:" onClick={this.handleMove}>상세정보</a>
@@ -203,7 +206,8 @@ class MovieWrapper extends React.Component {
                         <div class="infor">
                           <h3>
                             <span class="icon a15 ir_pm">15세 이상 관람</span>{" "}
-                            <strong>유체이탈자 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong>
+                            <strong>유체이탈자</strong>
+                            <h3> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h3>
                           </h3>
                           <div class="infor_btn">
                             <a href="#:" onClick={this.handleMove}>상세정보</a>
@@ -251,7 +255,8 @@ class MovieWrapper extends React.Component {
                         <div class="infor">
                           <h3>
                             <span class="icon a12 ir_pm">12세 이상 관람</span>{" "}
-                            <strong>듄 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong>
+                            <strong>듄</strong>
+                            <h3> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h3>
                           </h3>
                           <div class="infor_btn">
                             <a href="#:" onClick={this.handleMove}>상세정보</a>

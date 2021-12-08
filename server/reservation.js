@@ -108,7 +108,10 @@ const ticketCost = (schedule, seats) => {
         var playCostQuery = `select cost from Cost_time where play_type = '${play_type}'`;
         var seatCostQuery = `select cost from Cost_seat natural join Seat `+
                             `where cinema_name='${schedule.cinema}' `+
-                            `and theater_number=${schedule.theater} and seat_number in :bv `;
+                            `and theater_number=${schedule.theater} and seat_number in (`;
+        for (var i = 0; i < seats.length; i++)
+            seatCostQuery += (i > 0) ? ", :" + i : ":" + i;
+        seatCostQuery += ")";
 
         var cost = 0;
         var totalCost = 0;

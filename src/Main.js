@@ -116,7 +116,8 @@ function Main() {
                       <div class="infor">
                         <h3>
                           <span class="icon a15 ir_pm">15세 이상 관람</span>{" "}
-                          <strong>돈 룩 업 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong>
+                          <strong>돈 룩 업</strong>
+                          <h3>&nbsp;&nbsp;&nbsp;</h3>
                         </h3>
                         <div class="infor_btn">
                           <a href="#:" onClick={moveInfo}>
@@ -168,7 +169,8 @@ function Main() {
                       <div class="infor">
                         <h3>
                           <span class="icon a15 ir_pm">15세 이상 관람</span>{" "}
-                          <strong>왼팔의복서 닉 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong>
+                          <strong>왼팔의복서 닉</strong>
+                          <h3>&nbsp;&nbsp;&nbsp;</h3>
                         </h3>
                         <div class="infor_btn">
                           <a href="#:" onClick={moveInfo}>

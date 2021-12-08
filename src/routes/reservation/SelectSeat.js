@@ -76,12 +76,15 @@ function SelectSeat(props) {
       },
       body: JSON.stringify(parameters),
     })
-      .then((res) => res.json())
-      .then((res) => {
-        console.log("res:" + res);
-        console.log("res.status:" + res["status"]);
-        console.log("res.data: " + res["data"]);
-      })
+    .then((res) => res.json())
+    .then((res) => {
+      console.log("res:" + res);
+      console.log("res.status:" + res["status"]);
+      console.log("res.data: " + res["data"]);
+    })
+    .catch((error)=>{
+      console.log(error);
+    })
   }
 
   return (
