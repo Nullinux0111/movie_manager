@@ -59,8 +59,8 @@ function Main() {
               <div class="swiper-slide ss1">
                 <div class="container">
                   <div class="row">
-                    <h3>장르만 로맨스</h3>
-                    <p>진짜 장르만 로맨스? </p>
+                    <h3>스파이더맨 : 노 웨이 홈</h3>
+                    <p>개봉전 예매율 1위</p>
                   </div>
                 </div>
               </div>
@@ -109,7 +109,7 @@ function Main() {
                       <div class="infor">
                         <h3>
                           <span class="icon a15 ir_pm">15세 이상 관람</span>{" "}
-                          <strong>돈 룩 업</strong>
+                          <strong>돈 룩 업 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong>
                         </h3>
                         <div class="infor_btn">
                           <a href="#:" onClick={moveInfo}>상세정보</a>
@@ -153,7 +153,7 @@ function Main() {
                       <div class="infor">
                         <h3>
                           <span class="icon a15 ir_pm">15세 이상 관람</span>{" "}
-                          <strong>왼팔의복서 닉</strong>
+                          <strong>왼팔의복서 닉 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong>
                         </h3>
                         <div class="infor_btn">
                           <a href="#:" onClick={moveInfo}>상세정보</a>
