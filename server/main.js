@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const Log = require('./Log');
 
 const customerACC = require('./customer_account');
+const employeeACC = require('./employee_account');
 const reserve = require('./reservation');
 const movie = require('./Movie');
 const schedule = require('./Schedule');
@@ -56,16 +57,23 @@ app.post('/customer_join', (req, res) => {
 app.post('/login', (req, res) => {
   var id = req.body.id;
   var pwd = req.body.pwd;
-  if(!id || !pwd){
-    Log.info(TAG+"login", "id or pwd is undefined.");
+  var type = req.body.type;
+
+  if(!id || !pwd || !type){
+    Log.info(TAG+"login", "id or pwd or type is undefined.");
     sendRespond(res, 500, {status: false});
   }
-
-  customerACC.login_customer(id, pwd).then((result) => {
-    sendRespond(res, 200, result);
-  })
+  if(type==0)
+    customerACC.login_customer(id, pwd).then((result) => {
+      sendRespond(res, 200, result);
+    })
+  else if(type==1)
+    employeeACC.login_employee(id, pwd).then((result) => {
+      sendRespond(res, 200, result);
+    })
 })
 
+app.post('/')
 
 
 // Cinema

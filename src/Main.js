@@ -84,8 +84,8 @@ function Main() {
                       </div>
                       <div class="infor">
                         <h3>
-                          <span class="icon all ir_pm">전체관람가</span>{" "}
-                          <strong>침묵</strong>
+                          <span class="icon a12 ir_pm">12세 이상 관람</span>{" "}
+                          <strong>스파이더맨 : 노 웨이 홈</strong>
                         </h3>
                         <div class="infor_btn">
                           <a href="#:" onClick={moveInfo}>상세정보</a>
@@ -108,8 +108,8 @@ function Main() {
                       </div>
                       <div class="infor">
                         <h3>
-                          <span class="icon a19 ir_pm">19세 이상 관람</span>{" "}
-                          <strong>신세계</strong>
+                          <span class="icon a15 ir_pm">15세 이상 관람</span>{" "}
+                          <strong>돈 룩 업</strong>
                         </h3>
                         <div class="infor_btn">
                           <a href="#:" onClick={moveInfo}>상세정보</a>
@@ -131,7 +131,7 @@ function Main() {
                       <div class="infor">
                         <h3>
                           <span class="icon a12 ir_pm">12세 이상 관람</span>{" "}
-                          <strong>마스터</strong>
+                          <strong>소설가 구보의 하루</strong>
                         </h3>
                         <div class="infor_btn">
                           <a href="#:" onClick={moveInfo}>상세정보</a>
@@ -153,7 +153,7 @@ function Main() {
                       <div class="infor">
                         <h3>
                           <span class="icon a15 ir_pm">15세 이상 관람</span>{" "}
-                          <strong>마약왕</strong>
+                          <strong>왼팔의복서 닉</strong>
                         </h3>
                         <div class="infor_btn">
                           <a href="#:" onClick={moveInfo}>상세정보</a>

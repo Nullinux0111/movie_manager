@@ -14,11 +14,11 @@ exports.employeeIdCheck = (id) => {
 };
 
 exports.insertCustomer = (data) => {
-    return insertUser(data, "Customer");
+    return insertUser(data);
 };
 
 exports.insertEmployee = (data) => {
-    return insertUser(data, "Employee");
+    return insertEmployee(data);
 };
 
 exports.loginCustomer = (id, pwd) => {
@@ -154,10 +154,9 @@ function login(id, pwd, type) {
 /**
  * 
  * @param {JSON} data User data to insert to DB.
- * @param {String} type User type. Customer or Employee.
  * @returns Promise
  */
-function insertUser(data, type) {
+function insertUser(data) {
     var pwd = data.pwd;
     var bindParams = {
         id : data.id,
@@ -165,13 +164,6 @@ function insertUser(data, type) {
         phone: data.phone || "undefined",
         birthday: data.birthday
     };
-    var table = "";
-    if(type == "Customer")
-        table = "CustomerAcc";
-    else if(type == "Employee")
-        table = "EmployeeAcc";
-    else
-        return Promise.resolve(false);
 
     if(!data.id || !pwd)
         return Promise.resolve(false);
@@ -186,8 +178,8 @@ function insertUser(data, type) {
         }
 
         //main.js에서 설정한 data 구조 이름 그대로 참조
-        var query = `insert into ${table} values ('${data.id}', '${pwd}')`;
-        var query1 = `insert into ${type} values (:id, :name, :phone, :birthday)`;
+        var query = `insert into CustomerAcc values ('${data.id}', '${pwd}')`;
+        var query1 = `insert into Customer values (:id, :name, :phone, :birthday)`;
         
         if(DEBUG)
             Log.info(TAG+"insertUser", `Query: ${query}`);
@@ -226,9 +218,67 @@ function insertUser(data, type) {
     })
 }
 
+function insertEmployee(data) {
+    var pwd = data.pwd;
+    var bindParams = {
+        id : data.id,
+        name: data.name||"undefined",
+        birthday: data.birthday,
+        phone: data.phone || "undefined",
+        salary: data.salary,
+        cinema: data.cinema,
+        department: data.dept
+    };
 
-function doRelease(connection) {
-    connection.close();
-    Log.info(TAG+"doRelease", "Connection is closed.");
+    if(!data.id || !pwd)
+        return Promise.resolve(false);
+
+    return DBUtil.getDBConnection()
+    .then((connection) => {
+        Log.info(TAG+"insertEmployee", "connection executed");
+
+        if(!connection){
+            Log.info(TAG+"insertEmployee", "connection is undefined");
+            return false;
+        }
+
+        //main.js에서 설정한 data 구조 이름 그대로 참조
+        var query = `insert into EmployeeAcc values ('${data.id}', '${pwd}')`;
+        var query1 = `insert into Employee values (:id, :name, :birthday, :phone, :birthday, :salary, :)`;
+        
+        if(DEBUG)
+            Log.info(TAG+"insertEmployee", `Query: ${query}`);
+            
+        // account 테이블 insert query 실행
+        return connection.execute(query).then((result) => {
+            if(DEBUG){
+                Log.info(TAG+"insertEmployee", "rows inserted: " + result.rowsAffected + " rows");
+            }
+            // user 테이블 insert query 실행
+            return connection.execute(query1, bindParams).then((result) => {
+                if(DEBUG)
+                    Log.info(TAG+"insertEmployee", "Account inserted.");
+                connection.commit();
+                return true;
+            })
+            .catch((error) => {
+                // User insert Error
+                Log.error(TAG+"insertEmployee", error, query1);
+                return false;
+            })
+            
+        })
+        .catch((error) => {
+            // Account insert Error
+            Log.error(TAG + "insertEmployee", error, query);
+            connection.rollback();
+            return false;
+        })
+
+    })
+    .catch((error) => {
+        // DB connection Error
+        Log.error(TAG+"insertEmployee", error);
+        return false;
+    })
 }
-
