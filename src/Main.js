@@ -18,6 +18,7 @@ function Main() {
   function moveInfo(event) {
     event.preventDefault();
     navigate("/movieInfo");
+    window.location.reload();
   }
 
   /**
