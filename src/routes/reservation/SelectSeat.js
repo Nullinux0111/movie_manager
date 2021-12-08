@@ -5,82 +5,54 @@ import "../../assets/css/slick.css";
 import "../../assets/css/style19.css";
 import "../../assets/css/swiper.css";
 import "../../assets/css/seat.css";
-import pbl_logo from "../../assets/img/pbl_logo.png";
+import Header from "../../Header.js";
 import { Link, useNavigate } from "react-router-dom";
 
 function SelectSeat() {
   let navigate = useNavigate();
-
-  function moveMovie(event) {
-    event.preventDefault();
-    navigate("/Moviemenu", { state: { cinema: false, movie: false } });
-  }
-
-  function moveCinema(event) {
-    event.preventDefault();
-    navigate("/reservation-cinema", { state: { cinema: false, movie: false } });
+  let selectedSeats = new Array();
+  for (let i = 0; i < 6; i++) {
+    selectedSeats.push(new Array(10).fill(0));
   }
 
   function handleMove(event) {
     event.preventDefault();
-    navigate("/reservation-complete");
+    let reservSeats = new Array();
+    for(let i =0; i<6; i++){
+      for(let j=0; j<10; j++){
+        if(selectedSeats[i][j] == 1) {
+          reservSeats.push(String.fromCharCode(i+65) + String(j+1));
+        }
+      }
+    }
+    console.log(reservSeats);
   }
 
   function handleSelect(event) {
     event.preventDefault();
     event.target.classList.toggle("selected");
+    for (let i = 1; i < 7; i++) {
+      if (
+        event.target.parentElement.parentElement.children[i] ==
+        event.target.parentElement
+      ) {
+        for (let j = 0; j < 10; j++) {
+          if (event.target == event.target.parentElement.children[j]) {
+            if (selectedSeats[i - 1][j] == 0) {
+              selectedSeats[i - 1][j] = 1;
+            } else {
+              selectedSeats[i - 1][j] = 0;
+            }
+            break;
+          }
+        }
+      }
+    }
   }
 
   return (
     <div>
-      <header id="header">
-        <div class="container">
-          <div class="row">
-            <div class="header clearfix">
-              <h1>
-                <Link to="/Main">
-                  <em>
-                    <img src={pbl_logo} alt="일석이조" />
-                  </em>
-                </Link>
-              </h1>
-              {/* <nav id="mNav">
-                <h2 class="ir_so">전체메뉴</h2>
-                <a href="#:" class="ham">
-                  <span></span>
-                </a>
-              </nav> */}
-              <nav class="nav">
-                <ul class="clearfix">
-                  <Link to="/Moviemenu">
-                    <li onClick={moveMovie}>
-                      <a href="#:">영화</a>
-                    </li>
-                  </Link>
-                  <Link to="/reservation-cinema">
-                    <li onClick={moveCinema}>
-                      <a href="#:">영화관</a>
-                    </li>
-                  </Link>
-                  <li>
-                    <a href="#:">스토어</a>
-                  </li>
-                  <Link to="/StaffCeo">
-                    <li>
-                      <a href="#:">고객센터</a>
-                    </li>
-                  </Link>
-                  <Link to="/LoginPage">
-                    <li>
-                      <a href="#:">로그인</a>
-                    </li>
-                  </Link>
-                </ul>
-              </nav>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       <section id="banner">
         <div class="slider">

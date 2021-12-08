@@ -149,7 +149,7 @@ app.post('/list_schedule', (req, res) => {
     Log.info(TAG+"load_schedule_cinema", "cinema is undefined.");
     sendRespond(res, 500, {status: false});
   }
-  reserve.load_schedule_cinema(cinema,filter).then((result) => {
+  schedule.list_schedule(cinema,filter).then((result) => {
     sendRespond(res, 200, result);
   })
 })

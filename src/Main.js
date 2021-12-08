@@ -22,19 +22,24 @@ function Main() {
   }
 
   /**
-     * 
-     * @param {React.MouseEvent} event 
-     */
+   *
+   * @param {React.MouseEvent} event
+   */
   function handleMove(event) {
     event.preventDefault();
     navigate("/reservation-cinema", {
-      state: { cinema: false, movie: event.currentTarget.parentElement.previousElementSibling.children[1].textContent },
+      state: {
+        cinema: false,
+        movie:
+          event.currentTarget.parentElement.previousElementSibling.children[1]
+            .textContent,
+      },
     });
   }
 
   return (
     <div>
-      <Header state={location.state}/>
+      <Header state={location.state} />
       <section id="banner">
         <div class="banner_menu">
           <h2 class="ir_so">배너 영역</h2>
@@ -88,7 +93,9 @@ function Main() {
                           <strong>스파이더맨 : 노 웨이 홈</strong>
                         </h3>
                         <div class="infor_btn">
-                          <a href="#:" onClick={moveInfo}>상세정보</a>
+                          <a href="#:" onClick={moveInfo}>
+                            상세정보
+                          </a>
                           <a href="#:" onClick={handleMove}>
                             예매하기
                           </a>
@@ -112,8 +119,12 @@ function Main() {
                           <strong>돈 룩 업 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong>
                         </h3>
                         <div class="infor_btn">
-                          <a href="#:" onClick={moveInfo}>상세정보</a>
-                          <a href="#:" onClick={handleMove}>예매하기</a>
+                          <a href="#:" onClick={moveInfo}>
+                            상세정보
+                          </a>
+                          <a href="#:" onClick={handleMove}>
+                            예매하기
+                          </a>
                         </div>
                       </div>
                     </div>
@@ -134,8 +145,12 @@ function Main() {
                           <strong>소설가 구보의 하루</strong>
                         </h3>
                         <div class="infor_btn">
-                          <a href="#:" onClick={moveInfo}>상세정보</a>
-                          <a href="#:" onClick={handleMove}>예매하기</a>
+                          <a href="#:" onClick={moveInfo}>
+                            상세정보
+                          </a>
+                          <a href="#:" onClick={handleMove}>
+                            예매하기
+                          </a>
                         </div>
                       </div>
                     </div>
@@ -156,8 +171,12 @@ function Main() {
                           <strong>왼팔의복서 닉 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong>
                         </h3>
                         <div class="infor_btn">
-                          <a href="#:" onClick={moveInfo}>상세정보</a>
-                          <a href="#:" onClick={handleMove}>예매하기</a>
+                          <a href="#:" onClick={moveInfo}>
+                            상세정보
+                          </a>
+                          <a href="#:" onClick={handleMove}>
+                            예매하기
+                          </a>
                         </div>
                       </div>
                     </div>
