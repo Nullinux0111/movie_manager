@@ -4,7 +4,6 @@ import "./assets/css/reset19.css";
 import "./assets/css/slick.css";
 import "./assets/css/style19.css";
 import "./assets/css/swiper.css";
-import "./App.css";
 import Header from "./Header.js";
 import poster01 from "./assets/img/poster01.jpg";
 import poster02 from "./assets/img/poster02.jpg";
@@ -15,16 +14,6 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 function Main() {
   let navigate = useNavigate();
   let location = useLocation();
-
-  function moveMovie(event) {
-    event.preventDefault();
-    navigate("/Moviemenu", { state: { cinema: false, movie: false } });
-  }
-
-  function moveCinema(event) {
-    event.preventDefault();
-    navigate("/reservation-cinema", { state: { cinema: false, movie: false } });
-  }
 
   function moveInfo(event) {
     event.preventDefault();
