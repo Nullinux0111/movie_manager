@@ -97,7 +97,7 @@ const isSeatAvailable = (schedule, seat) => {
     })
 }
 
-const ticketCost = (schedule, seat) => {
+const ticketCost = (schedule, seats) => {
     var play_type = schedule.play_type;
     
     return DBUtil.getDBConnection().then((connection) => {
@@ -106,18 +106,20 @@ const ticketCost = (schedule, seat) => {
                     `(select type from Theater where cinema_name='${schedule.cinema}' `+
                     `and theater_number=${schedule.theater})`;
         var playCostQuery = `select cost from Cost_time where play_type = '${play_type}'`;
-        var seatCostQuery = `select cost from Cost_seat where seat_type = `+
-                    `(select seat_type from Seat where cinema_name='${schedule.cinema}' `+
-                    `and theater_number=${schedule.theater} and seat_number='${seat}') `;
+        var seatCostQuery = `select cost from Cost_seat natural join Seat `+
+                            `where cinema_name='${schedule.cinema}' `+
+                            `and theater_number=${schedule.theater} and seat_number in :bv) `;
+
+        var cost = 0;
         var totalCost = 0;
-        return connection.execute(theaterCostQuery).then((result) => {
+        return connection.execute(theaterCostQuery).then((result) => {  // 상영관 타입 요금 (base)
             if(!result.rows)
                 return false;
             Log.info(TAG+"ticketCost1", result.rows);
-            totalCost += result.rows[0][0];
+            cost += result.rows[0][0];
             return connection.execute(playCostQuery);
         })
-        .then((result) => {
+        .then((result) => {                                                 // 시간 타입 요금
             if(!result.rows || !result.rows[0] || !result.rows[0].length==1){
                 if(!result.rows[0])
                     Log.info(TAG+"ticketCost", "result.rows[0]: " + result.rows[0]);
@@ -128,10 +130,10 @@ const ticketCost = (schedule, seat) => {
                 
             Log.info(TAG+"ticketCost2[0][0]", result.rows[0][0]);
             Log.info(TAG+"ticketCost2", result.rows);
-            totalCost += result.rows[0][0];
-            return connection.execute(seatCostQuery);
+            cost += result.rows[0][0];
+            return connection.execute(seatCostQuery, seats);
         })
-        .then((result) => {
+        .then((result) => {                                                 // 좌석 타입 요금
             if(!result.rows || !result.rows[0] || !result.rows[0].length==1){
                 if(!result.rows[0])
                     Log.info(TAG+"ticketCost", "result.rows[0]: " + result.rows[0]);
@@ -139,8 +141,11 @@ const ticketCost = (schedule, seat) => {
                     Log.info(TAG+"ticketCost", "result.rows[0] length: "+result.rows[0].length);
                 return false;
             }
-            Log.info(TAG+"ticketCost3", result.rows);
-            totalCost += result.rows[0][0];
+            Log.info(TAG+"ticket3", result.rows);
+            for(var i=0 ; i<result.rows.length; i++){
+                totalCost += cost + result[i][0];
+            }
+            Log.info(TAG+"ticketCost3", totalCost);
             return {status: true, cost: totalCost};
         })
         .catch((error) => {
@@ -150,88 +155,93 @@ const ticketCost = (schedule, seat) => {
     })
 }
 
-
-const reserve = (user, schedule, seat) => {
+/**
+ * 
+ * @param {String} user userID
+ * @param {*} schedule 
+ * @param {Array} seats  seat array
+ * @returns 
+ */
+const reserve = (user, schedule, seats) => {
     var play_date = schedule.play_date;
     var play_time = schedule.play_time;
     var cinema = schedule.cinema;
     var theater = schedule.theater;
-    var seat_num = seat;
+    var seat_num = seats;
 
     var movie_id = schedule.movie_id;
     var movie_name = schedule.movie_name;
 
     var cost = 0;
+    var customers = seats.length;
     
-    if(!seat_num) return Promise.resolve({status:false});
+    if(!seats) return Promise.resolve({status:false});
 
-    return ticketCost(schedule, seat).then((calc_cost)=> {
+    return ticketCost(schedule, seats).then((calc_cost)=> {
         cost = calc_cost;
-        return list_empty_seats(schedule);
+        return DBUtil.getDBConnection();
     })
-    .then((list)=>{
-        if(!list) 
-            return {status:false};
-        
-        for(seat_data of list){
-            if(seat_data[0] == seat_num){
-                return DBUtil.getDBConnection().then((connection) => {
-                    if(!connection) return {status: false};
-                    var play_date_str = Util.dateToString(play_date);
-                    var play_time_str = Util.dateTimeToString(play_time);
-                    var query = `insert into Schedule_seat values (` +
-                                `TO_DATE('${play_date_str}', '${Util.dateFormat}'), `+
-                                `TO_DATE('${play_time_str}', '${Util.dateTimeFormat}'),`+
-                                `'${cinema}', ${theater}, '${seat_num}')`;
-                    Log.info(TAG+"reserve", "Query:"+query);
-                    return connection.execute(query).then((result) => {
-                        Log.info(TAG+"reserve", "into schedule_seat, rowsAffected:"+ result.rowsAffected);
-                    })
-                    .then(()=>{
-                        var query = `insert into Reservation values(` +
-                                    `reservation_seq.NEXTVAL, ${cost}, CURRENT_DATE, CURRENT_DATE, `+
-                                    `'${movie_id}', '${movie_name}', TO_DATE('${play_date_str}', '${Util.dateFormat}'), `+
-                                    `TO_DATE('${play_time_str}','${Util.dateTimeFormat}'), `+
-                                    `'${cinema}', ${theater}, '${seat_num}', '${user}', 0)`;
-                        return connection.execute(query)
-                    })
-                    .then((result)=>{
-                        Log.info(TAG+"reserve", "into reservation, rowsAffected:"+ result.rowsAffected);
-                        connection.commit();
-                        return {status:true}
-                    })
-                    .catch((error) => {
-                        Log.error(TAG+"reserve", error);
-                        connection.rollback();
-                        Log.info(TAG+"reserve", "rollback!");
-                        return {status:false};
-                    })
-                }).then((reserveResult) => {
-                    if(reserveResult["status"])
-                        DBUtil.getDBConnection().then((connection) => {
-                            var saleQuery = `update movie_sales set sales_amount=sales_amount+${cost} where movie_id=${movie_id}`;
-                            var customerQuery = `update movie_sales set customers=customers+${1} where movie_id=${movie_id}`;
-                            return connection.execute(saleQuery)
-                            .then((result) => {
-                                if(result.rowsAffected>0)
-                                    return connection.execute(customerQuery);
-                                else
-                                    Log.info(TAG+"reserve_log", "Not counted reservation.");
-                            })
-                            .then((result) => {
-                                if(result.rowsAffected==0)
-                                    Log.info(TAG+"reserve_log", "Not counted reservation.");
-                            })
-                        })
-                        .catch((error) => {
-                            Log.error(TAG+"reserve_log", error);
-                        })
-                    return reserveResult;
-                })
-            }
+    .then((connection) => {
+        if(!connection) return {status: false};
+        var play_date_str = Util.dateToString(play_date);
+        var play_time_str = Util.dateTimeToString(play_time);
+        var query = `insert into Schedule_seat values (` +
+                    `TO_DATE('${play_date_str}', '${Util.dateFormat}'), `+
+                    `TO_DATE('${play_time_str}', '${Util.dateTimeFormat}'),`+
+                    `'${cinema}', ${theater}, :bv)`;
+        Log.info(TAG+"reserve", "Query:"+query);
+        var bindParams = [];
+        for(var seat of seats){
+            bindParams.push([seat]);
         }
-
-        return {status: false};
-
+        return connection.executeMany(query, bindParams).then((result) => {
+            Log.info(TAG+"reserve", "into schedule_seat, rowsAffected:"+ result.rowsAffected);
+        })
+        .then(()=>{
+            var query = `insert into Reservation values(` +
+                        `reservation_seq.NEXTVAL, ${cost}, CURRENT_DATE, CURRENT_DATE, `+
+                        `'${movie_id}', '${movie_name}', TO_DATE('${play_date_str}', '${Util.dateFormat}'), `+
+                        `TO_DATE('${play_time_str}','${Util.dateTimeFormat}'), `+
+                        `'${cinema}', ${theater}, :bv, '${user}', 0)`;
+            return connection.executeMany(query, bindParams);
+        })
+        .then((result)=>{
+            Log.info(TAG+"reserve", "into reservation, rowsAffected:"+ result.rowsAffected);
+            connection.commit();
+            return {status:true}
+        })
+        .then((result) => {
+            addSalesLog(cost, customers);
+            return result;
+        })
+        .catch((error) => {
+            Log.error(TAG+"reserve", error);
+            connection.rollback();
+            Log.info(TAG+"reserve", "rollback!");
+            return {status:false};
+        })
     })
+}
+
+const addSalesLog = (cost, customers) => {
+
+    return DBUtil.getDBConnection().then((connection) => {
+                var saleQuery = `update movie_sales set sales_amount=sales_amount+${cost} where movie_id=${movie_id}`;
+                var customerQuery = `update movie_sales set customers=customers+${customers} where movie_id=${movie_id}`;
+                return connection.execute(saleQuery)
+                .then((result) => {
+                    if(result.rowsAffected>0)
+                        return connection.execute(customerQuery);
+                    else
+                        Log.info(TAG+"reserve_log", "Not counted reservation.");
+                })
+                .then((result) => {
+                    if(result.rowsAffected==0)
+                        Log.info(TAG+"reserve_log", "Not counted reservation.");
+                })
+            })
+            .catch((error) => {
+                Log.error(TAG+"reserve_log", error);
+            })
+
 }

@@ -79,7 +79,7 @@ class MovieWrapper extends React.Component {
                         <div class="infor">
                           <h3>
                             <span class="icon a12 ir_pm">12세 이상 관람가</span>{" "}
-                            <strong>스파이더맨 : 노 웨이 홈</strong>
+                            <strong>스파이더맨: 노 웨이 홈</strong>
                           </h3>
                           <div class="infor_btn">
                             <a href="#:" onClick={this.handleMove}>상세정보</a>

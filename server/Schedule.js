@@ -90,6 +90,8 @@ function selectSchedule(date, time, cinema, theater){
     var play_date_str = Util.dateToString(play_date);
     var play_time_str = Util.dateTimeToString(play_time);
 
+    Log.info(TAG+"select", play_date_str+ "  " + play_time_str);
+
     return DBUtil.getDBConnection().then((connection) => {
         if(!connection)
             return false;

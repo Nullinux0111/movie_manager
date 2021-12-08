@@ -64,7 +64,7 @@ function Main() {
               <div class="swiper-slide ss1">
                 <div class="container">
                   <div class="row">
-                    <h3>스파이더맨 : 노 웨이 홈</h3>
+                    <h3>스파이더맨: 노 웨이 홈</h3>
                     <p>개봉전 예매율 1위</p>
                   </div>
                 </div>
@@ -90,7 +90,7 @@ function Main() {
                       <div class="infor">
                         <h3>
                           <span class="icon a12 ir_pm">12세 이상 관람</span>{" "}
-                          <strong>스파이더맨 : 노 웨이 홈</strong>
+                          <strong>스파이더맨: 노 웨이 홈</strong>
                         </h3>
                         <div class="infor_btn">
                           <a href="#:" onClick={moveInfo}>

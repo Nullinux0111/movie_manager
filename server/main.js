@@ -185,8 +185,8 @@ app.post('/check_seat_available', (req, res) => {
 })
 
 app.post('/checkCost', (req, res) => {
-  var date = req.body.date;
-  var time = req.body.time;
+  var play_date = req.body.date;
+  var play_time = req.body.time;
   var cinema = req.body.cinema;
   var theater = req.body.theater;
   var seat = req.body.seat_num;
@@ -211,9 +211,10 @@ app.post('/reservation', (req, res) => {
   var theater = req.body.theater;
   var seat_num = req.body.seat_num;
   var user_id = req.body.user;
+  console.log("seat_array: "+seat_num);
   if(play_date && play_time && cinema && theater && seat_num && user_id){
     schedule.selectSchedule(play_date, play_time, cinema, theater).then((target) => {
-      if(!target) sendRespond(res, 200, target);
+      if(!target) sendRespond(res, 200, {status:false, data:target});
       Log.info(TAG+"test", "target found");
       reserve.reserve(user_id, target, seat_num).then((result) => {
         sendRespond(res, 200, result);
