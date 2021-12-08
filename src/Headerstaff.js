@@ -8,8 +8,22 @@ var cinema = sessionStorage.getItem("EmployeeCinema");
 var depart = sessionStorage.getItem("EmployeeDepartment");
 console.log(user);
 
+
 function Header(props) {
     let navigate = useNavigate();
+
+    const department = () => {
+        if(depart === "관리자"){
+            navigate('/StaffCeo');
+        }
+        else if(depart === "시설팀"){
+            navigate('/StaffMaterial');
+        }
+        else if(depart === "매점팀"){
+            navigate('/StaffItem');
+    
+        }
+    }
 
     function logoutSession(){
         sessionStorage.removeItem("CurrentEmployee");
@@ -64,7 +78,7 @@ function Header(props) {
                                 </li>}
                                 </Link>
                                 {user!=null && <li>
-                                    <a href="#:">직무</a>
+                                    <a href="#:" onClick={department}>직무</a>
                                 </li>}
                             </ul>
                         </nav>
