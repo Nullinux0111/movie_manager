@@ -137,18 +137,19 @@ function selectSchedule(date, time, cinema, theater){
         var query = `select * from Schedule where cinema_name='${cinema}' `;
         if(filter){
             if(filter.play_date){
-                query += `and play_date = TO_DATE(${Util.dateToString(filter.play_date)}, 'YYYY-MM-DD')`;
+                query += `and play_date = TO_DATE(${Util.dateToString(filter.play_date)}, 'YYYY-MM-DD') `;
             }
-            else{
-                query += `and play_date >= CURRENT_DATE`;
-            }
+            // else{
+            //     query += `and play_time >= CURRENT_DATE `;
+            // }
             if(filter.movie_id){
-                query += `and movie_id = '${movie_id}'`;
+                query += `and movie_id = '${filter.movie_id}'`;
             }
             if(filter.movie_name){
-                query += `and movie_name = '${movie_name}'`;
+                query += `and movie_name = '${filter.movie_name}'`;
             }
         }
+        Log.info(TAG, query);
 
         return connection.execute(query).then((result) => {
                 Log.info(TAG, "list_schedule_result: " + result.rows);

@@ -16,6 +16,11 @@ function Main() {
   let navigate = useNavigate();
   let location = useLocation();
 
+  if (location.state) {
+    location.state.cinema = false;
+    location.state.movie = false;
+  }
+
   function moveMovie(event) {
     event.preventDefault();
     navigate("/Moviemenu", { state: { cinema: false, movie: false } });
@@ -32,19 +37,24 @@ function Main() {
   }
 
   /**
-     * 
-     * @param {React.MouseEvent} event 
-     */
+   *
+   * @param {React.MouseEvent} event
+   */
   function handleMove(event) {
     event.preventDefault();
     navigate("/reservation-cinema", {
-      state: { cinema: false, movie: event.currentTarget.parentElement.previousElementSibling.children[1].textContent },
+      state: {
+        cinema: false,
+        movie:
+          event.currentTarget.parentElement.previousElementSibling.children[1]
+            .textContent,
+      },
     });
   }
 
   return (
     <div>
-      <Header state={location.state}/>
+      <Header state={location.state} />
       <section id="banner">
         <div class="banner_menu">
           <h2 class="ir_so">배너 영역</h2>
@@ -98,7 +108,9 @@ function Main() {
                           <strong>침묵</strong>
                         </h3>
                         <div class="infor_btn">
-                          <a href="#:" onClick={moveInfo}>상세정보</a>
+                          <a href="#:" onClick={moveInfo}>
+                            상세정보
+                          </a>
                           <a href="#:" onClick={handleMove}>
                             예매하기
                           </a>
@@ -122,8 +134,12 @@ function Main() {
                           <strong>신세계</strong>
                         </h3>
                         <div class="infor_btn">
-                          <a href="#:" onClick={moveInfo}>상세정보</a>
-                          <a href="#:" onClick={handleMove}>예매하기</a>
+                          <a href="#:" onClick={moveInfo}>
+                            상세정보
+                          </a>
+                          <a href="#:" onClick={handleMove}>
+                            예매하기
+                          </a>
                         </div>
                       </div>
                     </div>
@@ -144,8 +160,12 @@ function Main() {
                           <strong>마스터</strong>
                         </h3>
                         <div class="infor_btn">
-                          <a href="#:" onClick={moveInfo}>상세정보</a>
-                          <a href="#:" onClick={handleMove}>예매하기</a>
+                          <a href="#:" onClick={moveInfo}>
+                            상세정보
+                          </a>
+                          <a href="#:" onClick={handleMove}>
+                            예매하기
+                          </a>
                         </div>
                       </div>
                     </div>
@@ -166,8 +186,12 @@ function Main() {
                           <strong>마약왕</strong>
                         </h3>
                         <div class="infor_btn">
-                          <a href="#:" onClick={moveInfo}>상세정보</a>
-                          <a href="#:" onClick={handleMove}>예매하기</a>
+                          <a href="#:" onClick={moveInfo}>
+                            상세정보
+                          </a>
+                          <a href="#:" onClick={handleMove}>
+                            예매하기
+                          </a>
                         </div>
                       </div>
                     </div>
