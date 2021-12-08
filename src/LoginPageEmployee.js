@@ -89,7 +89,7 @@ function LoginPageEmployee() {
                 sessionStorage.setItem("CurrentEmployee", id_text);//여기 있는 값은 모두 sessionStorage.getItem("이름");으로 불러온다.
                 console.log(sessionStorage.getItem("CurrentEmployee"));
                 sessionStorage.setItem("EmployeeCinema", res["data"][0]);
-                console.log(sessionStorage.getItem("EmployeeCinem"));
+                console.log(sessionStorage.getItem("EmployeeCinema"));
                 sessionStorage.setItem("EmployeeDepartment", res["data"][1]);
                 console.log(sessionStorage.getItem("EmployeeDepartment"));
               

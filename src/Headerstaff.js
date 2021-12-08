@@ -3,14 +3,18 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 
-var user = sessionStorage.getItem("MovieCurrentUser");
+var user = sessionStorage.getItem("CurrentEmployee");
+var cinema = sessionStorage.getItem("EmployeeCinema");
+var depart = sessionStorage.getItem("EmployeeDepartment");
 console.log(user);
 
 function Header(props) {
     let navigate = useNavigate();
 
     function logoutSession(){
-        sessionStorage.removeItem("MovieCurrentUser");
+        sessionStorage.removeItem("CurrentEmployee");
+        sessionStorage.removeItem("EmployeeCinema");
+        sessionStorage.removeItem("EmployeeDepartment");
         alert("성공적으로 로그아웃 되었습니다!");
         navigate("/");
         window.location.reload();
@@ -44,12 +48,12 @@ function Header(props) {
                         </nav>
                         <nav class="nav">
                             <ul class="clearfix">
-                                <Link to="/LoginPage" state={state}>
+                                <Link to="/LoginPageEmployee" state={state}>
                                 {user==null && <li>
                                     <a href="#:">로그인</a>
                                 </li>}
                                 </Link>
-                                <Link to="/" state={state}>
+                                <Link to="/Staffmain" state={state}>
                                 {user!=null && <li>
                                     <a href="#:" onClick={logoutSession}>로그아웃</a>
                                 </li>}
