@@ -101,6 +101,15 @@ app.post('/listMovie', (req, res) => {
   })
 })
 
+app.get('/listMovie', (req, res) => {
+  var data = req.query.filter;
+  console.log("listMovie executed.");
+  
+  movie.list_movies(data).then((result) => {
+    sendRespond(res, 200, result);
+  })
+})
+
 
 // Schedule
 
