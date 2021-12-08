@@ -12,7 +12,7 @@ exports.addDepartment = (cinema, dept) => addDepartment(cinema, dept);
 exports.addEmployee = (data) => {
     if(data.birthday) data.pwd = Util.dateToString(data.birthday).slice(0,10);
     else data.pwd = '1111';
-    account.join_employee(data);
+    return account.join_employee(data);
 }
 
 exports.getDepartment = (id) => getDepartment(id);
