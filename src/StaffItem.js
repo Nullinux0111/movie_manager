@@ -1,6 +1,7 @@
 import React from "react";
 import pbl_logo from './assets/img/pbl_logo.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import Header from "./Headerstaff.js";
 
 // react-bootstrap components
 import {
@@ -16,33 +17,14 @@ import {
 } from "react-bootstrap";
 
 function StaffItem() {
+  let navigate = useNavigate();
+  let location = useLocation();
+  
   return (
+
     
     <>
-    <header id="header">
-        <div class="container">
-            <div class="row">
-                <div class="header clearfix">
-                    <h1>
-                        <Link to="/Main">
-                        <em><img src= {pbl_logo} alt="일석이조"/></em>  
-                        </Link>
-                    </h1>
-                    <nav id="mNav">
-                        <h2 class="ir_so">전체메뉴</h2>
-                        <a href="#:" class="ham"><span></span></a>
-                    </nav>
-                    <nav class="nav">
-                        <ul class="clearfix">
-                            <Link to="/LoginPage">
-                            <li><a href="#:">로그인</a></li>
-                            </Link>
-                        </ul>
-                    </nav>    
-                </div>
-            </div>
-        </div>
-      </header>
+    <Header state={location.state}/>
       
       <Container fluid>
         <Row>

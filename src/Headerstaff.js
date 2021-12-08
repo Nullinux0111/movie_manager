@@ -44,24 +44,6 @@ function Header(props) {
                         </nav>
                         <nav class="nav">
                             <ul class="clearfix">
-                                <Link to='/Moviemenu' state={state}>
-                                    <li>
-                                        <a href="#:">영화</a>
-                                    </li>
-                                </Link>
-                                <Link to='/reservation-cinema' state={state}>
-                                <li>
-                                    <a href="#:">영화관</a>
-                                </li>
-                                </Link>
-                                <li>
-                                <a href="#:">스토어</a>
-                                </li>
-                                <Link to="/Staffmain" state={state}>
-                                <li>
-                                    <a href="#:">고객센터</a>
-                                </li>
-                                </Link>
                                 <Link to="/LoginPage" state={state}>
                                 {user==null && <li>
                                     <a href="#:">로그인</a>
