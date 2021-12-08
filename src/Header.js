@@ -1,8 +1,21 @@
 import pbl_logo from "./assets/img/pbl_logo.png";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+
+var user = sessionStorage.getItem("MovieCurrentUser");
+console.log(user);
 
 function Header(props) {
+    let navigate = useNavigate();
+
+    function logoutSession(){
+        sessionStorage.removeItem("MovieCurrentUser");
+        alert("성공적으로 로그아웃 되었습니다!");
+        navigate("/");
+        window.location.reload();
+    }
+
     var state = {};
     if(props.state)
         state = props.state;
@@ -50,9 +63,19 @@ function Header(props) {
                                 </li>
                                 </Link>
                                 <Link to="/LoginPage" state={state}>
-                                <li>
+                                {user==null && <li>
                                     <a href="#:">로그인</a>
-                                </li>
+                                </li>}
+                                </Link>
+                                <Link to="/" state={state}>
+                                {user!=null && <li>
+                                    <a href="#:" onClick={logoutSession}>로그아웃</a>
+                                </li>}
+                                </Link>
+                                <Link to="/MyPage" state={state}>
+                                {user!=null && <li>
+                                    <a href="#:">내정보</a>
+                                </li>}
                                 </Link>
                             </ul>
                         </nav>

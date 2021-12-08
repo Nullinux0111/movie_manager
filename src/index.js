@@ -7,6 +7,7 @@ import App from "./App";
 import LoginPage from ".//LoginPage";
 import Main from "./Main";
 import MyPage from "./Mypage";
+import SignUpPage from "./SignUpPage";
 import MovieWrapper from "./Moviemenu";
 import CinemaWrapper from "./routes/reservation/Reservation";
 import SelectTime from "./routes/reservation/SelectTime";
@@ -14,14 +15,17 @@ import ReservationComplete from "./routes/reservation/ResComplete";
 import SelectSeat from "./routes/reservation/SelectSeat";
 import MovieInfo from "./MovieInfo";
 import StaffCeo from "./StaffCeo";
+import ScrollTop from "./ScrollTop";
 
 ReactDOM.render(
   <BrowserRouter>
+  <ScrollTop />
     <Routes>
       <Route path="/" element={<App />} exact={true} />
       <Route path="/Main" element={<Main />} />
       <Route path="/Moviemenu" element={<MovieWrapper />} />
       <Route path="/LoginPage" element={<LoginPage />} />
+      <Route path="/SignUpPage" element={<SignUpPage />} />
       <Route path="/MyPage" element={<MyPage />} />
       <Route path="/reservation-cinema" element={<CinemaWrapper />} />
       <Route path="/reservation-time" element={<SelectTime />} />

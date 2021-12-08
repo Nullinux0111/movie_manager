@@ -5,8 +5,9 @@ import './assets/css/slick.css';
 import './assets/css/style19.css';
 import './assets/css/swiper.css';
 import "./Mypage.css";
+import Header from "./Header.js";
 import React, { useState } from 'react';
-import { Link, Route, useNavigate } from 'react-router-dom';
+import { Link, Route, useNavigate, useLocation } from 'react-router-dom';
 import pbl_logo from './assets/img/pbl_logo.png';
 
 var orig_id = "12345";
@@ -37,6 +38,7 @@ function passwordhide()  {
 
 function MyPage() {
 
+    let location = useLocation();
     const navigate = useNavigate();
 
     const Withdraw = () => {
@@ -182,38 +184,19 @@ function MyPage() {
             setList("waiting for connection...");
         }
 
+        function moveMovie(event) {
+            event.preventDefault();
+            navigate("/Moviemenu", { state: { cinema: false, movie: false } });
+          }
+
+          function moveCinema(event) {
+            event.preventDefault();
+            navigate("/reservation-cinema", { state: { cinema: false, movie: false } });
+          }
+
     return (
     <body className="MyPage">
-        <header id="header">
-        <div class="container">
-            <div class="row">
-                <div class="header clearfix">
-                    <h1>
-                        <Link to="/Main">
-                            <em><img src= {pbl_logo} alt="일석이조"/></em>
-                        </Link>
-                    </h1>
-                    <nav id="mNav">
-                        <h2 class="ir_so">전체메뉴</h2>
-                        <a href="#:" class="ham"><span></span></a>
-                    </nav>
-                    <nav class="nav">
-                        <ul class="clearfix">
-                            <Link to='/Moviemenu'>
-                                <li><a href="#:">영화</a></li>
-                            </Link>
-                            <li><a href="#:">영화관</a></li>
-                            <li><a href="#:">스토어</a></li>
-                            <li><a href="#:">고객센터</a></li>
-                            <Link to='/LoginPage'>
-                                <li><a href="#:">로그아웃</a></li>
-                            </Link>
-                        </ul>
-                    </nav>    
-                </div>
-            </div>
-        </div>
-    </header>
+        <Header state={location.state}/>
 
         <section className="MyInfopage">
 
@@ -236,7 +219,7 @@ function MyPage() {
             아이디: <input className="idbox" value={id_text} id='id' onChange={onChange} disabled></input>
         </p>
         <p className="password">
-            비밀번호: <input className="passbox" type='password' value={pwd_text} id='pwd' onChange={onPwdChange} disabled></input>
+            비밀번호: <input className="passbox" type='password' id='pwd' onChange={onPwdChange} disabled></input>
         </p>
         <p className="phone">
             전화번호: <input className="phonebox" value={phone_text} id='phone' onChange={onPhoneChange} disabled></input>
@@ -263,9 +246,6 @@ function MyPage() {
             수정 취소
         </button>}
         </div>
-        <button id="quitit" className="loginButton" onClick={Withdraw} > 
-            탈퇴하기
-        </button>
 
         </div>
 

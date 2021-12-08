@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "./MovieInfo.css";
 import { Link , useLocation} from 'react-router-dom';
-import pbl_logo from './assets/img/pbl_logo.png';
 import poster13a from './assets/img/poster13@2.jpg';
+import Header from "./Header.js";
 import './assets/css/style19.css';
 import './assets/css/slick.css';
 import './assets/css/reset19.css';
@@ -34,11 +34,7 @@ const director = "드니 빌뇌브"; //이것들은.. 따로 모아두는 페이
 const actor = "티모시 샬라메 ,  레베카 퍼거슨 ,  오스카 아이삭 ,  제이슨 모모아 ,  조슈 브롤린 ,  젠데이아 콜먼 ,  하비에르 바르뎀 ,  스텔란 스카스가드 ,  장첸 ,  샤론 던컨 브루스터 ,  데이브 바티스타 ,  데이빗 다스트말치안";
 const openingdate = "2021년 10월 20일";
 
-function AAAA(){
-const search = useLocation().search;
-const name = new URLSearchParams(search).get('name');
-return name;
-}
+
 
 class MovieInfo extends React.Component{
 
@@ -56,40 +52,17 @@ class MovieInfo extends React.Component{
     
       render(){
 
+        const search = this.props.location.search;
+        const params = new URLSearchParams(search);
+        const name = params.get('name');
+
+        console.log('name: ', name); // 테스트
+
     return(
     <html>
 
     <body className="MovieInfoPage">
-    <header id="header">
-        <div class="container">
-            <div class="row">
-                <div class="header clearfix">
-                    <h1>
-                        <Link to="/Main">
-                            <em><img src= {pbl_logo} alt="일석이조"/></em>
-                        </Link>
-                    </h1>
-                    <nav id="mNav">
-                        <h2 class="ir_so">전체메뉴</h2>
-                        <a href="#:" class="ham"><span></span></a>
-                    </nav>
-                    <nav class="nav">
-                        <ul class="clearfix">
-                            <Link to='/Moviemenu'>
-                                <li><a href="#:">영화</a></li>
-                            </Link>
-                            <li><a href="#:">영화관</a></li>
-                            <li><a href="#:">스토어</a></li>
-                            <li><a href="#:">고객센터</a></li>
-                            <Link to='/LoginPage'>
-                                <li><a href='/LoginPage'>로그인</a></li>
-                            </Link>
-                        </ul>
-                    </nav>    
-                </div>
-            </div>
-        </div>
-    </header>
+    <Header state={this.props.location.state}/>
 
     <section id="movieinfo">
         <div class="container">
@@ -163,4 +136,21 @@ class MovieInfo extends React.Component{
 
 }
 
-export default MovieInfo;
+export const withRouter = (Component) => {
+    const Wrapper = (props) => {
+      //const navigate = useNavigate();
+      const location = useLocation();
+      
+      return (
+        <Component
+          //navigate={navigate}
+          location={location}
+          {...props}
+          />
+      );
+    };
+    
+    return Wrapper;
+  };
+
+export default withRouter(MovieInfo);
