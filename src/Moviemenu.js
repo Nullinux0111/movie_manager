@@ -8,6 +8,10 @@ import poster01 from "./assets/img/poster01.jpg";
 import poster02 from "./assets/img/poster02.jpg";
 import poster03 from "./assets/img/poster03.jpg";
 import poster04 from "./assets/img/poster04.jpg";
+import poster05 from "./assets/img/poster05.jpg";
+import poster06 from "./assets/img/poster06.jpg";
+import poster07 from "./assets/img/poster07.jpg";
+import poster08 from "./assets/img/poster08.jpg";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import React from "react";
 import Header from "./Header.js";
@@ -69,13 +73,13 @@ class MovieWrapper extends React.Component {
                       <div class="movie1">
                         <div class="poster">
                           <figure>
-                            <img src={poster01} srcset={poster01} x2 alt="침묵" />
+                            <img src={poster01} srcset={poster01} x2 alt="스파이더맨 : 노 웨이 홈" />
                           </figure>
                         </div>
                         <div class="infor">
                           <h3>
-                            <span class="icon all ir_pm">전체관람가</span>{" "}
-                            <strong>침묵</strong>
+                            <span class="icon a12 ir_pm">12세 이상 관람가</span>{" "}
+                            <strong>스파이더맨 : 노 웨이 홈</strong>
                           </h3>
                           <div class="infor_btn">
                             <a href="#:" onClick={this.handleMove}>상세정보</a>
@@ -92,14 +96,14 @@ class MovieWrapper extends React.Component {
                               src={poster02}
                               srcset={poster02}
                               x2
-                              alt="신세계"
+                              alt="돈 룩 업"
                             />
                           </figure>
                         </div>
                         <div class="infor">
                           <h3>
-                            <span class="icon a19 ir_pm">19세 이상 관람</span>{" "}
-                            <strong>신세계</strong>
+                            <span class="icon a15 ir_pm">15세 이상 관람</span>{" "}
+                            <strong>돈 룩 업</strong>
                           </h3>
                           <div class="infor_btn">
                             <a href="#:" onClick={this.handleMove}>상세정보</a>
@@ -116,14 +120,14 @@ class MovieWrapper extends React.Component {
                               src={poster03}
                               srcset={poster03}
                               x2
-                              alt="마스터"
+                              alt="소설가 구보의 하루"
                             />
                           </figure>
                         </div>
                         <div class="infor">
                           <h3>
                             <span class="icon a12 ir_pm">12세 이상 관람</span>{" "}
-                            <strong>마스터</strong>
+                            <strong>소설가 구보의 하루</strong>
                           </h3>
                           <div class="infor_btn">
                             <a href="#:" onClick={this.handleMove}>상세정보</a>
@@ -140,14 +144,114 @@ class MovieWrapper extends React.Component {
                               src={poster04}
                               srcset={poster04}
                               x2
-                              alt="마약왕"
+                              alt="왼팔의복서 닉"
                             />
                           </figure>
                         </div>
                         <div class="infor">
                           <h3>
-                            <span class="icon a12 ir_pm">15세 이상 관람</span>{" "}
-                            <strong>마약왕</strong>
+                            <span class="icon a15 ir_pm">15세 이상 관람</span>{" "}
+                            <strong>왼팔의복서 닉</strong>
+                          </h3>
+                          <div class="infor_btn">
+                            <a href="#:" onClick={this.handleMove}>상세정보</a>
+                            <a href="#:" onClick={this.handleMove}>
+                              예매하기
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="movie">
+                <div class="movie_chart">
+                  <div class="container2">
+                    <div class="line2">
+                      <div class="movie2">
+                        <div class="poster">
+                          <figure>
+                            <img src={poster05} srcset={poster05} x2 alt="리슨" />
+                          </figure>
+                        </div>
+                        <div class="infor">
+                          <h3>
+                            <span class="icon a12 ir_pm">12세 이상 관람</span>{" "}
+                            <strong>리슨</strong>
+                          </h3>
+                          <div class="infor_btn">
+                            <a href="#:" onClick={this.handleMove}>상세정보</a>
+                            <a href="#:" onClick={this.handleMove}>
+                              예매하기
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="movie2">
+                        <div class="poster">
+                          <figure>
+                            <img
+                              src={poster06}
+                              srcset={poster06}
+                              x2
+                              alt="유체이탈자"
+                            />
+                          </figure>
+                        </div>
+                        <div class="infor">
+                          <h3>
+                            <span class="icon a15 ir_pm">15세 이상 관람</span>{" "}
+                            <strong>유체이탈자</strong>
+                          </h3>
+                          <div class="infor_btn">
+                            <a href="#:" onClick={this.handleMove}>상세정보</a>
+                            <a href="#:" onClick={this.handleMove}>
+                              예매하기
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="movie3">
+                        <div class="poster">
+                          <figure>
+                            <img
+                              src={poster07}
+                              srcset={poster07}
+                              x2
+                              alt="연애 빠진 로맨스"
+                            />
+                          </figure>
+                        </div>
+                        <div class="infor">
+                          <h3>
+                            <span class="icon a15 ir_pm">15세 이상 관람</span>{" "}
+                            <strong>연애 빠진 로맨스</strong>
+                          </h3>
+                          <div class="infor_btn">
+                            <a href="#:" onClick={this.handleMove}>상세정보</a>
+                            <a href="#:" onClick={this.handleMove}>
+                              예매하기
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="movie4">
+                        <div class="poster">
+                          <figure>
+                            <img
+                              src={poster08}
+                              srcset={poster08}
+                              x2
+                              alt="듄"
+                            />
+                          </figure>
+                        </div>
+                        <div class="infor">
+                          <h3>
+                            <span class="icon a12 ir_pm">12세 이상 관람</span>{" "}
+                            <strong>듄</strong>
                           </h3>
                           <div class="infor_btn">
                             <a href="#:" onClick={this.handleMove}>상세정보</a>
