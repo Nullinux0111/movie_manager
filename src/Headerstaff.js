@@ -58,7 +58,7 @@ function Header(props) {
                                     <a href="#:" onClick={logoutSession}>로그아웃</a>
                                 </li>}
                                 </Link>
-                                <Link to="/MyPage" state={state}>
+                                <Link to="/MyPageEmployee" state={state}>
                                 {user!=null && <li>
                                     <a href="#:">내정보</a>
                                 </li>}

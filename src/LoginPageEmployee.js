@@ -2,7 +2,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import React from "react";
 import { useState } from "react";
 import "./LoginPage.css";
-import Header from "./Header.js";
+import Header from "./Headerstaff.js";
 
 function LoginPageEmployee() {
   let navigate = useNavigate();
