@@ -8,7 +8,6 @@ import "./Mypage.css";
 import Header from "./Header.js";
 import React, { useState } from 'react';
 import { Link, Route, useNavigate, useLocation } from 'react-router-dom';
-import pbl_logo from './assets/img/pbl_logo.png';
 
 var orig_id = "12345";
 var orig_pwd = "qwert";
@@ -183,16 +182,6 @@ function MyPage() {
             setIsLoading(true);
             setList("waiting for connection...");
         }
-
-        function moveMovie(event) {
-            event.preventDefault();
-            navigate("/Moviemenu", { state: { cinema: false, movie: false } });
-          }
-
-          function moveCinema(event) {
-            event.preventDefault();
-            navigate("/reservation-cinema", { state: { cinema: false, movie: false } });
-          }
 
     return (
     <body className="MyPage">
