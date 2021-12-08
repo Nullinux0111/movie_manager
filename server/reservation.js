@@ -108,7 +108,7 @@ const ticketCost = (schedule, seats) => {
         var playCostQuery = `select cost from Cost_time where play_type = '${play_type}'`;
         var seatCostQuery = `select cost from Cost_seat natural join Seat `+
                             `where cinema_name='${schedule.cinema}' `+
-                            `and theater_number=${schedule.theater} and seat_number in :bv) `;
+                            `and theater_number=${schedule.theater} and seat_number in :bv `;
 
         var cost = 0;
         var totalCost = 0;
@@ -120,7 +120,7 @@ const ticketCost = (schedule, seats) => {
             return connection.execute(playCostQuery);
         })
         .then((result) => {                                                 // 시간 타입 요금
-            if(!result.rows || !result.rows[0] || !result.rows[0].length==1){
+            if(!result || !result.rows || !result.rows[0] || !result.rows[0].length==1){
                 if(!result.rows[0])
                     Log.info(TAG+"ticketCost", "result.rows[0]: " + result.rows[0]);
                 else if(!result.rows[0].length==1)
@@ -134,16 +134,16 @@ const ticketCost = (schedule, seats) => {
             return connection.execute(seatCostQuery, seats);
         })
         .then((result) => {                                                 // 좌석 타입 요금
-            if(!result.rows || !result.rows[0] || !result.rows[0].length==1){
+            if(!result || !result.rows || !result.rows[0] || !result.rows[0].length==1){
                 if(!result.rows[0])
                     Log.info(TAG+"ticketCost", "result.rows[0]: " + result.rows[0]);
                 else if(!result.rows[0].length==1)
                     Log.info(TAG+"ticketCost", "result.rows[0] length: "+result.rows[0].length);
-                return false;
+                return {status: false};
             }
             Log.info(TAG+"ticket3", result.rows);
             for(var i=0 ; i<result.rows.length; i++){
-                totalCost += cost + result[i][0];
+                totalCost += cost + result.rows[i][0];
             }
             Log.info(TAG+"ticketCost3", totalCost);
             return {status: true, cost: totalCost};
@@ -178,7 +178,8 @@ const reserve = (user, schedule, seats) => {
     if(!seats) return Promise.resolve({status:false});
 
     return ticketCost(schedule, seats).then((calc_cost)=> {
-        cost = calc_cost;
+        if(!calc_cost) return null;
+        cost = calc_cost.cost;
         return DBUtil.getDBConnection();
     })
     .then((connection) => {
@@ -211,7 +212,7 @@ const reserve = (user, schedule, seats) => {
             return {status:true}
         })
         .then((result) => {
-            addSalesLog(cost, customers);
+            addSalesLog(movie_id, cost, customers);
             return result;
         })
         .catch((error) => {
@@ -223,25 +224,27 @@ const reserve = (user, schedule, seats) => {
     })
 }
 
-const addSalesLog = (cost, customers) => {
+const addSalesLog = (movie_id, cost, customers) => {
 
     return DBUtil.getDBConnection().then((connection) => {
-                var saleQuery = `update movie_sales set sales_amount=sales_amount+${cost} where movie_id=${movie_id}`;
-                var customerQuery = `update movie_sales set customers=customers+${customers} where movie_id=${movie_id}`;
-                return connection.execute(saleQuery)
-                .then((result) => {
-                    if(result.rowsAffected>0)
-                        return connection.execute(customerQuery);
-                    else
-                        Log.info(TAG+"reserve_log", "Not counted reservation.");
-                })
-                .then((result) => {
-                    if(result.rowsAffected==0)
-                        Log.info(TAG+"reserve_log", "Not counted reservation.");
-                })
-            })
-            .catch((error) => {
-                Log.error(TAG+"reserve_log", error);
-            })
+        var saleQuery = `update movie_sales set sales_amount=sales_amount+${cost} where movie_id=${movie_id}`;
+        var customerQuery = `update movie_sales set customers=customers+${customers} where movie_id=${movie_id}`;
+        return connection.execute(saleQuery)
+        .then((result) => {
+            if(result.rowsAffected>0)
+                return connection.execute(customerQuery);
+            else{
+                Log.info(TAG+"reserve_log", "Not counted reservation.");
+                return false;
+            }
+        })
+        .then((result) => {
+            if(!result || result.rowsAffected==0)
+                Log.info(TAG+"reserve_log", "Not counted reservation.");
+        })
+    })
+    .catch((error) => {
+        Log.error(TAG+"reserve_log", error);
+    })
 
 }

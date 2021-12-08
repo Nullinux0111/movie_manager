@@ -92,8 +92,19 @@ function insertMovieToDB(data) {
                     connection.commit();
                     return true;
                 })
+                .then((result)=> {
+                    query = `insert into movie_sales values('${info.movieCd}', '${info.movieNm}', 0, 0)`;
+                    connection.execute(query).then((result)=>{
+                        Log.info(TAG+"insertMovie", "movie_sales inserted.");
+                        connection.commit();
+                    })
+                    .catch((error)=>{
+                        Log.error(TAG+"insertMovieToDB", error, query);
+                    })
+                    return result;
+                })
                 .catch((error) => {
-                    Log.error(TAG+"insertMovieToDB", error);
+                    Log.error(TAG+"insertMovieToDB", error, query);
                     return false;
                 })
             })

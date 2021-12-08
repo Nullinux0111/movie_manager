@@ -192,14 +192,15 @@ app.post('/checkCost', (req, res) => {
   var seat = req.body.seat_num;
   schedule.selectSchedule(play_date, play_time, cinema, theater).then((result) => {
     if(result)
-    reserve.checkCost(result, seat).then((result) => {
-      sendRespond(res, 200, result);
-    })
+      reserve.checkCost(result, seat).then((result) => {
+        sendRespond(res, 200, result);
+      })
     else
       sendRespond(res, 200, {status:false});
   })
   .catch((error) => {
     Log.error(TAG+"/selectSchedule", error);
+    sendRespond(res, 200, {status: false});
   })
   
 })
@@ -305,7 +306,7 @@ app.listen(port, () => {
 // TEST 함수
 
 app.get('/backTest', (req, res)=> {
-  var data = req.body.filter;
+  var data = req.query.filter;
   console.log("listMovie executed.");
   
   movie.list_movies(data).then((result) => {
@@ -313,10 +314,19 @@ app.get('/backTest', (req, res)=> {
   })
 })
 
+app.get('/emplLogin', (req, res) => {
+  var id = req.query.id;
+  var pwd = req.query.pwd;
+
+  employeeACC.login_employee(id, pwd).then((result) => {
+    sendRespond(res, 200, result); 
+  })
+})
+
 app.get('/dummyData', (req, res) => {
   var response = ""
   const api = require('./movieAPI');
-  
+
   api.insertMovieToDB({movieCode: 20210028}).then(()=>{
     return api.insertMovieToDB({movieCode: 20212015})
   })
