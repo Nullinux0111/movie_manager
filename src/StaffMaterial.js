@@ -21,7 +21,6 @@ function StaffItem() {
   let location = useLocation();
   
   return (
-
     
     <>
     <Header state={location.state}/>
