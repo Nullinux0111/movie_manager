@@ -49,7 +49,7 @@ function insertMovieToDB(data) {
             code : info.movieCd,
             name : info.movieNm,
             director : info.directors[0].peopleNm,
-            actors : null, //info.actors,
+            actors : info.actors,
             grade : info.audits[0].watchGradeNm,
             genre : info.genres[0].genreNm,
             runningTime : info.showTm
@@ -59,7 +59,7 @@ function insertMovieToDB(data) {
             return false;
         else
             DBUtil.getDBConnection().then((connection) => {
-                var query = `insert into movie values (:code, :name, :director, :actors, :grade, :genre, :runningTime, null, null)`;
+                var query = `insert into movie values (:code, :name, :director, :actors, :grade, :genre, :runningTime, null, 0)`;
                 if(!connection)
                     return false;
                 connection.execute(query, bindParams).then((result) => {
