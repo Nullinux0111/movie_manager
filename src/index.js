@@ -15,9 +15,11 @@ import ReservationComplete from "./routes/reservation/ResComplete";
 import SelectSeat from "./routes/reservation/SelectSeat";
 import MovieInfo from "./MovieInfo";
 import StaffCeo from "./StaffCeo";
+import ScrollTop from "./ScrollTop";
 
 ReactDOM.render(
   <BrowserRouter>
+  <ScrollTop />
     <Routes>
       <Route path="/" element={<App />} exact={true} />
       <Route path="/Main" element={<Main />} />

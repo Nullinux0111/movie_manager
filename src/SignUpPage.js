@@ -5,9 +5,9 @@ import './assets/css/slick.css';
 import './assets/css/style19.css';
 import './assets/css/swiper.css';
 import "./Mypage.css";
+import Header from "./Header.js";
 import React, { useState } from 'react';
-import { Link, Route, useNavigate } from 'react-router-dom';
-import pbl_logo from './assets/img/pbl_logo.png';
+import { Link, Route, useNavigate, useLocation } from 'react-router-dom';
 
 function passwordshow()  {
     const fieldset = document.getElementById('pwd');
@@ -22,6 +22,7 @@ function passwordhide()  {
 function SignUpPage() {
 
     const navigate = useNavigate();
+    let location = useLocation();
 
     const refreshPage = ()=>{
         window.location.reload();
@@ -73,19 +74,6 @@ function SignUpPage() {
         //refreshPage();
         //위 코드는 백엔드로 가는 코드를 넣고나면 지우고, refresh page를 활성화해 정보가 바뀌면 이를 갱신하도록 한다.
     }
-    
-    const Withdraw = () => {
-        
-        console.log(id_text);
-        console.log(pwd_text);
-        console.log(name_text);
-        console.log(phone_text);
-        console.log(birthday_text);
-        //이 코드는 임시 코드로, 백엔드에 정보를 보내는 코드로 바꾸는게 맞다.
-
-        alert("성공적으로 가입되었습니다!");
-        navigate('/');
-    }
 
     const onEnter = (e) => {
         setLoading(true);
@@ -108,37 +96,43 @@ function SignUpPage() {
             setIsLoading(false);
           })
         
-         }
-        const onEnterPost = (e) => {
-            setLoading(true);
-            const parameters = {
-            user: id_text,
-            pwd: pwd_text,
-            query: "select * from student"
-        };
-            console.log(JSON.stringify(parameters));
-            fetch("http://localhost:3001/api",{
-            method: "post", //통신방법
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(parameters),
-        })
-        .then((res) => res.json())
-        .then((res) => {
-            console.log("res:" + res);
-            console.log("res.text:" + res['text']);
-            console.log("res.data: " + res['data']);
-            setList(res['text']);
-            setLoading(false);
-            setIsLoading(false);
-        })
-        .catch((err) => {
-            console.log(err);
-            setList(err.message);
-            setLoading(false);
-            setIsLoading(false);
-        });
+    }
+    const onEnterPost = (e) => {
+    setLoading(true);
+    const parameters = {
+      id: id_text,
+      pwd: pwd_text,
+      name: name_text, 
+      phone: phone_text, 
+      birthday: birthday_text
+
+    };
+    console.log(JSON.stringify(parameters));
+    fetch("http://localhost:3001/customer_join", {
+      method: "post", //통신방법
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(parameters),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log("res:" + res);
+        console.log("res.text:" + res["status"]);
+        setList(res["status"]);
+        alert(name_text + "님, 성공적으로 가입되었습니다!");
+        navigate('/');
+        refreshPage();
+        setLoading(false);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setList(err.message);
+        alert("이미 존재하는 아이디입니다.");
+        setLoading(false);
+        setIsLoading(false);
+      });
         
     }
       
@@ -147,38 +141,19 @@ function SignUpPage() {
             setList("waiting for connection...");
         }
 
+        function moveMovie(event) {
+            event.preventDefault();
+            navigate("/Moviemenu", { state: { cinema: false, movie: false } });
+          }
+
+          function moveCinema(event) {
+            event.preventDefault();
+            navigate("/reservation-cinema", { state: { cinema: false, movie: false } });
+          }
+
     return (
     <body className="MyPage">
-        <header id="header">
-        <div class="container">
-            <div class="row">
-                <div class="header clearfix">
-                    <h1>
-                        <Link to="/Main">
-                            <em><img src= {pbl_logo} alt="일석이조"/></em>
-                        </Link>
-                    </h1>
-                    <nav id="mNav">
-                        <h2 class="ir_so">전체메뉴</h2>
-                        <a href="#:" class="ham"><span></span></a>
-                    </nav>
-                    <nav class="nav">
-                        <ul class="clearfix">
-                            <Link to='/Moviemenu'>
-                                <li><a href="#:">영화</a></li>
-                            </Link>
-                            <li><a href="#:">영화관</a></li>
-                            <li><a href="#:">스토어</a></li>
-                            <li><a href="#:">고객센터</a></li>
-                            <Link to='/LoginPage'>
-                                <li><a href="#:">로그인</a></li>
-                            </Link>
-                        </ul>
-                    </nav>    
-                </div>
-            </div>
-        </div>
-    </header>
+        <Header state={location.state}/>
 
         <section className="MyInfopage">
 
@@ -225,7 +200,7 @@ function SignUpPage() {
             비밀번호 숨기기
         </button>}
         </div>
-        <button id="quitit" className="loginButton" onClick={Withdraw} > 
+        <button id="quitit" className="loginButton" onClick={onEnterPost} > 
             가입하기
         </button>
 

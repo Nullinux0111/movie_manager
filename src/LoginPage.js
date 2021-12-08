@@ -1,11 +1,19 @@
-import { Link, useNavigate } from "react-router-dom";
-import pbl_logo from "./assets/img/pbl_logo.png";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import React from "react";
 import { useState } from "react";
 import "./LoginPage.css";
+import Header from "./Header.js";
+
+function getCusEmp() {
+
+  var cusemp = document.querySelector('input[name="고객직원"]:checked').value;
+  return (cusemp==="customer" ? "login" : "notyet" );
+
+}
 
 function LoginPage() {
   let navigate = useNavigate();
+  let location = useLocation();
 
   const [id_text, setText] = useState("");
   const [pwd_text, setPWd] = useState("");
@@ -55,8 +63,11 @@ function LoginPage() {
       id: id_text,
       pwd: pwd_text,
     };
+    const LoginSection = getCusEmp();
+    
     console.log(JSON.stringify(parameters));
-    fetch("http://localhost:3001/login", {
+    console.log(getCusEmp());
+    fetch("http://localhost:3001/"+getCusEmp(), {
       method: "post", //통신방법
       headers: {
         "Content-Type": "application/json",
@@ -68,6 +79,10 @@ function LoginPage() {
         console.log("res:" + res);
         console.log("res.text:" + res["status"]);
         setList(res["status"]);
+        sessionStorage.setItem("MovieCurrentUser", id_text);
+        console.log(sessionStorage.getItem("MovieCurrentUser"));
+        navigate("/");
+        window.location.reload();
         setLoading(false);
         setIsLoading(false);
       })
@@ -97,52 +112,7 @@ function LoginPage() {
 
   return (
     <body className="LoginPage">
-      <header id="header">
-        <div class="container">
-          <div class="row">
-            <div class="header clearfix">
-              <h1>
-                <Link to="/Main">
-                  <em>
-                    <img src={pbl_logo} alt="일석이조" />
-                  </em>
-                </Link>
-              </h1>
-              {/* <nav id="mNav">
-                <h2 class="ir_so">전체메뉴</h2>
-                <a href="#:" class="ham">
-                  <span></span>
-                </a>
-              </nav> */}
-              <nav class="nav">
-                <ul class="clearfix">
-                  <Link to="/Moviemenu">
-                    <li onClick={moveMovie}>
-                      <a href="#:">영화</a>
-                    </li>
-                  </Link>
-                  <Link to="/reservation-cinema">
-                    <li onClick={moveCinema}>
-                      <a href="#:">영화관</a>
-                    </li>
-                  </Link>
-                  <li>
-                    <a href="#:">스토어</a>
-                  </li>
-                  <li>
-                    <a href="#:">고객센터</a>
-                  </li>
-                  <Link to="/LoginPage">
-                    <li>
-                      <a href="#:">로그인</a>
-                    </li>
-                  </Link>
-                </ul>
-              </nav>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header state={location.state}/>
         <section className="loginmainpage">
         <div className="LoginBox">
           <p className="LoginText">아이디와 비밀번호를 입력해 로그인하세요</p>
@@ -168,7 +138,7 @@ function LoginPage() {
           <div className="loginoption">
             <a
               className="signup"
-              href="/"
+              href="/SignUpPage"
               target="_self"
               title="디비영화관 메인화면으로 가기"
             >
