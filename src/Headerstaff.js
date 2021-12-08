@@ -63,6 +63,9 @@ function Header(props) {
                                     <a href="#:">내정보</a>
                                 </li>}
                                 </Link>
+                                {user!=null && <li>
+                                    <a href="#:">직무</a>
+                                </li>}
                             </ul>
                         </nav>
                     </div>
