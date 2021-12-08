@@ -92,8 +92,8 @@ class SelectTime extends React.Component {
 
 function list_schedule(cinema, movie) {
   const parameters = {
-    cinema: '안산',
-    filter: { movie_name: '안녕' },
+    cinema: cinema,
+    filter: { movie_name: movie },
   };
   return fetch("http://localhost:3001/list_schedule", {
     method: "post", //통신방법
@@ -112,11 +112,21 @@ function list_schedule(cinema, movie) {
         return (
           <Fragment>
             {res["data"].map((data) => (
-              <Link to="/reservation-seat" class="cinema-link">
+              <Link to="/reservation-seat" class="cinema-link" 
+              state={{
+                cinema: cinema,
+                movie: movie,
+                theater: data[3],
+                time: data[1]
+                }}>
                 <div class="swiper-slide">
                   <div class="infor">
                     <h3>
                       <strong>{refactory(data[1])}</strong>
+                    </h3>
+                    <h3>
+                      <br/>
+                      <strong>{data[3]}상영관</strong>
                     </h3>
                   </div>
                 </div>

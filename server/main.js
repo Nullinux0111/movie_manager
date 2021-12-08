@@ -112,15 +112,6 @@ app.post('/listMovie', (req, res) => {
   })
 })
 
-app.get('/listMovie', (req, res) => {
-  var data = req.query.filter;
-  console.log("listMovie executed.");
-  
-  movie.list_movies(data).then((result) => {
-    sendRespond(res, 200, result);
-  })
-})
-
 
 // Schedule
 
@@ -314,12 +305,12 @@ app.get('/backTest', (req, res)=> {
   })
 })
 
-app.get('/emplLogin', (req, res) => {
-  var id = req.query.id;
-  var pwd = req.query.pwd;
-
-  employeeACC.login_employee(id, pwd).then((result) => {
-    sendRespond(res, 200, result); 
+app.get('/listMovie', (req, res) => {
+  var data = req.query.filter;
+  console.log("listMovie executed.");
+  
+  movie.list_movies(data).then((result) => {
+    sendRespond(res, 200, result);
   })
 })
 

@@ -241,6 +241,7 @@ const addSalesLog = (movie_id, cost, customers) => {
         .then((result) => {
             if(!result || result.rowsAffected==0)
                 Log.info(TAG+"reserve_log", "Not counted reservation.");
+            Log.info(TAG+"reserve_log", "log successfully");
         })
     })
     .catch((error) => {

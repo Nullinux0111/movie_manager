@@ -6,11 +6,13 @@ import "../../assets/css/style19.css";
 import "../../assets/css/swiper.css";
 import "../../assets/css/seat.css";
 import Header from "../../Header.js";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
-function SelectSeat() {
+function SelectSeat(props) {
   let navigate = useNavigate();
+  let location = useLocation();
   let selectedSeats = new Array();
+  console.log(location.state);
   for (let i = 0; i < 6; i++) {
     selectedSeats.push(new Array(10).fill(0));
   }
@@ -26,6 +28,9 @@ function SelectSeat() {
       }
     }
     console.log(reservSeats);
+    reserveRequest(reservSeats, location.state).then((result) => {
+
+    })
   }
 
   function handleSelect(event) {
@@ -48,6 +53,35 @@ function SelectSeat() {
         }
       }
     }
+  }
+
+  function reserveRequest(seats, state){
+    const parameters = {
+      date: state.time,
+      time: state.time,
+      cinema: state.cinema,
+      theater: state.theater,
+      seat_num: seats,
+      user: sessionStorage.getItem("MovieCurrentUser"),
+    };
+    console.log(parameters);
+    if(!parameters.time|| !parameters.cinema || !parameters.theater){
+      return Promise.resolve(false);
+    }
+
+    return fetch("http://localhost:3001/reservation", {
+      method: "post", //통신방법
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(parameters),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log("res:" + res);
+        console.log("res.status:" + res["status"]);
+        console.log("res.data: " + res["data"]);
+      })
   }
 
   return (
