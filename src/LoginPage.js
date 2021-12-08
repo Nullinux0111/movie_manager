@@ -55,11 +55,11 @@ function LoginPage() {
     const parameters = {
       id: id_text,
       pwd: pwd_text,
-      type: "customer"
+      type: "Customer"
     };
     
     console.log(JSON.stringify(parameters));
-    console.log("customer");
+    console.log("Customer");
     fetch("http://localhost:3001/login", {
       method: "post", //통신방법
       headers: {
@@ -78,12 +78,12 @@ function LoginPage() {
         
             navigate('/');
             window.location.reload();
-            setLoading(false);
-            setIsLoading(false);
           }
           else{
             alert("아이디 혹은 비밀번호가 일치하지 않습니다.");
           }
+          setLoading(false);
+          setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);

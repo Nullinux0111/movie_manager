@@ -71,6 +71,9 @@ app.post('/login', (req, res) => {
     employeeACC.login_employee(id, pwd).then((result) => {
       sendRespond(res, 200, result);
     })
+  else{
+    sendRespond(res, 200, {status: false});
+  }
 })
 
 app.post('/')
@@ -258,7 +261,8 @@ app.post('/admin/getDepartment', (req, res) => {
   if(!id)
     sendRespond(res, 200, {status: false});
   
-  Admin.getDepartment(id).then((result) => {
+  else 
+    Admin.getDepartment(id).then((result) => {
     sendRespond(res, 200, result);
   })
 })

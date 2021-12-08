@@ -55,11 +55,11 @@ function LoginPageEmployee() {
     const parameters = {
       id: id_text,
       pwd: pwd_text,
-      type: "employee"
+      type: "Employee"
     };
     
     console.log(JSON.stringify(parameters));
-    console.log("employee");
+    console.log("Employee");
     fetch("http://localhost:3001/login", {
       method: "post", //통신방법
       headers: {
@@ -73,67 +73,59 @@ function LoginPageEmployee() {
         console.log("res.text:" + res["status"]);
         setList(res["status"]);
         const parameters2 = {
-          id: id_text
+          employee_id: id_text
         };
-        return fetch("http://localhost:3001/admin/getDepartment", {
-          method: "post", //통신방법
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(parameters2),
-        })
-        .then((res) => res.json())
-        .then((res) => {
-          if(res["status"]===true){
-             
-            if(res["data"][1] === "관리자"){
+        if(res["status"]===true){
+          return fetch("http://localhost:3001/admin/getDepartment", {
+            method: "post", //통신방법
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(parameters2),
+          })
+          .then((res) => res.json())
+          .then((res) => {
+            if(res["status"]===true){
+                sessionStorage.setItem("CurrentEmployee", id_text);//여기 있는 값은 모두 sessionStorage.getItem("이름");으로 불러온다.
+                console.log(sessionStorage.getItem("CurrentEmployee"));
+                sessionStorage.setItem("EmployeeCinema", res["data"][0]);
+                console.log(sessionStorage.getItem("EmployeeCinem"));
+                sessionStorage.setItem("EmployeeDepartment", res["data"][1]);
+                console.log(sessionStorage.getItem("EmployeeDepartment"));
               
-              sessionStorage.setItem("CurrentEmployee", id_text); //여기 있는 값은 모두 sessionStorage.getItem("이름");으로 불러온다.
-              console.log(sessionStorage.getItem("CurrentEmployee"));
-              sessionStorage.setItem("EmployeeCinema", res["data"][0]);
-              console.log(sessionStorage.getItem("EmployeeCinem"));
-              sessionStorage.setItem("EmployeeDepartment", res["data"][1]);
-              console.log(sessionStorage.getItem("EmployeeDepartment"));
-              navigate('/StaffCeo');
-                window.location.reload();
-                setLoading(false);
-                setIsLoading(false);
-            }
-            else if(res["data"][1] === "시설팀"){
-              
-              sessionStorage.setItem("CurrentEmployee", id_text);
-              console.log(sessionStorage.getItem("CurrentEmployee"));
-              sessionStorage.setItem("EmployeeCinema", res["data"][0]);
-              console.log(sessionStorage.getItem("EmployeeCinem"));
-              sessionStorage.setItem("EmployeeDepartment", res["data"][1]);
-              console.log(sessionStorage.getItem("EmployeeDepartment"));
-              navigate('/StaffMaterial');
-                window.location.reload();
-                setLoading(false);
-                setIsLoading(false);
-            }
-            else if(res["data"][1] === "매점팀"){
-              
-              sessionStorage.setItem("CurrentEmployee", id_text);
-              console.log(sessionStorage.getItem("CurrentEmployee"));
-              sessionStorage.setItem("EmployeeCinema", res["data"][0]);
-              console.log(sessionStorage.getItem("EmployeeCinem"));
-              sessionStorage.setItem("EmployeeDepartment", res["data"][1]);
-              console.log(sessionStorage.getItem("EmployeeDepartment"));
-              navigate('/StaffItem');
-                window.location.reload();
-                setLoading(false);
-                setIsLoading(false);
+              if(res["data"][1] === "관리자"){
+                
+                navigate('/StaffCeo');
+                  window.location.reload();
+              }
+              else if(res["data"][1] === "시설팀"){
+                
+                navigate('/StaffMaterial');
+                  window.location.reload();
+              }
+              else if(res["data"][1] === "매점팀"){
+                
+                navigate('/StaffItem');
+                  window.location.reload();
+              }
+              else{
+                alert("부서 페이지가 존재하지 않습니다.");
+              }
             }
             else{
-              alert("존재하지 않는 부서입니다!");
+              alert("서버 에러!");
             }
-          }
-          else{
-            alert("아이디 혹은 비밀번호가 일치하지 않습니다.");
-          }
-              
-        })
+            setLoading(false);
+            setIsLoading(false); 
+          })
+          
+        }
+        else{
+          alert("아이디 혹은 비밀번호가 일치하지 않습니다.");
+          setLoading(false);
+          setIsLoading(false);
+        }
+
       })
       .catch((err) => {
         console.log(err);
