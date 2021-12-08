@@ -58,8 +58,8 @@ function Main() {
               <div class="swiper-slide ss1">
                 <div class="container">
                   <div class="row">
-                    <h3>장르만 로맨스</h3>
-                    <p>진짜 장르만 로맨스? </p>
+                    <h3>스파이더맨 : 노 웨이 홈</h3>
+                    <p>개봉전 예매율 1위</p>
                   </div>
                 </div>
               </div>
