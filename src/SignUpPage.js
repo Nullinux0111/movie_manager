@@ -115,18 +115,19 @@ function SignUpPage() {
       },
       body: JSON.stringify(parameters),
     })
-      .then((res) => res.json())
-      .then((res) => {
+    .then((res) => res.json())
+    .then((res) => {
         console.log("res:" + res);
         console.log("res.text:" + res["status"]);
         setList(res["status"]);
         alert(name_text + "님, 성공적으로 가입되었습니다!");
+        
         navigate('/');
         refreshPage();
         setLoading(false);
         setIsLoading(false);
-      })
-      .catch((err) => {
+    })
+    .catch((err) => {
         console.log(err);
         setList(err.message);
         alert("이미 존재하는 아이디입니다.");

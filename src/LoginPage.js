@@ -7,7 +7,7 @@ import Header from "./Header.js";
 function getCusEmp() {
 
   var cusemp = document.querySelector('input[name="고객직원"]:checked').value;
-  return (cusemp==="customer" ? "login" : "notyet" );
+  return cusemp;
 
 }
 
@@ -62,12 +62,12 @@ function LoginPage() {
     const parameters = {
       id: id_text,
       pwd: pwd_text,
+      type: getCusEmp()
     };
-    const LoginSection = getCusEmp();
     
     console.log(JSON.stringify(parameters));
     console.log(getCusEmp());
-    fetch("http://localhost:3001/"+getCusEmp(), {
+    fetch("http://localhost:3001/login", {
       method: "post", //통신방법
       headers: {
         "Content-Type": "application/json",
@@ -79,12 +79,36 @@ function LoginPage() {
         console.log("res:" + res);
         console.log("res.text:" + res["status"]);
         setList(res["status"]);
-        sessionStorage.setItem("MovieCurrentUser", id_text);
-        console.log(sessionStorage.getItem("MovieCurrentUser"));
-        navigate("/");
-        window.location.reload();
-        setLoading(false);
-        setIsLoading(false);
+        if(getCusEmp() === "customer"){
+          sessionStorage.setItem("MovieCurrentUser", id_text);
+          console.log(sessionStorage.getItem("MovieCurrentUser"));
+          navigate('/');
+          window.location.reload();
+          setLoading(false);
+          setIsLoading(false);
+        }
+        else{
+          const parameters2 = {
+            id: id_text
+          };
+            return fetch("http://localhost:3001/admin/getDepartment", {
+              method: "post", //통신방법
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(parameters2),
+            })
+            .then((res) => res.json())
+            .then((res) => {
+              sessionStorage.setItem("MovieCurrentUser", id_text);
+              console.log(sessionStorage.getItem("MovieCurrentUser"));
+              
+                navigate('/');
+                window.location.reload();
+                setLoading(false);
+                setIsLoading(false);
+              })
+        }
       })
       .catch((err) => {
         console.log(err);

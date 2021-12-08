@@ -63,11 +63,11 @@ app.post('/login', (req, res) => {
     Log.info(TAG+"login", "id or pwd or type is undefined.");
     sendRespond(res, 500, {status: false});
   }
-  if(type==0)
+  if(type=="Customer")
     customerACC.login_customer(id, pwd).then((result) => {
       sendRespond(res, 200, result);
     })
-  else if(type==1)
+  else if(type=="Employee")
     employeeACC.login_employee(id, pwd).then((result) => {
       sendRespond(res, 200, result);
     })
