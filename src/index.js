@@ -14,7 +14,10 @@ import SelectTime from "./routes/reservation/SelectTime";
 import ReservationComplete from "./routes/reservation/ResComplete";
 import SelectSeat from "./routes/reservation/SelectSeat";
 import MovieInfo from "./MovieInfo";
+import StaffCeo from "./StaffCeo";
+import StaffItem from "./StaffItem";
 import Staffmain from "./Staffmain";
+import StaffMaterial from "./StaffMaterial";
 import ScrollTop from "./ScrollTop";
 import LoginPageEmployee from "./LoginPageEmployee";
 
@@ -33,6 +36,9 @@ ReactDOM.render(
       <Route path="/reservation-complete" element={<ReservationComplete />} />
       <Route path="/movieInfo" element={<MovieInfo />} />
       <Route path="/Staffmain" element={<Staffmain />} />
+      <Route path="/StaffCeo" element={<StaffCeo />} />
+      <Route path="/StaffItem" element={<StaffItem />} />
+      <Route path="/StaffMaterial" element={<StaffMaterial />} />
       <Route path="/reservation-seat" element={<SelectSeat />} />
       <Route path="/LoginPageEmployee" element={<LoginPageEmployee/>} />
     </Routes>
