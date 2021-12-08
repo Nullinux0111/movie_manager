@@ -8,6 +8,7 @@ const TAG = "Schedule.js:";
 
 exports.selectSchedule = (date, time, cinema, theater) => selectSchedule(date, time, cinema, theater);
 exports.list_schedule = (cinema, filter) => list_schedule(cinema, filter);
+exports.insertSchedule = (data) => insertSchedule(data);
 
 
 /**
@@ -64,10 +65,12 @@ function insertSchedule(data) {
     var theater = data.theater;
     var movie_id = data.movie_id;
     var movie_name = data.movie_name;
+    data.play_date = Util.dateToString(play_date);
+    data.play_time = Util.dateTimeToString(play_time);
 
     return DBUtil.getDBConnection().then((connection) => {
         if(!connection) return {status:false};
-        var query = `insert into Schedule values (:play_date, :play_time, :cinema, :theater, :movie_id, :movie_name, :play_type)`
+        var query = `insert into Schedule values (TO_DATE(:play_date, '${Util.dateFormat}'), TO_DATE(:play_time, '${Util.dateTimeFormat}'), :cinema, :theater, :movie_id, :movie_name, :play_type)`;
         return connection.execute(query, data)
             .then((result) => {
                 Log.info(TAG+"insertSchedule", "rows inserted: " + result.rowsAffected + " rows");
@@ -143,10 +146,10 @@ function selectSchedule(date, time, cinema, theater){
             //     query += `and play_time >= CURRENT_DATE `;
             // }
             if(filter.movie_id){
-                query += `and movie_id = '${filter.movie_id}'`;
+                query += `and movie_id = '${filter.movie_id}' `;
             }
             if(filter.movie_name){
-                query += `and movie_name = '${filter.movie_name}'`;
+                query += `and movie_name = '${filter.movie_name}' `;
             }
         }
         Log.info(TAG, query);

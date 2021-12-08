@@ -162,6 +162,25 @@ app.post('/list_empty_seats', (req, res) => {
 })
 
 app.post('/check_seat_available', (req, res) => {
+  var date = req.body.date;
+  var time = req.body.time;
+  var cinema = req.body.cinema;
+  var theater = req.body.theater;
+  var seat = req.body.seat_num;
+  schedule.selectSchedule(date, time, cinema, theater).then((result) => {
+    if(result)
+      reserve.isSeatAvailable(result, seat).then((isAvailable) => {
+        if(isAvailable)
+          sendRespond(res, 200, {status:true, isAvailable: true});
+        else 
+          sendRespond(res, 200, {status:true, isAvailable: false});
+      })
+    else
+      sendRespond(res, 200, {status:false});
+  })
+  .catch((error) => {
+    Log.error(TAG+"check_seat", error);
+  })
   
 })
 
@@ -292,6 +311,109 @@ app.get('/backTest', (req, res)=> {
     sendRespond(res, 200, result);
   })
 })
+
+app.get('/dummyData', (req, res) => {
+  var response = ""
+  const api = require('./movieAPI');
+  api.insertMovieToDB({movieCode: 20210028}).then(
+  api.insertMovieToDB({movieCode: 20212015})).then(
+  api.insertMovieToDB({movieCode: 20191282})).then(
+  api.insertMovieToDB({movieCode: 20212168})).then(
+  api.insertMovieToDB({movieCode: 20210611})).then(
+  api.insertMovieToDB({movieCode: 20196264})).then(
+  api.insertMovieToDB({movieCode: 20205986})).then(
+  api.insertMovieToDB({movieCode: 20210087})).then(()=>{
+    response += "insert Movie finished \t\n";
+  }).then(
+
+  customerACC.join_customer({
+    id: "TEST",
+    pwd: "test",
+    name: "유저",
+    phone: "010-000-0000",
+    birthday: "2000-01-01"
+  }).then((result)=>{
+    if(result)
+      response += "insert customer finished \t \n";
+    else
+      response += "insert customer Failed \t \n";
+  })).then(
+    
+  Admin.addEmployee({
+    id: "EMPL",
+    name: "직원",
+    phone: "010-0000-0101",
+    birthday: null,
+    cinema: "안산",
+    dept: "시설팀",
+    salary: null
+  })).then((result)=>{
+    if(result)
+      response += "insert employee finished \t \n";
+    else
+      response += "insert employee Failed \t \n";
+  }).then(
+  schedule.insertSchedule({
+    play_date: "2021-12-09",
+    play_time: "2021-12-09 09:00:00",
+    cinema: "안산",
+    theater: 1,
+    movie_id: "20196264",
+    movie_name: "유체이탈자",
+    play_type: "day"
+  })).then(
+  schedule.insertSchedule({
+    play_date: "2021-12-09",
+    play_time: "2021-12-09 09:00:00",
+    cinema: "서울",
+    theater: 1,
+    movie_id: "20196264",
+    movie_name: "유체이탈자",
+    play_type: "day"
+  })).then(
+  schedule.insertSchedule({
+    play_date: "2021-12-10",
+    play_time: "2021-12-10 09:00:00",
+    cinema: "안산",
+    theater: 2,
+    movie_id: "20210028",
+    movie_name: "스파이더맨: 노 웨이 홈",
+    play_type: "day"
+  })).then(
+  schedule.insertSchedule({
+    play_date: "2021-12-10",
+    play_time: "2021-12-10 09:00:00",
+    cinema: "서울",
+    theater: 2,
+    movie_id: "20210028",
+    movie_name: "스파이더맨: 노 웨이 홈",
+    play_type: "day"
+  })).then(
+  schedule.insertSchedule({
+    play_date: "2021-12-09",
+    play_time: "2021-12-09 13:00:00",
+    cinema: "안산",
+    theater: 1,
+    movie_id: "20210028",
+    movie_name: "스파이더맨: 노 웨이 홈",
+    play_type: "day"
+  })).then(
+  schedule.insertSchedule({
+    play_date: "2021-12-09",
+    play_time: "2021-12-09 13:00:00",
+    cinema: "서울",
+    theater: 1,
+    movie_id: "20196264",
+    movie_name: "유체이탈자",
+    play_type: "day"
+  })).then((result) => {
+    response += "insert Movie finished \t\n";
+    sendRespond(res, 200, response);
+  })
+
+
+})
+
 
 app.get('/hashpassword', (req, res) => {
   var pwd = req.query.pwd;

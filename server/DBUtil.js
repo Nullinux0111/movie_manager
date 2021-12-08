@@ -23,3 +23,13 @@ exports.getDBConnection = () => {
           Log.error(TAG, error, `user:${user}, pwd:${pwd}`);
       })
 }
+exports.oracledb = oracledb;
+
+/**
+ * 
+ * @param {oracledb.Lob} data 
+ * @returns 
+ */
+exports.getJsonData = (data) => {
+    return data.getData();
+}

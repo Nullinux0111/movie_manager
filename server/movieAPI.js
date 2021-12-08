@@ -45,24 +45,48 @@ function insertMovieToDB(data) {
     return getMovieInfo(data).then((info) => {
         if(!info)
             return false;
+                    
+        var actors = info.actors.map((value) => value["peopleNm"]);
+        var director;
+        var grade;
+        var prdtStatNm;
+        if(info.directors[0])
+            director=info.directors[0].peopleNm;
+        else 
+            director = "'undefined'";
+        if(info.audits[0])
+            grade = info.audits[0].watchGradeNm;
+        else
+            grade = "'undefined'";
+        
+        if(info.prdtStatNm){
+            if(info.prdtStatNm == "개봉")
+                prdtStatNm = "개봉";
+            else if(info.prdtStatNm == "개봉예정")
+                prdtStatNm = "개봉예정";
+            else 
+                prdtStatNm = "unexpected";
+        }
+        
         var bindParams = {
             code : info.movieCd,
             name : info.movieNm,
-            director : info.directors[0].peopleNm,
-            actors : info.actors,
-            grade : info.audits[0].watchGradeNm,
+            director : director,
+            actors : Buffer.from(JSON.stringify(actors), "utf8"),
+            grade : grade,
             genre : info.genres[0].genreNm,
-            runningTime : info.showTm
+            runningTime : info.showTm,
+            prdtStat : prdtStatNm
         }
         Log.info(TAG +"insertMovie", bindParams.director);
         if(!info.movieCd || !info.movieNm)
             return false;
         else
-            DBUtil.getDBConnection().then((connection) => {
-                var query = `insert into movie values (:code, :name, :director, :actors, :grade, :genre, :runningTime, null, 0)`;
+            return DBUtil.getDBConnection().then((connection) => {
+                var query = `insert into movie values (:code, :name, :director, :actors, :grade, :genre, :runningTime, null, :prdtStat)`;
                 if(!connection)
                     return false;
-                connection.execute(query, bindParams).then((result) => {
+                return connection.execute(query, bindParams).then((result) => {
                     if(DEBUG)
                         Log.info(TAG+"insertMovie", "Movie inserted.");
                     connection.commit();

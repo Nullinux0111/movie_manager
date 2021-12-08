@@ -40,8 +40,32 @@ function list_movies(data) {
 
         return connection.execute(query).then((result)=>{
             Log.info(TAG+"list", "result: " + result.rows);
-            rows = result.rows;
-            return {status: true, data: rows};
+            var count = 0;
+            var movie_rows=[];
+            var promises = [];
+            for(var i = 0; i < result.rows.length; i++) {
+                
+                promises.push(new Promise((resolve, reject) => {
+                    var movie_1 = result.rows[i].slice(0,3);
+                    var movie_2 = result.rows[i].slice(4);
+                    DBUtil.getJsonData(result.rows[i][3]).then((d) => {
+                        Log.info(TAG+"list", d);
+                        var j = JSON.parse(`${d}`);
+                        movie_1.push(j);
+                        movie_rows.push(movie_1.concat(movie_2));
+                        count++;
+                        if(count==result.rows.length){
+                            resolve(movie_rows);
+                        }
+                        else
+                            resolve(null);
+                    })
+                    
+                }))
+            }
+            return Promise.all(promises).then((result) => {
+                return {status: true, data: movie_rows};
+            })
         })
         .catch((error) => {
             Log.error(TAG+"list", error);

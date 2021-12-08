@@ -244,7 +244,7 @@ function insertEmployee(data) {
 
         //main.js에서 설정한 data 구조 이름 그대로 참조
         var query = `insert into EmployeeAcc values ('${data.id}', '${pwd}')`;
-        var query1 = `insert into Employee values (:id, :name, :birthday, :phone, :birthday, :salary, :)`;
+        var query1 = `insert into Employee values (:id, :name, :birthday, :phone, :salary, :cinema, :department)`;
         
         if(DEBUG)
             Log.info(TAG+"insertEmployee", `Query: ${query}`);

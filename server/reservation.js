@@ -14,6 +14,10 @@ exports.list_empty_seats = (schedule) => {
     return list_empty_seats(schedule);
 }
 
+exports.isSeatAvailable = (schedule, seat) => {
+    return isSeatAvailable(schedule, seat);
+}
+
 exports.checkCost = (schedule, seat) => {
     return ticketCost(schedule, seat);
 }
@@ -80,6 +84,16 @@ const list_empty_seats = (schedule) => {
             
             return result.rows;
         })
+    })
+}
+
+const isSeatAvailable = (schedule, seat) => {
+    return list_empty_seats(schedule).then((list) => {
+        for( seat_data of list ){
+            if(seat == seat_data)
+                return true;
+        }
+        return false;
     })
 }
 
