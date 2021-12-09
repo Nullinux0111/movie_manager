@@ -29,7 +29,10 @@ function SelectSeat(props) {
     }
     console.log(reservSeats);
     reserveRequest(reservSeats, location.state).then((result) => {
-
+      navigate("/reservation-complete");
+    })
+    .catch((error)=>{
+      console.log(error);
     })
   }
 
