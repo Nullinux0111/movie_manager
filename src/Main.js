@@ -5,10 +5,10 @@ import "./assets/css/slick.css";
 import "./assets/css/style19.css";
 import "./assets/css/swiper.css";
 import Header from "./Header.js";
-import poster01 from "./assets/img/poster01.jpg";
-import poster02 from "./assets/img/poster02.jpg";
-import poster03 from "./assets/img/poster03.jpg";
-import poster04 from "./assets/img/poster04.jpg";
+import poster01 from "./assets/img/20210028/poster.jpg";
+import poster02 from "./assets/img/20212015/poster.jpg";
+import poster03 from "./assets/img/20191282/poster.jpg";
+import poster04 from "./assets/img/20212168/poster.jpg";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 function Main() {

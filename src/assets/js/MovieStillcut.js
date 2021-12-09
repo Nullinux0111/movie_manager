@@ -4,8 +4,8 @@ import React, { Component } from "react";
 import '../css/style.css';
 import '../../slid.css';
 
-import poster01a from '../img/poster01@2.jpg';
-import poster02a from '../img/poster02@2.jpg';
+import poster01a from '../img/poster13@2.jpg';
+import poster02a from '../img/poster13@2.jpg';
 
 class MovStillcut extends React.Component{
     constructor(props) {

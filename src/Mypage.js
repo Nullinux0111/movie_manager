@@ -146,7 +146,7 @@ function MyPage() {
             id: sessionStorage.getItem("MovieCurrentUser"),
             name: name_text,
             phone: phone_text,
-            birthday: birthday_text
+            birthday: birthday_text+"T15:00:00.000Z"
         };
         if(pwd_text.replace(/(\s*)/g, "") != ""){
             data.pwd = pwd_text;
@@ -204,11 +204,7 @@ function MyPage() {
             setText(parameters['id']);
             setName(res['data'][1]);
             setPhone(res['data'][2]);
-            setBDay(res['data'][3]);
-            orig_id = parameters['id'];
-            orig_name = res['data'][1];
-            orig_phone = res['data'][2];
-            orig_bday = res['data'][3];
+            setBDay(res['data'][3].substr(0,10));
 
             setLoading(false);
             setIsLoading(false);
@@ -338,19 +334,15 @@ function MyPage() {
 
         <div >
         
-        {!editable && <button id="editit" className="loginButton" onClick={plzwork} > 
-            예매 하기
-        </button>}
-        {editable &&  <button id="acceptit" className="loginButton" onClick={savechanges} > 
-            수정 완료
-        </button>}
-        {editable && <button id="undoit" className="loginButton" onClick={refreshPage} > 
-            수정 취소
+        {<button id="editit" className="loginButton" onClick={plzwork} > 
+            예매하러 하기
         </button>}
         </div>
+        {/*
         <button id="quitit" className="loginButton" onClick={Withdraw} > 
             예매 취소
         </button>
+        */}
 
         </div>
 
