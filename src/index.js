@@ -18,6 +18,7 @@ import StaffCeo from "./StaffCeo";
 import StaffItem from "./StaffItem";
 import Staffmain from "./Staffmain";
 import StaffMaterial from "./StaffMaterial";
+import MypageEmployee from "./MypageEmployee";
 import ScrollTop from "./ScrollTop";
 import LoginPageEmployee from "./LoginPageEmployee";
 
@@ -39,6 +40,7 @@ ReactDOM.render(
       <Route path="/StaffCeo" element={<StaffCeo />} />
       <Route path="/StaffItem" element={<StaffItem />} />
       <Route path="/StaffMaterial" element={<StaffMaterial />} />
+      <Route path="/MypageEmployee" element={<MypageEmployee />} />
       <Route path="/reservation-seat" element={<SelectSeat />} />
       <Route path="/LoginPageEmployee" element={<LoginPageEmployee/>} />
     </Routes>
