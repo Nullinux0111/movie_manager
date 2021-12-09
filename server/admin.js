@@ -17,11 +17,15 @@ exports.addEmployee = (data) => {
 exports.getDepartment = (id) => getDepartment(id);
 
 exports.setDepartment = (id, cinema, dept) => setDepartment(id, cinema, dept);
+
 exports.setSalary = (id, salary) => setSalary(id, salary);
 
-
 exports.listItem = (cinema) => listItem(cinema);
+
 exports.listItemStocks = (cinema) => listItemStocks(cinema);
+
+exports.listMaterial = (cinema) => listMaterial(cinema);
+
 
 function addCinema(cinema_name) {
     return DBUtil.getDBConnection().then((connection) => {
@@ -128,6 +132,21 @@ function listItemStocks(cinema){
             return {status: true, data: result};
         }).catch((error) => {
             Log.error(TAG+"listItemStocks", error, query);
+            return {status: false};
+        })
+    })
+}
+
+function listMaterial(cinema) {
+    return DBUtil.getDBConnection().then((connection) => {
+        if(!connection) return {status:false};
+
+        var query = `select * from Material where cinema_name='${cinema}'`;
+        return connection.execute(query).then((result)=>{
+            Log.info(TAG+"listMaterial", result.rows);
+            return {status: true, data: result};
+        }).catch((error) => {
+            Log.error(TAG+"listMaterial", error, query);
             return {status: false};
         })
     })
