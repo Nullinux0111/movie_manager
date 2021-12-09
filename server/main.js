@@ -406,7 +406,7 @@ app.post('/admin/listItemStocks', (req, res) => {
 })
 
 
-app.post('/admin/listMaterials', (req, res) => {
+app.post('/admin/listMaterial', (req, res) => {
   var cinema = req.body.cinema;
   var dept = req.body.department;
 
