@@ -223,7 +223,7 @@ function MyPage() {
     const getDepartment = () => {
         setLoading(true);
         const parameters = {
-            id: sessionStorage.getItem("CurrentEmployee")
+            employee_id: sessionStorage.getItem("CurrentEmployee")
         };
         console.log(JSON.stringify(parameters));
         fetch("http://localhost:3001/admin/getDepartment",{
@@ -237,8 +237,15 @@ function MyPage() {
         .then((res) => {
             console.log("res:" + res);
             console.log("res.data: " + res['data']);
-            sessionStorage.setItem("EmployeeCinema", res["data"][0]);
-            sessionStorage.setItem("EmployeeDepartment", res["data"][1]);
+            if(res['status']){
+                sessionStorage.setItem("EmployeeCinema", res["data"][0]);
+                sessionStorage.setItem("EmployeeDepartment", res["data"][1]);
+                //패널 수정
+            }
+            else{
+                sessionStorage.setItem("EmployeeCinema", null);
+                sessionStorage.setItem("EmployeeDepartment", null);
+            }
             setLoading(false);
             setIsLoading(false);
         })
@@ -274,69 +281,67 @@ function MyPage() {
 
         <div className="myinfo">
             
-        <div className="MypageBox">
+            <div className="MypageBox">
+                
+
+                <p className="LoginText">
+                내 정보
+                </p>
+                
+                <div className="idpassword">
+                    <p className="name">
+                        이름: <input className="namebox" value={name_text} id='name' onChange={onNameChange} disabled></input>
+                    </p>
+                    <p className="id"> 
+                        아이디: <input className="idbox" value={id_text} id='id' onChange={onChange} disabled></input>
+                    </p>
+                    <p className="password">
+                        비밀번호: <input className="passbox" type='password' id='pwd' onChange={onPwdChange} disabled></input>
+                    </p>
+                    <p className="phone">
+                        전화번호: <input className="phonebox" value={phone_text} id='phone' onChange={onPhoneChange} disabled></input>
+                    </p>
+                    <p className="birthday">
+                        생년월일: <input className="birthdaybox" value={birthday_text} id='birthday' onChange={onBDayChange} disabled></input>
+                    </p>
+                
+                </div>
+
+            </div>
+        
+            {/*<p className = "loginProcess">{list}</p>*/}
+
+            <div >
             
-
-        <p className="LoginText">
-          내 정보
-        </p>
-        
-        <div className="idpassword">
-        <p className="name">
-            이름: <input className="namebox" value={name_text} id='name' onChange={onNameChange} disabled></input>
-        </p>
-        <p className="id"> 
-            아이디: <input className="idbox" value={id_text} id='id' onChange={onChange} disabled></input>
-        </p>
-        <p className="password">
-            비밀번호: <input className="passbox" type='password' id='pwd' onChange={onPwdChange} disabled></input>
-        </p>
-        <p className="phone">
-            전화번호: <input className="phonebox" value={phone_text} id='phone' onChange={onPhoneChange} disabled></input>
-        </p>
-        <p className="birthday">
-            생년월일: <input className="birthdaybox" value={birthday_text} id='birthday' onChange={onBDayChange} disabled></input>
-        </p>
-        
-        </div>
-
-        </div>
-        
-        {/*<p className = "loginProcess">{list}</p>*/}
-
-        <div >
-        
-        {!editable && <button id="editit" className="loginButton" onClick={plzwork} > 
-            내 정보 수정하기
-        </button>}
-        {editable &&  <button id="acceptit" className="loginButton" onClick={savechanges} > 
-            수정 완료
-        </button>}
-        {editable && <button id="undoit" className="loginButton" onClick={refreshPage} > 
-            수정 취소
-        </button>}
-        </div>
+            {!editable && <button id="editit" className="loginButton" onClick={plzwork} > 
+                내 정보 수정하기
+            </button>}
+            {editable &&  <button id="acceptit" className="loginButton" onClick={savechanges} > 
+                수정 완료
+            </button>}
+            {editable && <button id="undoit" className="loginButton" onClick={refreshPage} > 
+                수정 취소
+            </button>}
+            </div>
 
         </div>
 
         <div className="myinfo">
             
-        <div className="MypageBox">
-            
+            <div className="MypageBox">
+                
 
-        <p className="LoginText">
-          직무 정보
-        </p>
-        
-        <div className="idpassword">
+                <p className="LoginText">
+                직무 정보
+                </p>
+                
+                <div className="idpassword">
 
-            내용 및 기능 추가 (부서, 극장)
-        
-        </div>
+                    내용 및 기능 추가 (부서, 극장)
+                
+                </div>
 
-        </div>
-        
-        {/*<p className = "loginProcess">{list}</p>*/}
+            </div>
 
         </div>
 

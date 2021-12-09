@@ -309,6 +309,7 @@ function loadUserInfo(user_id, type) {
         return connection.execute(query).then((result) => {
             if(!result.rows[0]) return {status:false, data: []};
             Log.info(TAG+"loadUser", result.rows[0]);
+            result.rows[0][3] = Util.dateToString(result.rows[0][3]);
             return {status:true, data: result.rows[0]};
         })
         .catch((error) => {
