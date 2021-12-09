@@ -383,7 +383,7 @@ app.post('/admin/listItem', (req, res) => {
   var cinema = req.body.cinema;
   var dept = req.body.department;
 
-  if(dept != "매점팀")  sendRespond(res, 200, {status: false});
+  if(dept != "매점팀" && dept != "관리자" )  sendRespond(res, 200, {status: false});
   else{
     Admin.listItem(cinema).then((result) => {
       sendRespond(res, 200, result);
@@ -396,7 +396,7 @@ app.post('/admin/listItemStocks', (req, res) => {
   var cinema = req.body.cinema;
   var dept = req.body.department;
 
-  if(dept != "매점팀")  sendRespond(res, 200, {status: false});
+  if(dept != "매점팀" && dept != "관리자" )  sendRespond(res, 200, {status: false});
   else{
     Admin.listItemStocks(cinema).then((result) => {
       sendRespond(res, 200, result);
@@ -410,9 +410,21 @@ app.post('/admin/listMaterials', (req, res) => {
   var cinema = req.body.cinema;
   var dept = req.body.department;
 
-  if(dept != "시설팀")  sendRespond(res, 200, {status: false});
+  if(dept != "시설팀" && dept != "관리자" )  sendRespond(res, 200, {status: false});
   else{
     Admin.listMaterial(cinema).then((result) => {
+      sendRespond(res, 200, result);
+    })
+  }
+})
+
+app.post('/admin/listEmployee', (req, res) => {
+  var cinema = req.body.cinema;
+  var dept = req.body.department;
+  var filter = req.body.filter;
+  if(dept != "인사팀" && dept != "관리자" ) sendRespond(res, 200, {status: false});
+  else{
+    Admin.listEmployee(filter).then((result)=>{
       sendRespond(res, 200, result);
     })
   }

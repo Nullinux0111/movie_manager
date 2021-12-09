@@ -25,6 +25,7 @@ exports.listItem = (cinema) => listItem(cinema);
 exports.listItemStocks = (cinema) => listItemStocks(cinema);
 
 exports.listMaterial = (cinema) => listMaterial(cinema);
+exports.listEmployee = (filter) => listEmployee(filter);
 
 
 function addCinema(cinema_name) {
@@ -110,8 +111,11 @@ function setSalary(id, salary) {
 function listItem(cinema) {
     return DBUtil.getDBConnection().then((connection) => {
         if(!connection) return {status:false};
-
-        var query = `select * from Item where cinema_name='${cinema}'`;
+        var query;
+        if(cinema=="본사")
+            query = "select * from Item";
+        else
+            query = `select * from Item where cinema_name='${cinema}'`;
         return connection.execute(query).then((result)=>{
             Log.info(TAG+"listItem", result.rows);
             return {status: true, data: result};
@@ -125,8 +129,11 @@ function listItem(cinema) {
 function listItemStocks(cinema){
     return DBUtil.getDBConnection().then((connection) => {
         if(!connection) return {status:false};
-
-        var query = `select * from Item_stocks where cinema_name='${cinema}'`;
+        var query;
+        if(cinema=="본사")
+            query = "select * from Item_stocks";
+        else
+            query = `select * from Item_stocks where cinema_name='${cinema}'`;
         return connection.execute(query).then((result)=>{
             Log.info(TAG+"listItemStocks", result.rows);
             return {status: true, data: result};
@@ -141,7 +148,11 @@ function listMaterial(cinema) {
     return DBUtil.getDBConnection().then((connection) => {
         if(!connection) return {status:false};
 
-        var query = `select * from Material where cinema_name='${cinema}'`;
+        var query;
+        if(cinema=="본사")
+            query = "select * from Material";
+        else
+            query = `select * from Material where cinema_name='${cinema}'`;
         return connection.execute(query).then((result)=>{
             Log.info(TAG+"listMaterial", result.rows);
             return {status: true, data: result};
@@ -150,4 +161,35 @@ function listMaterial(cinema) {
             return {status: false};
         })
     })
+}
+
+
+function listEmployee(filter) {
+    var where ="where ";
+    var query = "select * from Employee ";
+    var filterCount = 0;
+    if(filter.cinema) {
+        where+=`cinema_name='${filter.cinema}' `;
+        filterCount += 1;
+        if(filter.department) {
+            where += ` and dept_name='${filter.department}' `;
+        }
+        query += where;
+    }
+
+
+    return DBUtil.getDBConnection().then((connection) => {
+        if(!connection) return {status: false};
+
+        return connection.execute(query).then((result)=>{
+            Log.info(TAG+"listEmployee", result.rows);
+            return {status: true, data: result};
+        })
+        .catch((error) => {
+            Log.error(TAG+"listEmployee", error, query);
+            return {status: false};
+        })
+    })
+    
+    
 }
