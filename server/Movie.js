@@ -140,11 +140,11 @@ function updateMovie(data) {
             filterCount += 1;
             query += `director LIKE '%${data.director}%' `;
         }
-        if(data.is_on){
+        if(data.prdtStat){
             if(filterCount > 0)
                 query += `and `;
             filterCount += 1;
-            query += `status=status+1 `;
+            query += `prdtStat=${data.prdtStat}`;
         }
         if(data.grade){
             if(filterCount > 0)
