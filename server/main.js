@@ -591,12 +591,27 @@ app.get('/dummyData', (req, res) => {
     })
   }).then((result)=>{
     response += "insert Schedules finished \t\n";
-    sendRespond(res, 200, response);
+    return initSeats();
+  })
+  .then(()=> {
+    return initItems().then(()=> {
+      response += "insert Items finished\n"
+      return initMaterials();
+    })
+  })
+  .then(()=> {
+    return initMaterials().then(()=>{
+      response += "insert Materials finished\n"
+    })
+  })
+  .then(()=> sendRespond(res, 200, response))
+  .catch((error) => {
+    Log.error(TAG, error);
   })
 
 })
 
-app.get('/initSeats', (req, res)=>{
+function initSeats() {
   const DBUtil = require('./DBUtil');
   var cinemas = ["안산", "서울"];
   var theaters = [1, 2, 3, 4];
@@ -608,7 +623,7 @@ app.get('/initSeats', (req, res)=>{
     }
   }
 
-  DBUtil.getDBConnection().then((connection)=>{
+  return DBUtil.getDBConnection().then((connection)=>{
     var promises = [];
     if(!connection) {
       sendRespond(res, 200, false);
@@ -625,7 +640,6 @@ app.get('/initSeats', (req, res)=>{
                 connection.rollback();
                 resolve(false);
               }
-              Log.info(TAG+"initSeats", "seats are initialized");
               connection.commit();
               resolve(true);
           })
@@ -635,56 +649,12 @@ app.get('/initSeats', (req, res)=>{
     Promise.all(promises).then((result) => {
       Log.info(TAG+"initSeats", "initSeats Complete");
       connection.close();
-      sendRespond(res, 200, true);
     })
   })
-})
+}
 
 
-app.get('/initItems', (req, res) => {
-  const DBUtil = require('./DBUtil');
-  var promises =[];
-  var cinemas = ["안산"];
-  var items = ["달콤팝콘L", "고소팝콘M", "콜라M", "콜라L", "제로콜라M", "제로콜라L",
-              "레몬에이드", "아메리카노"];
-  var costs = [6000, 6000, 3000, 3500, 3000, 3500,
-              3500, 3000];
-  var stocks = [20, 20, 300, 300, 350, 350,
-                200, 200];
-  var binds = [];
-  items.map((value, index) => {
-    binds.push([value, costs[index], stocks[index]]);
-  })
-  DBUtil.getDBConnection().then((connection) => {
-    if(!connection) return false;
-    for(var cinema of cinemas) {
-
-      promises.push(new Promise((resolve, reject) => {
-        connection.executeMany(`insert into Item values(:0, '${cinema}', :1, :2)`, binds)
-          .then((result) => {
-            if(result.batchErrors){
-              Log.error(TAG+"initItems", result.batchErrors);
-              connection.rollback();
-              resolve(false);
-            }
-            Log.info(TAG+"initItems", "item are initialized");
-            connection.commit();
-            resolve(true);
-          })
-      }))
-    }
-    Promise.all(promises).then((result) => {
-      Log.info(TAG+"initItems", "initItems Complete");
-      connection.close();
-      sendRespond(res, 200, true);
-    })
-  })
-  
-  
-})
-
-
-app.get('/initItems_1', (req, res) => {
+function initItems() {
   const DBUtil = require('./DBUtil');
   var promises =[];
   var cinemas = ["안산"];
@@ -698,13 +668,12 @@ app.get('/initItems_1', (req, res) => {
   items.map((value, index) => {
     binds.push([value, materials[index], costs[index]]);
   })
-  initItemStocks().then((result) => {
-    DBUtil.getDBConnection().then((connection) => {
+  return initItemStocks().then((result) => {
+    return DBUtil.getDBConnection().then((connection) => {
       if(!connection) return false;
       for(var cinema of cinemas) {
   
         promises.push(new Promise((resolve, reject) => {
-          var query = `insert into Item values(:0, '${cinema}', :1, 10)`;
           connection.executeMany(`insert into Item values(:0, :1, '${cinema}', :2)`, binds)
             .then((result) => {
               if(result.batchErrors){
@@ -712,26 +681,30 @@ app.get('/initItems_1', (req, res) => {
                 connection.rollback();
                 resolve(false);
               }
-              Log.info(TAG+"initItems", "item are initialized");
               connection.commit();
               resolve(true);
+            })
+            .catch((error) => {
+              Log.error(TAG+"initItem", error);
+              resolve(false);
             })
         }))
       }
       Promise.all(promises).then((result) => {
         Log.info(TAG+"initItems", "initItems Complete");
         connection.close();
-        sendRespond(res, 200, true);
+      })
+      .catch((error) => {
+        Log.error(TAG+"initItem all", error);
       })
     })
   })
-  
-})
+}
 
 
 function initItemStocks(){
   const DBUtil = require('./DBUtil');
-  var cinemas = ["안산"];
+  var cinemas = ["안산", "서울"];
   var promises = [];
   var items = ["옥수수", "콜라", "제로콜라", "음료컵", "레몬에이드", "아메리카노"];
   var stocks = [2, 500, 500, 1000, 300, 300];
@@ -755,16 +728,63 @@ function initItemStocks(){
             connection.commit();
             resolve(true);
           })
+          .catch((error) => {
+            Log.error(TAG+"initItemStocks", error);
+            resolve(false);
+          })
       }))
     }
     Promise.all(promises).then((result) => {
       Log.info(TAG+"initItem_stocks", "initItem_stocks Complete");
       connection.close();
-      //sendRespond(res, 200, true);
+    })
+    .catch((error) => {
+      Log.error(TAG+"initItem_stocks all", error);
     })
   })
 }
 
+function initMaterials(){
+  const DBUtil = require('./DBUtil');
+  var cinemas = ["안산", "서울"];
+  var promises = [];
+  var items = ["영사기", "매점테이블", "매점의자", "좌석", "어린이용방석"];
+  var stocks = [5, 20, 70, 350, 100];
+  var binds = [];
+  items.map((value, index) => {
+    binds.push([value, stocks[index]]);
+  })
+  return DBUtil.getDBConnection().then((connection) => {
+    if(!connection) return false;
+
+    for(var cinema of cinemas){
+      promises.push(new Promise((resolve, reject) => {
+        connection.executeMany(`insert into Material values(:0, '${cinema}', :1)`, binds)
+          .then((result) => {
+            if(result.batchErrors){
+              Log.error(TAG+"initMaterials", result.batchErrors);
+              connection.rollback();
+              resolve(false);
+            }
+            Log.info(TAG+"initMaterials", "materials are initialized");
+            connection.commit();
+            resolve(true);
+          })
+          .catch((error) => {
+            Log.error(TAG+"initMaterials", error);
+            resolve(false);
+          })
+      }))
+    }
+    Promise.all(promises).then((result) => {
+      Log.info(TAG+"initMaterials", "initMaterials Complete");
+      connection.close();
+    })
+    .catch((error) => {
+      Log.error(TAG+"initMaterials all", error);
+    })
+  })
+}
 
 app.get('/hashpassword', (req, res) => {
   var pwd = req.query.pwd;
