@@ -30,7 +30,7 @@ function Header(props) {
         sessionStorage.removeItem("EmployeeCinema");
         sessionStorage.removeItem("EmployeeDepartment");
         alert("성공적으로 로그아웃 되었습니다!");
-        navigate("/");
+        navigate("/Staffmain");
         window.location.reload();
     }
 
