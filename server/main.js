@@ -379,6 +379,58 @@ app.post('/admin/setSalary', (req, res) => {
 })
 
 
+app.post('/admin/listItem', (req, res) => {
+  var cinema = req.body.cinema;
+  var dept = req.body.department;
+
+  if(dept != "매점팀" && dept != "관리자" )  sendRespond(res, 200, {status: false});
+  else{
+    Admin.listItem(cinema).then((result) => {
+      sendRespond(res, 200, result);
+    })
+  }
+
+})
+
+app.post('/admin/listItemStocks', (req, res) => {
+  var cinema = req.body.cinema;
+  var dept = req.body.department;
+
+  if(dept != "매점팀" && dept != "관리자" )  sendRespond(res, 200, {status: false});
+  else{
+    Admin.listItemStocks(cinema).then((result) => {
+      sendRespond(res, 200, result);
+    })
+  }
+
+})
+
+
+app.post('/admin/listMaterial', (req, res) => {
+  var cinema = req.body.cinema;
+  var dept = req.body.department;
+
+  if(dept != "시설팀" && dept != "관리자" )  sendRespond(res, 200, {status: false});
+  else{
+    Admin.listMaterial(cinema).then((result) => {
+      sendRespond(res, 200, result);
+    })
+  }
+})
+
+app.post('/admin/listEmployee', (req, res) => {
+  var cinema = req.body.cinema;
+  var dept = req.body.department;
+  var filter = req.body.filter;
+  if(dept != "인사팀" && dept != "관리자" ) sendRespond(res, 200, {status: false});
+  else{
+    Admin.listEmployee(filter).then((result)=>{
+      sendRespond(res, 200, result);
+    })
+  }
+})
+
+
 // statistic
 
 
@@ -396,209 +448,23 @@ app.listen(port, () => {
 // TEST 함수
 
 app.get('/backTest', (req, res)=> {
-  var data = req.query.filter;
-  console.log("listMovie executed.");
-  
-  reserve.viewMyReservations('hong').then((result) => {
-    sendRespond(res, 200, result);
-  })
+  var cinema = req.query.cinema;
+  var dept = req.query.department;
+
+  if(dept != "매점팀")  sendRespond(res, 200, {status: false});
+  else{
+    Admin.listItem(cinema).then((result) => {
+      sendRespond(res, 200, result);
+    })
+  }
 })
 
-app.get('/listMovie', (req, res) => {
-  var data = req.query.filter;
-  console.log("listMovie executed.");
-  
-  movie.list_movies(data).then((result) => {
-    sendRespond(res, 200, result);
-  })
-})
-
-app.get('/getMovieInfo', (req, res) => {
-  var movie_id = req.query.movie_id;
-  var movie_name = req.query.movie_name;
-  var data={
-    movie_id: movie_id,
-    movie_name: movie_name
-  };
-  movie.getMovieInfo(data).then((result) => {
-    sendRespond(res, 200, result);
-  })
-})
 
 app.get('/dummyData', (req, res) => {
-  var response = ""
-  const api = require('./movieAPI');
-
-  api.insertMovieToDB({movieCode: 20210028}).then(()=>{
-    return api.insertMovieToDB({movieCode: 20212015})
-  })
-  .then(() => {
-    return api.insertMovieToDB({movieCode: 20191282})
-  })
-  .then(() => {
-    return api.insertMovieToDB({movieCode: 20212168})
-  })
-  .then(() => {
-    return api.insertMovieToDB({movieCode: 20210611})
-  })
-  .then(() => {
-    return api.insertMovieToDB({movieCode: 20196264})
-  })
-  .then(() => {
-    return api.insertMovieToDB({movieCode: 20205986})
-  })
-  .then(() => {
-    return api.insertMovieToDB({movieCode: 20210087})
-  })
-  .then(()=>{
-    response += "insert Movie finished \t\n";
-  })
-  .then(() => {
-    return customerACC.join_customer({
-      id: "TEST",
-      pwd: "test",
-      name: "유저",
-      phone: "010-000-0000",
-      birthday: "2000-01-01"
-    }).then((result)=>{
-      if(result)
-        response += "insert customer finished \t \n";
-      else
-        response += "insert customer Failed \t \n";
-    })
-  }).then(()=> {
-    return Admin.addEmployee({
-      id: "EMPL",
-      name: "직원",
-      phone: "010-0000-0101",
-      birthday: null,
-      cinema: "안산",
-      dept: "시설팀",
-      salary: null
-    }).then((result)=>{
-      if(result)
-        response += "insert employee finished \t \n";
-      else
-        response += "insert employee Failed \t \n";
-    })
-  }).then(()=>{
-    schedule.insertSchedule({
-      play_date: "2021-12-09",
-      play_time: "2021-12-09 09:00:00",
-      cinema: "안산",
-      theater: 1,
-      movie_id: "20196264",
-      movie_name: "유체이탈자",
-      play_type: "day"
-    })
-  }).then(()=>{
-    schedule.insertSchedule({
-      play_date: "2021-12-09",
-      play_time: "2021-12-09 09:00:00",
-      cinema: "서울",
-      theater: 1,
-      movie_id: "20196264",
-      movie_name: "유체이탈자",
-      play_type: "day"
-    })
-  }).then(()=>{
-    schedule.insertSchedule({
-      play_date: "2021-12-10",
-      play_time: "2021-12-10 09:00:00",
-      cinema: "안산",
-      theater: 2,
-      movie_id: "20210028",
-      movie_name: "스파이더맨: 노 웨이 홈",
-      play_type: "day"
-    })
-  }).then(()=>{
-    schedule.insertSchedule({
-      play_date: "2021-12-10",
-      play_time: "2021-12-10 09:00:00",
-      cinema: "서울",
-      theater: 2,
-      movie_id: "20210028",
-      movie_name: "스파이더맨: 노 웨이 홈",
-      play_type: "day"
-    })
-  }).then(()=>{
-    schedule.insertSchedule({
-      play_date: "2021-12-09",
-      play_time: "2021-12-09 13:00:00",
-      cinema: "안산",
-      theater: 1,
-      movie_id: "20210028",
-      movie_name: "스파이더맨: 노 웨이 홈",
-      play_type: "day"
-    })
-  }).then(()=>{
-    schedule.insertSchedule({
-      play_date: "2021-12-09",
-      play_time: "2021-12-09 13:00:00",
-      cinema: "서울",
-      theater: 1,
-      movie_id: "20196264",
-      movie_name: "유체이탈자",
-      play_type: "day"
-    })
-  }).then((result)=>{
-    response += "insert Schedules finished \t\n";
-    sendRespond(res, 200, response);
-  })
-
+  const init = require('./init.js');
+  init.dummyData(res);
 })
 
-app.get('/initSeats', (req, res)=>{
-  const DBUtil = require('./DBUtil');
-  var cinemas = ["안산", "서울"];
-  var theaters = [1, 2, 3, 4];
-  var seats = [];
-  
-  for(var i=0; i<6; i++){
-    for(var j=0; j<10;j++){
-      seats.push([String.fromCharCode(i+65) + String(j+1)]);
-    }
-  }
-
-  DBUtil.getDBConnection().then((connection)=>{
-    var promises = [];
-    if(!connection) {
-      sendRespond(res, 200, false);
-      return;
-    }
-    for(var cinema of cinemas){
-      for(var theater of theaters){
-        promises.push(new Promise((resolve, reject) => {
-          connection.executeMany(`insert into seat values('${cinema}', ${theater}, :bv, '기본' )`,
-                                  seats, {autoCommit:false, batchErrors:true})
-          .then((result) => {
-              if(result.batchErrors){
-                Log.error(TAG+"initSeats", result.batchErrors);
-                connection.rollback();
-                resolve(false);
-              }
-              Log.info(TAG+"initSeats", "seats are initialized");
-              connection.commit();
-              resolve(true);
-          })
-        }))
-      }
-    }
-    Promise.all(promises).then((result) => {
-      Log.info(TAG+"initSeats", "initSeats Complete");
-      connection.close();
-      sendRespond(res, 200, true);
-    })
-  })
-})
-
-
-app.get('/hashpassword', (req, res) => {
-  var pwd = req.query.pwd;
-  var id = req.query.id;
-
-  sendRespond(res, 200, Util.generateHashPassword(pwd, id));
-})
 
 app.get('/join_test', (req, res) => {
   var user = req.query.user;
