@@ -307,8 +307,9 @@ function loadUserInfo(user_id, type) {
         var query = `select * from ${type} where customer_id='${user_id}'`;
         
         return connection.execute(query).then((result) => {
-            if(!result[0]) return {status:false, data: []};
-            return {status:true, data: result[0]};
+            if(!result.rows[0]) return {status:false, data: []};
+            Log.info(TAG+"loadUser", result.rows[0]);
+            return {status:true, data: result.rows[0]};
         })
         .catch((error) => {
             Log.error(TAG+"loadUserInfo", error, query);
@@ -339,19 +340,20 @@ function setUserInfo(user_id, data, type) {
             var bd = new Date(data.birthday);
             data.birthday = Util.dateToString(bd);
             if(filterCount>0)
-                query += `and `;
+                query += `, `;
             filterCount += 1;
             query += `birthday=TO_DATE('${data.birthday}', '${Util.dateFormat}') `
         }
         if(data.name){
             if(filterCount>0)
-                query += `and `;
+                query += `, `;
             filterCount += 1;
             query += `${type}_name='${data.name}' `;
         }
         
         if(filterCount>0){
             query += `where ${type}_id='${user_id}'`;
+            Log.info(TAG+"setUserInfo", query);
             return connection.execute(query).then((result) => {
                 if(result.rowsAffected>0)
                     Log.info(TAG+"setUserInfo", "Affected: " + result.rowsAffected);
@@ -369,6 +371,7 @@ function setUserInfo(user_id, data, type) {
                         return {status: true};
                     })
                 }
+                return result;
             })
             .catch((error) => {
                 Log.error(TAG+"setUserInfo", error, query);

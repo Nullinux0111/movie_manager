@@ -6,11 +6,12 @@ import './assets/css/style19.css';
 import './assets/css/swiper.css';
 import "./Mypage.css";
 import Header from "./Header.js";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, Route, useNavigate, useLocation } from 'react-router-dom';
+import { init } from 'express/lib/application';
 
 var orig_id = "12345";
-var orig_pwd = "qwert";
+var orig_pwd = "";
 var orig_name = "홍길동";
 var orig_phone = "010-1234-1234";
 var orig_bday = "2000-01-01";
@@ -84,12 +85,11 @@ function MyPage() {
     };
     const onKeyPress = (e) => {
         if(e.key === 'Enter'){
-         onEnter(e);
+         setInfo(e);
         }
     }
 
     const plzwork = (e) => {
-        onEnter(e);
         fieldsetEnable('name');
         fieldsetEnable('id');
         fieldsetEnable('pwd');
@@ -102,58 +102,61 @@ function MyPage() {
     }
 
     const savechanges = (e) => {
-        onEnter(e);
         console.log(id_text);
         console.log(pwd_text);
         console.log(name_text);
         console.log(phone_text);
         console.log(birthday_text);
-        //이 코드는 임시 코드로, 백엔드에 정보를 보내는 코드로 바꾸는게 맞다.
+        setInfo().then(() => {
+            getInfo();
+            fieldsetDisable('name');
+            fieldsetDisable('id');
+            fieldsetDisable('pwd');
+            fieldsetDisable('phone');
+            fieldsetDisable('birthday');
+            setEditable(!editable);
+        })
+        passwordhide();
+        //refreshPage();
+        //위 코드는 백엔드로 가는 코드를 넣고나면 지우고, refresh page를 활성화해 정보가 바뀌면 이를 갱신하도록 한다.
+    }
 
+    const cancelChanges = (e) => {
+        setText(orig_id);
+        setName(orig_name);
+        setPhone(orig_phone);
+        setBDay(orig_bday);
+        setPWd("");
+        
         fieldsetDisable('name');
         fieldsetDisable('id');
         fieldsetDisable('pwd');
         fieldsetDisable('phone');
         fieldsetDisable('birthday');
-
         passwordhide();
 
         setEditable(!editable);
-        //refreshPage();
-        //위 코드는 백엔드로 가는 코드를 넣고나면 지우고, refresh page를 활성화해 정보가 바뀌면 이를 갱신하도록 한다.
     }
 
-    const onEnter = (e) => {
+    
+    const setInfo = () => {
         setLoading(true);
-        fetch(`http://localhost:3001?user=${id_text}&pwd=${pwd_text}&query=select * from pc`)
-          .then((res) => res.json())
-          .then((res) => {
-            console.log("res:" + res);
-            console.log("res.text:" + res['text']);
-            console.log("res.data: " + res['data']);
-            var a = res['data'];
-            //setList(a[1]);
-            setList(res['data']);
-            setLoading(false);
-            setIsLoading(false);
-          })
-          .catch((err) => {
-            console.log(err);
-            setList(err.message);
-            setLoading(false);
-            setIsLoading(false);
-          })
-        
-         }
-        const onEnterPost = (e) => {
-            setLoading(true);
-            const parameters = {
-            user: id_text,
-            pwd: pwd_text,
-            query: "select * from student"
+
+        var data = {
+            id: sessionStorage.getItem("MovieCurrentUser"),
+            name: name_text,
+            phone: phone_text,
+            birthday: birthday_text
         };
-            console.log(JSON.stringify(parameters));
-            fetch("http://localhost:3001/api",{
+        if(pwd_text.replace(/(\s*)/g, "") != ""){
+            data.pwd = pwd_text;
+            console.log("try to change password");
+        }
+        
+        const parameters = { data: data };
+        console.log(JSON.stringify(parameters));
+
+        return fetch("http://localhost:3001/updateCustomerInfo",{
             method: "post", //통신방법
             headers: {
                 "Content-Type": "application/json",
@@ -163,9 +166,11 @@ function MyPage() {
         .then((res) => res.json())
         .then((res) => {
             console.log("res:" + res);
-            console.log("res.text:" + res['text']);
             console.log("res.data: " + res['data']);
-            setList(res['text']);
+            if(!res['status']){
+                alert("정보를 수정할 수 없습니다.");
+                cancelChanges();
+            }
             setLoading(false);
             setIsLoading(false);
         })
@@ -177,11 +182,85 @@ function MyPage() {
         });
         
     }
-      
-        if(loading & !isLoading) {
-            setIsLoading(true);
-            setList("waiting for connection...");
-        }
+
+    const getInfo = () => {
+        console.log("load informations...");
+        setLoading(true);
+        const parameters = {
+            id: sessionStorage.getItem("MovieCurrentUser")
+        };
+        console.log(JSON.stringify(parameters));
+        fetch("http://localhost:3001/viewCustomerInfo",{
+            method: "post", //통신방법
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(parameters),
+        })
+        .then((res) => res.json())
+        .then((res) => {
+            console.log("res:" + res);
+            console.log("res.data: " + res['data']);
+            setText(parameters['id']);
+            setName(res['data'][1]);
+            setPhone(res['data'][2]);
+            setBDay(res['data'][3]);
+            orig_id = parameters['id'];
+            orig_name = res['data'][1];
+            orig_phone = res['data'][2];
+            orig_bday = res['data'][3];
+
+            setLoading(false);
+            setIsLoading(false);
+        })
+        .catch((err) => {
+            console.log(err);
+            setList(err.message);
+            setLoading(false);
+            setIsLoading(false);
+        });
+    };
+
+    const getReservations = () => {
+        setLoading(true);
+        const parameters = {
+            id: sessionStorage.getItem("MovieCurrentUser")
+        };
+        console.log(JSON.stringify(parameters));
+        fetch("http://localhost:3001/myReservation",{
+            method: "post", //통신방법
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(parameters),
+        })
+        .then((res) => res.json())
+        .then((res) => {
+            console.log("res:" + res);
+            console.log("res.data: " + res['data']);
+            
+            setLoading(false);
+            setIsLoading(false);
+        })
+        .catch((err) => {
+            console.log(err);
+            setList(err.message);
+            setLoading(false);
+            setIsLoading(false);
+        });
+    }
+
+    const initInfo =() => {
+        getInfo();
+        getReservations();
+        return;
+    }
+    useEffect(() => initInfo(), []);
+
+    if(loading & !isLoading) {
+        setIsLoading(true);
+        setList("waiting for connection...");
+    }
 
     return (
     <body className="MyPage">
@@ -231,7 +310,7 @@ function MyPage() {
         {editable &&  <button id="acceptit" className="loginButton" onClick={savechanges} > 
             수정 완료
         </button>}
-        {editable && <button id="undoit" className="loginButton" onClick={refreshPage} > 
+        {editable && <button id="undoit" className="loginButton" onClick={cancelChanges} > 
             수정 취소
         </button>}
         </div>
