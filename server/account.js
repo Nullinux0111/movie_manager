@@ -176,12 +176,12 @@ function insertUser(data) {
     var pwd = data.pwd;
     var bindParams = {
         id : data.id,
-        name: data.name||"undefined",
-        phone: data.phone || "undefined",
+        name: data.name,
+        phone: data.phone,
         birthday: data.birthday
     };
 
-    if(!data.id || !pwd)
+    if(!data.id || !pwd || !data.name || !data.phone)
         return Promise.resolve(false);
 
     return DBUtil.getDBConnection()
