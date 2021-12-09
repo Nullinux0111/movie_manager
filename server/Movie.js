@@ -117,7 +117,7 @@ function getMovieInfo(data) {
             Log.error(TAG+"getInfo_json", error);
             return {status: false};
         })
-        
+
     })
     .catch((error) => {
         Log.error(TAG+"getMovieInfo", error, query);
@@ -169,6 +169,7 @@ function updateMovie(data) {
 
         return connection.execute(query).then((result)=>{
             Log.info(TAG+"update", "rowsAffected: " + result.rowsAffected);
+            connection.commit();
             return {status: true};
         })
         .catch((error) => {

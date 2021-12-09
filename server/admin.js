@@ -90,6 +90,7 @@ function setSalary(id, salary) {
         if(!connection) return {status: false};
         var query =`update Employee set salary=${salary} where employee_id='${id}'`;
         return connection.execute(query).then((result) => {
+            connection.commit();
             return {status: true};
         }).catch((error) => {
             Log.error(TAG+"setSalary", error, query);

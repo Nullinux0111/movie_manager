@@ -357,6 +357,7 @@ function setUserInfo(user_id, data, type) {
                     Log.info(TAG+"setUserInfo", "Affected: " + result.rowsAffected);
                 else
                     Log.info(TAG+"setUserInfo", "nothing changed");
+                connection.commit();
                 return {status: true};
             })
             .then((result) => {
@@ -364,6 +365,7 @@ function setUserInfo(user_id, data, type) {
                     query = `update ${table} set user_pwd='${Util.generateHashPassword(data.pwd, user_id)}' where user_id='${user_id}'`;
                     return connection.execute(query).then((result) => {
                         Log.info(TAG+"setUserPwd", "Affected: " + result.rowsAffected);
+                        connection.commit();
                         return {status: true};
                     })
                 }
@@ -377,6 +379,7 @@ function setUserInfo(user_id, data, type) {
             query = `update ${table} set user_pwd='${Util.generateHashPassword(data.pwd, user_id)}' where user_id='${user_id}'`;
             return connection.execute(query).then((result) => {
                 Log.info(TAG+"setUserPwd", "Affected: " + result.rowsAffected);
+                connection.commit();
                 return {status: true};
             })
             .catch((error)=>{

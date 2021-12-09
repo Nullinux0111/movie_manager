@@ -162,6 +162,18 @@ app.post('/getMovieInfo', (req, res) => {
   })
 })
 
+app.post('/updateMovieInfo', (req, res) => {
+  var movie_id = req.body.movie_id;
+  var data = req.body.data;
+  if(!movie_id) sendRespond(res, 200, {status: false});
+  else{
+    data.movie_id = movie_id;
+    movie.updateMovie(data).then((result) => {
+      sendRespond(res, 200, result);
+    })
+  }
+})
+
 
 // Schedule
 
