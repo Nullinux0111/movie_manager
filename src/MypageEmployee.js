@@ -246,12 +246,12 @@ function MyPage() {
             
 
         <p className="LoginText">
-          예매목록
+          직무 정보
         </p>
         
         <div className="idpassword">
 
-            내용 및 기능 추가 예정
+            내용 및 기능 추가 (부서, 극장)
         
         </div>
 
