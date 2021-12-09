@@ -48,7 +48,7 @@ function Header(props) {
                 <div class="row">
                     <div class="header clearfix">
                         <h1>
-                        <Link to="/Main" state={state}>
+                        <Link to="/Staffmain" state={state}>
                             <em>
                                 <img src={pbl_logo} alt="일석이조" />
                             </em>
