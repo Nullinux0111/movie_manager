@@ -304,7 +304,7 @@ function loadUserInfo(user_id, type) {
     return DBUtil.getDBConnection().then((connection) => {
         if(!connection) return {status: false};
 
-        var query = `select * from ${type} where customer_id='${user_id}'`;
+        var query = `select * from ${type} where ${type}_id='${user_id}'`;
         
         return connection.execute(query).then((result) => {
             if(!result.rows[0]) return {status:false, data: []};
