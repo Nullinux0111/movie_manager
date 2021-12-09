@@ -16,7 +16,8 @@ exports.addEmployee = (data) => {
 
 exports.getDepartment = (id) => getDepartment(id);
 
-
+exports.setDepartment = (id, cinema, dept) => setDepartment(id, cinema, dept);
+exports.setSalary = (id, salary) => setSalary(id, salary);
 
 
 function addCinema(cinema_name) {
@@ -64,6 +65,35 @@ function getDepartment(employee_id) {
         .catch((error) => {
             Log.error(TAG+"getDepartment", error);
             return {status:false};
+        })
+    })
+}
+
+function setDepartment(id, cinema, dept) {
+    return DBUtil.getDBConnection().then((connection) => {
+        if(!connection) return {status : false};
+
+        var query = `update Employee set cinema='${cinema}' and dept_name='${dept}' where employee_id='${id}'`;
+        return connection.execute(query).then((result) => {
+            connection.commit();
+            return {status: true};
+        })
+        .catch((error) => {
+            Log.error(TAG+"setDept", error, query);
+            return {status: false};
+        })
+    })
+}
+
+function setSalary(id, salary) {
+    return DBUtil.getDBConnection().then((connection) => {
+        if(!connection) return {status: false};
+        var query =`update Employee set salary=${salary} where employee_id='${id}'`;
+        return connection.execute(query).then((result) => {
+            return {status: true};
+        }).catch((error) => {
+            Log.error(TAG+"setSalary", error, query);
+            return {status: false};
         })
     })
 }

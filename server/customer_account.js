@@ -13,6 +13,12 @@ exports.login_customer = (id, pwd) => {
     return login_customer(id, pwd);
 }
 
+exports.loadInfo = (id) => account.load_customer_info(id);
+
+exports.setInfo = (id, data) => {
+    return account.set_customer_info(id, data);
+}
+
 /**
  * Join account for customer.
  * 

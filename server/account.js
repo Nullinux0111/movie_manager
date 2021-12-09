@@ -29,6 +29,22 @@ exports.loginEmployee = (id, pwd) => {
     return login(id, pwd, "Employee");
 }
 
+exports.load_customer_info = (id) => {
+    return loadUserInfo(id, "Customer");
+}
+
+exports.load_employee_info = (id) => {
+    return loadUserInfo(id, "Employee");
+}
+
+exports.set_customer_info = (id, data) => {
+    return setUserInfo(id, data, "Customer");
+}
+
+exports.set_employee_info = (id, data) => {
+    return setUserInfo(id, data, "Employee");
+}
+
 
 /**
  * Check if id exists.
@@ -280,5 +296,99 @@ function insertEmployee(data) {
         // DB connection Error
         Log.error(TAG+"insertEmployee", error);
         return false;
+    })
+}
+
+
+function loadUserInfo(user_id, type) {
+    return DBUtil.getDBConnection().then((connection) => {
+        if(!connection) return {status: false};
+
+        var query = `select * from ${type} where customer_id='${user_id}'`;
+        
+        return connection.execute(query).then((result) => {
+            if(!result[0]) return {status:false, data: []};
+            return {status:true, data: result[0]};
+        })
+        .catch((error) => {
+            Log.error(TAG+"loadUserInfo", error, query);
+            return {status: false};
+        })
+    })
+}
+
+function setUserInfo(user_id, data, type) {
+    var table = "";
+    if(type=="Customer")
+        table = "CustomerAcc";
+    else if(type == "Employee")
+        table = "EmployeeAcc";
+    else
+        return Promise.resolve({status: false});
+
+    return DBUtil.getDBConnection().then((connection) => {
+        if(!connection) return {status: false};
+        var query = `update ${type} set `;
+        var filterCount = 0;
+
+        if(data.phone){
+            filterCount += 1;
+            query += `phone_number='${data.phone}' `;
+        }
+        if(data.birthday){
+            var bd = new Date(data.birthday);
+            data.birthday = Util.dateToString(bd);
+            if(filterCount>0)
+                query += `and `;
+            filterCount += 1;
+            query += `birthday=TO_DATE('${data.birthday}', '${Util.dateFormat}') `
+        }
+        if(data.name){
+            if(filterCount>0)
+                query += `and `;
+            filterCount += 1;
+            query += `${type}_name='${data.name}' `;
+        }
+        
+        if(filterCount>0){
+            query += `where ${type}_id='${user_id}'`;
+            return connection.execute(query).then((result) => {
+                if(result.rowsAffected>0)
+                    Log.info(TAG+"setUserInfo", "Affected: " + result.rowsAffected);
+                else
+                    Log.info(TAG+"setUserInfo", "nothing changed");
+                return {status: true};
+            })
+            .then((result) => {
+                if(data.pwd && result.status){
+                    query = `update ${table} set user_pwd='${Util.generateHashPassword(data.pwd, user_id)}' where user_id='${user_id}'`;
+                    return connection.execute(query).then((result) => {
+                        Log.info(TAG+"setUserPwd", "Affected: " + result.rowsAffected);
+                        return {status: true};
+                    })
+                }
+            })
+            .catch((error) => {
+                Log.error(TAG+"setUserInfo", error, query);
+                return {status: false};
+            })
+        }
+        else if(data.pwd){
+            query = `update ${table} set user_pwd='${Util.generateHashPassword(data.pwd, user_id)}' where user_id='${user_id}'`;
+            return connection.execute(query).then((result) => {
+                Log.info(TAG+"setUserPwd", "Affected: " + result.rowsAffected);
+                return {status: true};
+            })
+            .catch((error)=>{
+                Log.error(TAG+"setUserPwd", error, query);
+                return {status:false};
+            })
+        }
+        Log.info(TAG+"setUserInfo", "nothing");
+        return {status: true};
+    })
+    .catch((error) => {
+        Log.error(TAG+"setUserInfo", error);
+        return {status:false};
     })
 }

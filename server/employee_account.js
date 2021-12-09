@@ -13,6 +13,12 @@ exports.login_employee = (id, pwd) => {
     return login_employee(id, pwd);
 }
 
+exports.loadInfo = (id) => account.load_employee_info(id);
+
+exports.setInfo = (id, data) => {
+    return account.set_employee_info(id, data);
+}
+
 /**
  * Join account for employee.
  * 

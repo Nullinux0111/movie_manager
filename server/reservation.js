@@ -70,9 +70,24 @@ const viewMyReservations = (user) => {
         if(!connection) return {status: false};
 
         return connection.execute(query).then((result) => {
+            var rows = [];
+            var json={};
             if(!result || !result.rows)
                 return {status: true, data: []};
-            return {status: true, data: result};
+            Log.info(TAG+"viewReserv", "rows.length: " + result.rows.length);
+            for(var row of result.rows){
+                json.cost = row[1];
+                json.pay_time = row[3];
+                json.movie_id = row[4];
+                json.movie_name = row[5];
+                json.play_time = row[7];
+                json.cinema = row[8];
+                json.theater = row[9];
+                json.seat = row[10];
+                json.isPrinted = row[12];
+                rows.push(json);
+            }
+            return {status: true, data: rows};
         })
         .catch((error) => {
             Log.error(TAG+"viewReserv", error);

@@ -76,7 +76,37 @@ app.post('/login', (req, res) => {
   }
 })
 
-app.post('/')
+app.post('/viewCustomerInfo', (req, res) => {
+  var id = req.body.id;
+  customerACC.loadInfo(id).then((result) => {
+    sendRespond(res, 200, result);
+  })
+})
+
+app.post('/viewEmployeeInfo', (req, res) => {
+  var id = req.body.id;
+  employeeACC.loadInfo(id).then((result) => {
+    sendRespond(res, 200, result);
+  })
+})
+
+app.post('/updateCustomerInfo', (req, res) => {
+  var data = req.body.data;
+  var id = data.id;
+  
+  customerACC.setInfo(id, data).then((result) => {
+    sendRespond(res, 200, result);
+  })
+})
+
+app.post('/updateEmployeeInfo', (req, res) => {
+  var data = req.body.data;
+  var id = data.id;
+  
+  employeeACC.setInfo(id, data).then((result) => {
+    sendRespond(res, 200, result);
+  })
+})
 
 
 // Cinema
@@ -171,6 +201,7 @@ app.post('/check_seat_available', (req, res) => {
   })
   .catch((error) => {
     Log.error(TAG+"check_seat", error);
+    sendRespond(res, 200, {status: false});
   })
   
 })
@@ -190,7 +221,7 @@ app.post('/checkCost', (req, res) => {
       sendRespond(res, 200, {status:false});
   })
   .catch((error) => {
-    Log.error(TAG+"/selectSchedule", error);
+    Log.error(TAG+"/checkCost", error);
     sendRespond(res, 200, {status: false});
   })
   
@@ -207,14 +238,25 @@ app.post('/reservation', (req, res) => {
   if(play_date && play_time && cinema && theater && seat_num && user_id){
     schedule.selectSchedule(play_date, play_time, cinema, theater).then((target) => {
       if(!target) sendRespond(res, 200, {status:false, data:target});
-      Log.info(TAG+"test", "target found");
+      Log.info(TAG+"reservation", "target found");
       reserve.reserve(user_id, target, seat_num).then((result) => {
         sendRespond(res, 200, result);
       })
     })
+    .catch((error) => {
+      Log.error(TAG+"main.js", error);
+    })
   }
   else
     sendRespond(res, 200, {status: false});
+})
+
+
+app.post('/myReservation', (req, res) => {
+  var id = req.body.id;
+  reserve.viewMyReservations(id).then((result) => {
+    sendRespond(res, 200, result);
+  })
 })
 
 
@@ -279,6 +321,31 @@ app.post('/admin/getDepartment', (req, res) => {
   })
 })
 
+app.post('/admin/setDepartment', (req, res) => {
+  var id = req.body.employee_id;
+  var cinema = req.body.cinema;
+  var dept = req.body.department;
+
+  if(!id)
+    sendRespond(res, 200, {status: false});
+  else
+    Admin.setDepartment(id, cinema, dept).then((result) => {
+      sendRespond(res, 200, result);
+    })
+})
+
+app.post('/admin/setSalary', (req, res) => {
+  var id = req.body.employee_id;
+  var salary = req.body.salary;
+
+  if(!id)
+    sendRespond(res, 200, {status: false});
+  else
+    Admin.setSalary(id, salary).then((result) => {
+      sendRespond(res, 200, result);
+    })
+})
+
 
 // statistic
 
@@ -300,7 +367,7 @@ app.get('/backTest', (req, res)=> {
   var data = req.query.filter;
   console.log("listMovie executed.");
   
-  movie.list_movies(data).then((result) => {
+  reserve.viewMyReservations('hong').then((result) => {
     sendRespond(res, 200, result);
   })
 })
