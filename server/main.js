@@ -142,6 +142,26 @@ app.post('/listMovie', (req, res) => {
   })
 })
 
+app.post('/getMovieName', (req, res) => {
+  var movie_id = req.body.movie_id;
+
+  movie.getMovieName(movie_id).then((result) => {
+    sendRespond(res, 200, result);
+  })
+})
+
+app.post('/getMovieInfo', (req, res) => {
+  var movie_id = req.body.movie_id;
+  var movie_name = req.body.movie_name;
+  var data={
+    movie_id: movie_id,
+    movie_name: movie_name
+  };
+  movie.getMovieInfo(data).then((result) => {
+    sendRespond(res, 200, result);
+  })
+})
+
 
 // Schedule
 
@@ -377,6 +397,18 @@ app.get('/listMovie', (req, res) => {
   console.log("listMovie executed.");
   
   movie.list_movies(data).then((result) => {
+    sendRespond(res, 200, result);
+  })
+})
+
+app.get('/getMovieInfo', (req, res) => {
+  var movie_id = req.query.movie_id;
+  var movie_name = req.query.movie_name;
+  var data={
+    movie_id: movie_id,
+    movie_name: movie_name
+  };
+  movie.getMovieInfo(data).then((result) => {
     sendRespond(res, 200, result);
   })
 })
