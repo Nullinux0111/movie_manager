@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import pbl_logo from './assets/img/pbl_logo.png';
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import Header from "./Headerstaff.js";
@@ -20,9 +20,73 @@ function StaffItem() {
   let navigate = useNavigate();
   let location = useLocation();
   
-  return (
+  const [itemMeta, setItemMeta] = useState();
+  const [itemRowsData, setItemData] = useState();
+  const [stockMeta, setStockMeta] = useState();
+  const [stockRowsData, setStockData] = useState();
+  
+  const getItemTable = () => {
+    const parameters = {
+      cinema: sessionStorage.getItem("EmployeeCinema"),
+      department: sessionStorage.getItem("EmployeeDepartment")
+    }
+    fetch("http://localhost:3001/admin/listItem",{
+            method: "post", //통신방법
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(parameters),
+        })
+        .then((res) => res.json())
+        .then((res) => {
+            console.log("res:" + res);
+            console.log("res.data: " + res['data']);
+            if(res['status']){
+               setItemMeta(res['data'].metaData );
+               setItemData(res['data'].rows);
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+  }
 
-    
+  const getItemStocksTable = () => {
+    const parameters = {
+      cinema: sessionStorage.getItem("EmployeeCinema"),
+      department: sessionStorage.getItem("EmployeeDepartment")
+    }
+    fetch("http://localhost:3001/admin/listItemStocks",{
+            method: "post", //통신방법
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(parameters),
+        })
+        .then((res) => res.json())
+        .then((res) => {
+            console.log("res:" + res);
+            console.log("res.data: " + res['data']);
+            if(res['status']){
+               setStockMeta(res['data'].metaData );
+               setStockData(res['data'].rows);
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+  }
+
+  const initData = () => {
+    getItemTable();
+    getItemStocksTable();
+    return;
+  }
+
+  useEffect(()=> initData(), []);
+  var cinema = sessionStorage.getItem("EmployeeCinema");
+  var dept = sessionStorage.getItem("EmployeeDepartment");
+  return (
     <>
     <Header state={location.state}/>
       
@@ -31,74 +95,79 @@ function StaffItem() {
           <Col md="12">
             <Card className="strpied-tabled-with-hover">
               <Card.Header>
-                <Card.Title as="h4">Striped Table with Hover</Card.Title>
+                <Card.Title as="h4">{cinema} 지점의 {dept} 대시보드입니다.</Card.Title>
                 <p className="card-category">
-                  Here is a subtitle for this table
+                  판매하는 물품
                 </p>
               </Card.Header>
               <Card.Body className="table-full-width table-responsive px-0">
                 <Table className="table-hover table-striped">
-                  <thead>
-                    <tr>
-                      <th className="border-0">ID</th>
-                      <th className="border-0">Name</th>
-                      <th className="border-0">Salary</th>
-                      <th className="border-0">Country</th>
-                      <th className="border-0">City</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>Dakota Rice</td>
-                      <td>$36,738</td>
-                      <td>Niger</td>
-                      <td>Oud-Turnhout</td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>Minerva Hooper</td>
-                      <td>$23,789</td>
-                      <td>Curaçao</td>
-                      <td>Sinaai-Waas</td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td>Sage Rodriguez</td>
-                      <td>$56,142</td>
-                      <td>Netherlands</td>
-                      <td>Baileux</td>
-                    </tr>
-                    <tr>
-                      <td>4</td>
-                      <td>Philip Chaney</td>
-                      <td>$38,735</td>
-                      <td>Korea, South</td>
-                      <td>Overland Park</td>
-                    </tr>
-                    <tr>
-                      <td>5</td>
-                      <td>Doris Greene</td>
-                      <td>$63,542</td>
-                      <td>Malawi</td>
-                      <td>Feldkirchen in Kärnten</td>
-                    </tr>
-                    <tr>
-                      <td>6</td>
-                      <td>Mason Porter</td>
-                      <td>$78,615</td>
-                      <td>Chile</td>
-                      <td>Gloucester</td>
-                    </tr>
-                  </tbody>
+                  {makeTableHead(itemMeta)}
+                  {makeDataRows(itemRowsData)}
+                </Table>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md="12">
+            <Card className="strpied-tabled-with-hover">
+              <Card.Header>
+                <p className="card-category">
+                  근무지의 재고를 수시로 확인하기 바랍니다.
+                </p>
+              </Card.Header>
+              <Card.Body className="table-full-width table-responsive px-0">
+                <Table className="table-hover table-striped">
+                  {makeTableHead(stockMeta)}
+                  {makeDataRows(stockRowsData)}
                 </Table>
               </Card.Body>
             </Card>
           </Col>
         </Row>
       </Container>
+      
     </>
   );
 }
+
+function makeTableHead(list){
+    if(!list || list.length==0){
+      return (<thead>
+        <tr>
+          Data not found!
+        </tr>
+      </thead>)
+    }
+    return (
+      <thead>
+        <tr>
+          {list.map((data) => (
+            <th className="border-0">{data.name}</th>
+          ))}
+        </tr>
+      </thead>);
+}
+
+function makeDataRows(data) {
+  if(!data || data.length==0){
+    return (<tbody>
+      <tr>
+        Data not found!
+      </tr>
+    </tbody>);
+  }
+  return (
+    <tbody>
+      {data.map((row) => (
+        <tr>
+          {row.map((e) => (
+            <td>{e}</td>
+          ))}
+        </tr>
+      ))}
+    </tbody>);
+
+}
+
 
 export default StaffItem;

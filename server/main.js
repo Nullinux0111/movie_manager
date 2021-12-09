@@ -379,6 +379,36 @@ app.post('/admin/setSalary', (req, res) => {
 })
 
 
+app.post('/admin/listItem', (req, res) => {
+  var cinema = req.body.cinema;
+  var dept = req.body.department;
+
+  if(dept != "매점팀")  sendRespond(res, 200, {status: false});
+  else{
+    Admin.listItem(cinema).then((result) => {
+      sendRespond(res, 200, result);
+    })
+  }
+
+})
+
+app.post('/admin/listItemStocks', (req, res) => {
+  var cinema = req.body.cinema;
+  var dept = req.body.department;
+
+  if(dept != "매점팀")  sendRespond(res, 200, {status: false});
+  else{
+    Admin.listItemStocks(cinema).then((result) => {
+      sendRespond(res, 200, result);
+    })
+  }
+
+})
+
+
+
+
+
 // statistic
 
 
@@ -396,12 +426,15 @@ app.listen(port, () => {
 // TEST 함수
 
 app.get('/backTest', (req, res)=> {
-  var data = req.query.filter;
-  console.log("listMovie executed.");
-  
-  reserve.viewMyReservations('hong').then((result) => {
-    sendRespond(res, 200, result);
-  })
+  var cinema = req.query.cinema;
+  var dept = req.query.department;
+
+  if(dept != "매점팀")  sendRespond(res, 200, {status: false});
+  else{
+    Admin.listItem(cinema).then((result) => {
+      sendRespond(res, 200, result);
+    })
+  }
 })
 
 app.get('/listMovie', (req, res) => {
@@ -474,6 +507,21 @@ app.get('/dummyData', (req, res) => {
       birthday: null,
       cinema: "안산",
       dept: "시설팀",
+      salary: null
+    }).then((result)=>{
+      if(result)
+        response += "insert employee finished \t \n";
+      else
+        response += "insert employee Failed \t \n";
+    })
+  }).then(()=> {
+    return Admin.addEmployee({
+      id: "TEST",
+      name: "매점직원",
+      phone: "010-0000-0101",
+      birthday: null,
+      cinema: "안산",
+      dept: "매점팀",
       salary: null
     }).then((result)=>{
       if(result)
@@ -591,6 +639,131 @@ app.get('/initSeats', (req, res)=>{
     })
   })
 })
+
+
+app.get('/initItems', (req, res) => {
+  const DBUtil = require('./DBUtil');
+  var promises =[];
+  var cinemas = ["안산"];
+  var items = ["달콤팝콘L", "고소팝콘M", "콜라M", "콜라L", "제로콜라M", "제로콜라L",
+              "레몬에이드", "아메리카노"];
+  var costs = [6000, 6000, 3000, 3500, 3000, 3500,
+              3500, 3000];
+  var stocks = [20, 20, 300, 300, 350, 350,
+                200, 200];
+  var binds = [];
+  items.map((value, index) => {
+    binds.push([value, costs[index], stocks[index]]);
+  })
+  DBUtil.getDBConnection().then((connection) => {
+    if(!connection) return false;
+    for(var cinema of cinemas) {
+
+      promises.push(new Promise((resolve, reject) => {
+        connection.executeMany(`insert into Item values(:0, '${cinema}', :1, :2)`, binds)
+          .then((result) => {
+            if(result.batchErrors){
+              Log.error(TAG+"initItems", result.batchErrors);
+              connection.rollback();
+              resolve(false);
+            }
+            Log.info(TAG+"initItems", "item are initialized");
+            connection.commit();
+            resolve(true);
+          })
+      }))
+    }
+    Promise.all(promises).then((result) => {
+      Log.info(TAG+"initItems", "initItems Complete");
+      connection.close();
+      sendRespond(res, 200, true);
+    })
+  })
+  
+  
+})
+
+
+app.get('/initItems_1', (req, res) => {
+  const DBUtil = require('./DBUtil');
+  var promises =[];
+  var cinemas = ["안산"];
+  var items = ["달콤팝콘L", "고소팝콘M", "콜라M", "콜라L", "제로콜라M", "제로콜라L",
+              "레몬에이드", "아메리카노"];
+  var costs = [6000, 6000, 3000, 3500, 3000, 3500,
+              3500, 3000];
+  var materials = ["옥수수", "옥수수", "콜라", "콜라", "제로콜라", "제로콜라",
+                  "레몬에이드", "아메리카노"];
+  var binds = [];
+  items.map((value, index) => {
+    binds.push([value, materials[index], costs[index]]);
+  })
+  initItemStocks().then((result) => {
+    DBUtil.getDBConnection().then((connection) => {
+      if(!connection) return false;
+      for(var cinema of cinemas) {
+  
+        promises.push(new Promise((resolve, reject) => {
+          var query = `insert into Item values(:0, '${cinema}', :1, 10)`;
+          connection.executeMany(`insert into Item values(:0, :1, '${cinema}', :2)`, binds)
+            .then((result) => {
+              if(result.batchErrors){
+                Log.error(TAG+"initItems", result.batchErrors);
+                connection.rollback();
+                resolve(false);
+              }
+              Log.info(TAG+"initItems", "item are initialized");
+              connection.commit();
+              resolve(true);
+            })
+        }))
+      }
+      Promise.all(promises).then((result) => {
+        Log.info(TAG+"initItems", "initItems Complete");
+        connection.close();
+        sendRespond(res, 200, true);
+      })
+    })
+  })
+  
+})
+
+
+function initItemStocks(){
+  const DBUtil = require('./DBUtil');
+  var cinemas = ["안산"];
+  var promises = [];
+  var items = ["옥수수", "콜라", "제로콜라", "음료컵", "레몬에이드", "아메리카노"];
+  var stocks = [2, 500, 500, 1000, 300, 300];
+  var binds = [];
+  items.map((value, index) => {
+    binds.push([value, stocks[index]]);
+  })
+  return DBUtil.getDBConnection().then((connection) => {
+    if(!connection) return false;
+
+    for(var cinema of cinemas){
+      promises.push(new Promise((resolve, reject) => {
+        connection.executeMany(`insert into Item_stocks values(:0, '${cinema}', :1)`, binds)
+          .then((result) => {
+            if(result.batchErrors){
+              Log.error(TAG+"initItem_stocks", result.batchErrors);
+              connection.rollback();
+              resolve(false);
+            }
+            Log.info(TAG+"initItem_stocks", "item_stocks are initialized");
+            connection.commit();
+            resolve(true);
+          })
+      }))
+    }
+    Promise.all(promises).then((result) => {
+      Log.info(TAG+"initItem_stocks", "initItem_stocks Complete");
+      connection.close();
+      //sendRespond(res, 200, true);
+    })
+  })
+}
 
 
 app.get('/hashpassword', (req, res) => {

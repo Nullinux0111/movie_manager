@@ -20,6 +20,9 @@ exports.setDepartment = (id, cinema, dept) => setDepartment(id, cinema, dept);
 exports.setSalary = (id, salary) => setSalary(id, salary);
 
 
+exports.listItem = (cinema) => listItem(cinema);
+exports.listItemStocks = (cinema) => listItemStocks(cinema);
+
 function addCinema(cinema_name) {
     return DBUtil.getDBConnection().then((connection) => {
         if(!connection) return {status: false};
@@ -94,6 +97,37 @@ function setSalary(id, salary) {
             return {status: true};
         }).catch((error) => {
             Log.error(TAG+"setSalary", error, query);
+            return {status: false};
+        })
+    })
+}
+
+
+function listItem(cinema) {
+    return DBUtil.getDBConnection().then((connection) => {
+        if(!connection) return {status:false};
+
+        var query = `select * from Item where cinema_name='${cinema}'`;
+        return connection.execute(query).then((result)=>{
+            Log.info(TAG+"listItem", result.rows);
+            return {status: true, data: result};
+        }).catch((error) => {
+            Log.error(TAG+"listItem", error, query);
+            return {status: false};
+        })
+    })
+}
+
+function listItemStocks(cinema){
+    return DBUtil.getDBConnection().then((connection) => {
+        if(!connection) return {status:false};
+
+        var query = `select * from Item_stocks where cinema_name='${cinema}'`;
+        return connection.execute(query).then((result)=>{
+            Log.info(TAG+"listItemStocks", result.rows);
+            return {status: true, data: result};
+        }).catch((error) => {
+            Log.error(TAG+"listItemStocks", error, query);
             return {status: false};
         })
     })
