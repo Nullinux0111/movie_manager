@@ -93,24 +93,8 @@ function LoginPageEmployee() {
                 sessionStorage.setItem("EmployeeDepartment", res["data"][1]);
                 console.log(sessionStorage.getItem("EmployeeDepartment"));
               
-              if(res["data"][1] === "관리자"){
-                
-                navigate('/StaffCeo');
-                  window.location.reload();
-              }
-              else if(res["data"][1] === "시설팀"){
-                
-                navigate('/StaffMaterial');
-                  window.location.reload();
-              }
-              else if(res["data"][1] === "매점팀"){
-                
-                navigate('/StaffItem');
-                  window.location.reload();
-              }
-              else{
-                alert("부서 페이지가 존재하지 않습니다.");
-              }
+                navigate('/Staffmain');
+                window.location.reload();
             }
             else{
               alert("서버 에러!");
