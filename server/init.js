@@ -1,15 +1,25 @@
 const DBUtil = require('./DBUtil');
+const Log = require('./Log');
 
+const customerACC = require('./customer_account');
+const employeeACC = require('./employee_account');
+const reserve = require('./reservation');
+const movie = require('./Movie');
+const schedule = require('./Schedule');
+const Admin = require('./admin');
+const Util = require('./Util');
+
+const TAG = "init.js:";
 
 exports.dummyData = (res) => dummyData(res);
 
 
 
-function dummyData(res) {
+function dummyData() {
     var response = ""
     const api = require('./movieAPI');
   
-    api.insertMovieToDB({movieCode: 20210028}).then(()=>{
+    return api.insertMovieToDB({movieCode: 20210028}).then(()=>{
       return api.insertMovieToDB({movieCode: 20212015})
     })
     .then(() => {
@@ -151,7 +161,7 @@ function dummyData(res) {
         response += "insert Materials finished\n"
       })
     })
-    .then(()=> sendRespond(res, 200, response))
+    .then(()=> {return response;})
     .catch((error) => {
       Log.error(TAG, error);
     })

@@ -462,7 +462,7 @@ app.get('/backTest', (req, res)=> {
 
 app.get('/dummyData', (req, res) => {
   const init = require('./init.js');
-  init.dummyData(res);
+  init.dummyData().then((response=>sendRespond(res, 200, response)));
 })
 
 
