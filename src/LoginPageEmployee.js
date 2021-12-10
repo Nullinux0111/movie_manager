@@ -27,29 +27,6 @@ function LoginPageEmployee() {
     }
   };
   
-  const onEnter = (e) => {
-    setLoading(true);
-    fetch(
-      `http://localhost:3001?user=${id_text}&pwd=${pwd_text}&query=select * from pc`
-    )
-      .then((res) => res.json())
-      .then((res) => {
-        console.log("res:" + res);
-        console.log("res.text:" + res["text"]);
-        console.log("res.data: " + res["data"]);
-        var a = res["data"];
-        //setList(a[1]);
-        setList(res["data"]);
-        setLoading(false);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setList(err.message);
-        setLoading(false);
-        setIsLoading(false);
-      });
-  };
   const onEnterPost = (e) => {
     setLoading(true);
     const parameters = {
