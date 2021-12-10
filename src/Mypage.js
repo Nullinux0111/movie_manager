@@ -146,7 +146,7 @@ function MyPage() {
             id: sessionStorage.getItem("MovieCurrentUser"),
             name: name_text,
             phone: phone_text,
-            birthday: birthday_text+"T15:00:00.000Z"
+            birthday: birthday_text
         };
         if(pwd_text.replace(/(\s*)/g, "") != ""){
             data.pwd = pwd_text;
