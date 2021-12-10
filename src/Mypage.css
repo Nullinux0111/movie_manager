@@ -78,6 +78,15 @@
   color: #082131;
 }
 
+.depttext {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  font-size: 2rem;
+  color: #082131;
+}
+
 .idtext {
   display: flex;
   flex-direction: column;

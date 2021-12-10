@@ -335,9 +335,10 @@ function MyPage() {
                 직무 정보
                 </p>
                 
-                <div className="idpassword">
+                <div className="depttext">
 
-                    내용 및 기능 추가 (부서, 극장)
+                    <p>소속 지점: {sessionStorage.getItem("EmployeeCinema")}</p>
+                    <p>부서:    {sessionStorage.getItem("EmployeeDepartment")}</p>
                 
                 </div>
 
