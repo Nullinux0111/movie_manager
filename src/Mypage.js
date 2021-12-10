@@ -64,6 +64,7 @@ function MyPage() {
     const [birthday_text, setBDay] = useState();
     const [list, setList] = useState(null);
     const [editable, setEditable] = useState(false);
+    const [reservation_array, setReservation] = useState();
 
     const [loading, setLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -237,7 +238,8 @@ function MyPage() {
         .then((res) => res.json())
         .then((res) => {
             console.log("res:" + res);
-            console.log("res.data: " + res['data']);
+            console.log("res.data: (reservation)" + res['data']);
+            setReservation(res['data']);
             
             setLoading(false);
             setIsLoading(false);
@@ -255,6 +257,7 @@ function MyPage() {
         getReservations();
         return;
     }
+
     useEffect(() => initInfo(), []);
 
     if(loading & !isLoading) {
@@ -326,9 +329,9 @@ function MyPage() {
           예매목록
         </p>
         
-        <div className="idpassword">
+        <div className="idpassword" id="myres">
 
-            내용 및 기능 추가 예정
+            api는 있고 보여주면 끝
         
         </div>
 
@@ -337,10 +340,11 @@ function MyPage() {
         {/*<p className = "loginProcess">{list}</p>*/}
 
         <div >
-        
+        {/*
         {<button id="editit" className="loginButton" onClick={plzwork} > 
             예매 하기
         </button>}
+        */}
         </div>
         {/*
         <button id="quitit" className="loginButton" onClick={Withdraw} > 
