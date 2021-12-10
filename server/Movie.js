@@ -101,6 +101,7 @@ function getMovieInfo(data) {
     
     return DBUtil.getDBConnection()
     .then((connection) => {
+        Log.info(TAG+"getInfo", query);
         return connection.execute(query);
     })
     .then((result) => {

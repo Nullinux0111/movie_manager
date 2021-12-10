@@ -114,9 +114,7 @@ class MovieInfo extends React.Component {
         this.setState({ running_time: res["data"][6] });
         this.setState({ synopsis: res["data"][7] });
         this.setState({ is_on: res["data"][8] });
-
-        //setPhone(res['data'][2]);
-        //setBDay(res['data'][3].substr(0,10));
+        this.setState({ openingdate: res["data"][9] });
 
         this.setLoading(false);
         this.setIsLoading(false);
@@ -163,7 +161,7 @@ class MovieInfo extends React.Component {
               <div class="row">
                 <div class="movieDetail">
                   <div class="movieBrief">
-                    <div class="moviePart">
+                    <div class="moviePart" margin='10'>
                       <span class={grade(this.state.age)}></span>
 
                       <p class="movieName">
@@ -171,24 +169,24 @@ class MovieInfo extends React.Component {
                           {this.state.movieTitle}
                         </strong>
 
-                        <p class="movieTitleOrig">.{/* {movieTitleOrig} */}</p>
+                        {/*<p class="movieTitleOrig">.{ {movieTitleOrig} }</p>*/}
 
-                        <p class="movieSpec"> . </p>
                         {/*<p class="movieSpec">예매율 <strong>{soonwi}</strong>위 ({rate}%) 누적 관객 수 <strong>{watchers}</strong>명 </p>*/}
 
                         <p class="movieTMI">
                           <p>
                             감독 : {this.state.director} 장르 :{" "}
                             {this.state.genre}/{this.state.running_time}분{" "}
-                          </p>{" "}
-                          {/*개봉일: {openingdate}*/}
+                          </p>
+                          {this.state.is_on =="개봉예정" ? (<p>개봉예정일: {openingdate}</p>) : (<p/>)}
                           <p>출연 : {this.state.actor} </p>
                         </p>
 
-                        {this.state.is_on !==
-                        "모든영화가 상영중 혹은 상영예정이다" ? (
-                          <button className="resButton">
-                            <a onClick={this.handleMove}>예매하기</a></button>
+                        {this.state.is_on ==
+                        "개봉" ? (
+                          <button className="resButton" onClick={this.handleMove}>
+                            예매하기
+                          </button>
                         ) : (
                           <button className="resButton_disabled">
                             상영종료

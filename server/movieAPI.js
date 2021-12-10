@@ -2,6 +2,7 @@ const Log = require('./Log');
 const DBUtil = require('./DBUtil');
 const TAG = "movieAPI";
 const fetch = require('node-fetch');
+const Util = require('./Util');
 
 const DEBUG = true;
 
@@ -50,6 +51,7 @@ function insertMovieToDB(data) {
         var director;
         var grade;
         var prdtStatNm;
+        var openDt;
         if(info.directors[0])
             director=info.directors[0].peopleNm;
         else 
@@ -67,6 +69,9 @@ function insertMovieToDB(data) {
             else 
                 prdtStatNm = "unexpected";
         }
+        if(info.openDt){
+            openDt = info.openDt.slice(0, 4) + "-" + info.openDt.slice(4,6) + "-" + info.openDt.slice(6);
+        }
         
         var bindParams = {
             code : info.movieCd,
@@ -76,14 +81,15 @@ function insertMovieToDB(data) {
             grade : grade,
             genre : info.genres[0].genreNm,
             runningTime : info.showTm,
-            prdtStat : prdtStatNm
+            prdtStat : prdtStatNm,
+            openingdate : openDt
         }
         Log.info(TAG +"insertMovie", bindParams.director);
         if(!info.movieCd || !info.movieNm)
             return false;
         else
             return DBUtil.getDBConnection().then((connection) => {
-                var query = `insert into movie values (:code, :name, :director, :actors, :grade, :genre, :runningTime, null, :prdtStat)`;
+                var query = `insert into movie values (:code, :name, :director, :actors, :grade, :genre, :runningTime, null, :prdtStat, :openingdate)`;
                 if(!connection)
                     return false;
                 return connection.execute(query, bindParams).then((result) => {

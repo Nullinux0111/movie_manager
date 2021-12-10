@@ -36,6 +36,7 @@
   height: 30rem;
   max-width: 60%;
   float: left;
+  padding: 30px;
 }
 
 .movieName {
@@ -68,6 +69,7 @@
 .movieTMI {
   height: 5rem;
   margin-top: 5%;
+  font-size: medium;
 }
 
 .resButton {
@@ -94,8 +96,22 @@
   width: 22rem;
 }
 
+
+.wrap {
+  border:3px solid gray;
+}
+.contentArea {
+  width:inherit;
+}
+
 .synopsis {
   font-family: "Segoe UI", Tahoma, Verdana, sans-serif;
+  font-size: medium;
+  text-align: center;
+}
+
+.div.iframe {
+  align-content: center;
 }
 
 .underall {
