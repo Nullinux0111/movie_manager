@@ -178,7 +178,7 @@ class MovieInfo extends React.Component {
                             감독 : {this.state.director} 장르 :{" "}
                             {this.state.genre}/{this.state.running_time}분{" "}
                           </p>
-                          {this.state.is_on =="개봉예정" ? (<p>개봉예정일: {openingdate}</p>) : (<p/>)}
+                          {this.state.is_on =="개봉예정" ? (<p>개봉예정일: {openingdate}</p>) : (<p>개봉일: {openingdate}</p>)}
                           <p>출연 : {this.state.actor} </p>
                         </p>
 

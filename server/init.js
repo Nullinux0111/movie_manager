@@ -99,6 +99,86 @@ function dummyData() {
     }).then(()=>{
       schedule.insertSchedule({
         play_date: "2021-12-09",
+        play_time: "2021-12-09 16:00:00",
+        cinema: "안산",
+        theater: 1,
+        movie_id: "20196264",
+        movie_name: "유체이탈자",
+        play_type: "day"
+      })
+    }).then(()=>{
+      schedule.insertSchedule({
+        play_date: "2021-12-09",
+        play_time: "2021-12-09 09:00:00",
+        cinema: "안산",
+        theater: 2,
+        movie_id: "20191282",
+        movie_name: "소설가 구보의 하루",
+        play_type: "day"
+      })
+    }).then(()=>{
+      schedule.insertSchedule({
+        play_date: "2021-12-09",
+        play_time: "2021-12-09 12:00:00",
+        cinema: "안산",
+        theater: 3,
+        movie_id: "20191282",
+        movie_name: "소설가 구보의 하루",
+        play_type: "day"
+      })
+    }).then(()=>{
+      schedule.insertSchedule({
+        play_date: "2021-12-09",
+        play_time: "2021-12-09 12:00:00",
+        cinema: "안산",
+        theater: 1,
+        movie_id: "20191282",
+        movie_name: "소설가 구보의 하루",
+        play_type: "day"
+      })
+    }).then(()=>{
+      schedule.insertSchedule({
+        play_date: "2021-12-10",
+        play_time: "2021-12-10 09:00:00",
+        cinema: "안산",
+        theater: 1,
+        movie_id: "20212015",
+        movie_name: "돈 룩 업",
+        play_type: "day"
+      })
+    }).then(()=>{
+      schedule.insertSchedule({
+        play_date: "2021-12-10",
+        play_time: "2021-12-10 12:00:00",
+        cinema: "안산",
+        theater: 1,
+        movie_id: "20212015",
+        movie_name: "돈 룩 업",
+        play_type: "day"
+      })
+    }).then(()=>{
+      schedule.insertSchedule({
+        play_date: "2021-12-10",
+        play_time: "2021-12-10 09:00:00",
+        cinema: "서울",
+        theater: 1,
+        movie_id: "20212015",
+        movie_name: "돈 룩 업",
+        play_type: "day"
+      })
+    }).then(()=>{
+      schedule.insertSchedule({
+        play_date: "2021-12-10",
+        play_time: "2021-12-10 13:00:00",
+        cinema: "서울",
+        theater: 2,
+        movie_id: "20212015",
+        movie_name: "돈 룩 업",
+        play_type: "day"
+      })
+    }).then(()=>{
+      schedule.insertSchedule({
+        play_date: "2021-12-09",
         play_time: "2021-12-09 09:00:00",
         cinema: "서울",
         theater: 1,

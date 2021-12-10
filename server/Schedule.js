@@ -155,7 +155,7 @@ function selectSchedule(date, time, cinema, theater){
             }
         }
         Log.info(TAG, query);
-
+        query += `order by play_time`;
         return connection.execute(query).then((result) => {
                 Log.info(TAG, "list_schedule_result: " + result.rows);
                 var list = [];
