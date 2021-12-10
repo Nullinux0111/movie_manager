@@ -93,7 +93,7 @@ function Main() {
                           <strong>스파이더맨: 노 웨이 홈</strong>
                         </h3>
                         <div class="infor_btn">
-                          <a href="#:" onClick={moveInfo}>
+                          <a href="./movieInfo?name=20210028">
                             상세정보
                           </a>
                           <a href="#:" onClick={handleMove}>
@@ -120,7 +120,7 @@ function Main() {
                           <h3>&nbsp;&nbsp;&nbsp;</h3>
                         </h3>
                         <div class="infor_btn">
-                          <a href="#:" onClick={moveInfo}>
+                          <a href="./movieInfo?name=20212015">
                             상세정보
                           </a>
                           <a href="#:" onClick={handleMove}>
@@ -146,7 +146,7 @@ function Main() {
                           <strong>소설가 구보의 하루</strong>
                         </h3>
                         <div class="infor_btn">
-                          <a href="#:" onClick={moveInfo}>
+                          <a href="./movieInfo?name=20191282">
                             상세정보
                           </a>
                           <a href="#:" onClick={handleMove}>
@@ -173,7 +173,7 @@ function Main() {
                           <h3>&nbsp;&nbsp;&nbsp;</h3>
                         </h3>
                         <div class="infor_btn">
-                          <a href="#:" onClick={moveInfo}>
+                          <a href="./movieInfo?name=20212168">
                             상세정보
                           </a>
                           <a href="#:" onClick={handleMove}>

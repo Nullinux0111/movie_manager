@@ -57,11 +57,11 @@ function MyPage() {
         window.location.reload();
     }
 
-    const [id_text, setText] = useState(orig_id);
+    const [id_text, setText] = useState();
     const [pwd_text, setPWd] = useState(orig_pwd);
-    const [name_text, setName] = useState(orig_name);
-    const [phone_text, setPhone] = useState(orig_phone);
-    const [birthday_text, setBDay] = useState(orig_bday);
+    const [name_text, setName] = useState();
+    const [phone_text, setPhone] = useState();
+    const [birthday_text, setBDay] = useState();
     const [list, setList] = useState(null);
     const [editable, setEditable] = useState(false);
 
@@ -205,6 +205,10 @@ function MyPage() {
             setName(res['data'][1]);
             setPhone(res['data'][2]);
             setBDay(res['data'][3].substr(0,10));
+            orig_id = parameters['id'];
+            orig_name = res['data'][1];
+            orig_phone = res['data'][2];
+            orig_bday = res['data'][3].substr(0,10);
 
             setLoading(false);
             setIsLoading(false);
@@ -335,7 +339,7 @@ function MyPage() {
         <div >
         
         {<button id="editit" className="loginButton" onClick={plzwork} > 
-            예매하러 하기
+            예매 하기
         </button>}
         </div>
         {/*

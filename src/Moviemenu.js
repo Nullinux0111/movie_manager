@@ -82,7 +82,7 @@ class MovieWrapper extends React.Component {
                             <strong>스파이더맨: 노 웨이 홈</strong>
                           </h3>
                           <div class="infor_btn">
-                            <a href="#:" onClick={this.handleMove}>상세정보</a>
+                            <a href="./movieInfo?name=20210028">상세정보</a>
                             <a href="#:" onClick={this.handleMove}>
                               예매하기
                             </a>
@@ -107,7 +107,7 @@ class MovieWrapper extends React.Component {
                             <h3>&nbsp;&nbsp;&nbsp;</h3>
                           </h3>
                           <div class="infor_btn">
-                            <a href="#:" onClick={this.handleMove}>상세정보</a>
+                            <a href="./movieInfo?name=20212015">상세정보</a>
                             <a href="#:" onClick={this.handleMove}>
                               예매하기
                             </a>
@@ -131,7 +131,7 @@ class MovieWrapper extends React.Component {
                             <strong>소설가 구보의 하루</strong>
                           </h3>
                           <div class="infor_btn">
-                            <a href="#:" onClick={this.handleMove}>상세정보</a>
+                            <a href="./movieInfo?name=20191282">상세정보</a>
                             <a href="#:" onClick={this.handleMove}>
                               예매하기
                             </a>
@@ -156,7 +156,7 @@ class MovieWrapper extends React.Component {
                             <h3>&nbsp;&nbsp;&nbsp;</h3>
                           </h3>
                           <div class="infor_btn">
-                            <a href="#:" onClick={this.handleMove}>상세정보</a>
+                            <a href="./movieInfo?name=20212168">상세정보</a>
                             <a href="#:" onClick={this.handleMove}>
                               예매하기
                             </a>
@@ -185,7 +185,7 @@ class MovieWrapper extends React.Component {
                             <h3> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h3>
                           </h3>
                           <div class="infor_btn">
-                            <a href="#:" onClick={this.handleMove}>상세정보</a>
+                            <a href="./movieInfo?name=20210611">상세정보</a>
                             <a href="#:" onClick={this.handleMove}>
                               예매하기
                             </a>
@@ -210,7 +210,7 @@ class MovieWrapper extends React.Component {
                             <h3> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h3>
                           </h3>
                           <div class="infor_btn">
-                            <a href="#:" onClick={this.handleMove}>상세정보</a>
+                            <a href="./movieInfo?name=20196264">상세정보</a>
                             <a href="#:" onClick={this.handleMove}>
                               예매하기
                             </a>
@@ -234,7 +234,7 @@ class MovieWrapper extends React.Component {
                             <strong>연애 빠진 로맨스</strong>
                           </h3>
                           <div class="infor_btn">
-                            <a href="#:" onClick={this.handleMove}>상세정보</a>
+                            <a href="./movieInfo?name=20205986">상세정보</a>
                             <a href="#:" onClick={this.handleMove}>
                               예매하기
                             </a>
@@ -259,7 +259,7 @@ class MovieWrapper extends React.Component {
                             <h3> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h3>
                           </h3>
                           <div class="infor_btn">
-                            <a href="#:" onClick={this.handleMove}>상세정보</a>
+                            <a href="./movieInfo?name=20210087">상세정보</a>
                             <a href="#:" onClick={this.handleMove}>
                               예매하기
                             </a>
